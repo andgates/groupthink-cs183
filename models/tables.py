@@ -13,7 +13,7 @@ db.define_table('project',
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
                 )
 #User Table
-db.define_table('user',
+db.define_table('student',
                 Field('user_email'),
                 Field('addtl_info'),
                 Field('skills'),
