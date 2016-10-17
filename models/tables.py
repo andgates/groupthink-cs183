@@ -1,7 +1,7 @@
 import datetime
 
 #Class Table
-db.define_table('class',
+db.define_table('userClasses',
                 Field('class_name')
                 )
 #Project Table
