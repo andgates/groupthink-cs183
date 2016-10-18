@@ -32,6 +32,20 @@ def index():
 
     return dict(projects=projects,get_user_name_from_email=get_user_name_from_email)
 
+@auth.requires_login()
+def project():
+    """
+    This is the project controller.
+
+    Returns: A dictionary of projects and associated user names.
+    """
+
+
+    # Gets a list of the 20 most recent projects, orders by date created
+    projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
+
+    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email)
+
 
 @auth.requires_login()
 def edit():
@@ -44,6 +58,7 @@ def edit():
     if request.args(0) is None:
         # Create a new project if there are no arguments
         form = SQLFORM(db.project)
+        form.add_button('Cancel', URL('project'))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
@@ -53,15 +68,15 @@ def edit():
         # Invariant: Check if project exists
         if project is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'index'))
+            redirect(URL('default', 'project'))
 
         args = request.args(0)
         form = SQLFORM(db.project, project, deletable=True, showid=False)
-        form.add_button('Cancel', URL('index'))
+        form.add_button('Cancel', URL('project'))
 
     if form.process().accepted:
         session.flash = T('Project created' if args is None else 'Project edited')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'project'))
 
     return dict(args=args,form=form)
 

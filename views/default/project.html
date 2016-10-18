@@ -1,0 +1,61 @@
+{{extend 'layout.html'}}
+
+<div class="post_listing center">
+
+    {{logged_in = auth.user_id is not None}}
+
+    <div class="page-header clearfix">
+        <h2 class="pull-left">GroupThink: Project List</h2>
+        {{if logged_in:}}
+            <a href="{{=URL('default', 'edit')}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> Post Project
+            </a>
+        {{else:}}
+            <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
+                    Log in <i class="fa fa-sign-in"></i>
+            </a>
+        {{pass}}
+    </div>
+
+    <div class="text-left">
+    {{if projects:}}
+        {{for p in projects:}}
+            {{own_p = auth.user_id and p.user_email == auth.user.email}}
+            <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
+                <div class="panel-heading clearfix">
+                    <h2 class="panel-title pull-left">
+                        {{=get_user_name_from_email(p.user_email)}}
+                        <small>{{=p.user_email}}</small>
+                    </h2>
+                    {{if own_p:}}
+                        <a href="{{=URL('default', 'edit', args=[p.id])}}" class="btn btn-primary btn-sm pull-right">
+                            Edit <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    {{pass}}
+                </div>
+                <div class="panel-body">
+                    <p>Project Name: {{=p.project_name}}</p>
+                    <p>Project Info: {{=p.project_info}} </p>
+                    <p>Current Members: {{=p.current_members}} </p>
+                    <p>Needed Skills: {{=p.needed_skills}} </p>
+
+                </div>
+                <div class="panel-footer clearfix">
+                    <div class="pull-left">
+                    <span class="label label-success">Created {{=p.created_on}}</span>
+                    {{if p.created_on != p.updated_on:}}
+                         <span class="label label-warning">Last edited {{=p.updated_on}}</span>
+                    {{pass}}
+                    </div>
+                    <span class="badge pull-right">#{{=p.id}}</span>
+                </div>
+            </div>
+        {{pass}}
+    {{else:}}
+        <div class="alert alert-warning" role="alert">
+            There aren't any projects yet! {{='Create one with the button above.' if logged_in else 'Log in to create one.'}}
+        </div>
+    {{pass}}
+    </div>
+
+</div>
