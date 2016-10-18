@@ -10,9 +10,11 @@
 
 {{pass}}
 
+<!-- If the request was for profile, send the user to our own profile page -->
 {{if request.args(0)=='profile':}}
     <h1>Hello Profile</h1>
 
+<!-- Otherwise use the default web2py user code -->
 {{else:}}
 
     <div class="container">
