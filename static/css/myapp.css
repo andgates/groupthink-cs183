@@ -21,3 +21,135 @@
   -webkit-border-radius: 16px;
   border-radius: 16px;
 }
+
+
+body {
+  background: rgba(34, 102, 102, 0.49);
+}
+
+/* Profile container */
+.profile {
+  margin: 10px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 20px 0 10px 0;
+  background: #fff;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.profile-usertitle-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.profile-userbuttons .btn {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 15px;
+  margin-right: 5px;
+}
+
+.profile-usermenu {
+  margin-top: 50px;
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #93a3b5;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-usermenu ul li a i {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+  background-color: #fafcfd;
+  color: #5b9bd1;
+}
+
+.profile-usermenu ul li.active a {
+  color: #5b9bd1;
+  background-color: #f6f9fb;
+  border-left: 2px solid #5b9bd1;
+  margin-left: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 25px;
+  background: #fff;
+  min-height: 460px;
+}
+
+/*TABS*/
+ul.tab{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+
+ul.tab li {float: left;}
+
+ul.tab li a {
+  display: inline-block;
+  color: black;
+  text-align: center;
+  padding:14px 16px;
+  text-decoration: none;
+  transition: .3s;
+  font-size: 17px;
+}
+
+ul.tab li a:hover {background-color: #ddd;}
+
+
+.tabcontent{
+  display: none;
+  padding: 5%;
+  padding-bottom: 300px;;
+  border: 1px solid #ccc;
+}
