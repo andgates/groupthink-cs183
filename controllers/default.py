@@ -99,7 +99,7 @@ def user():
 
 
 
-    return dict(form=auth())
+    return dict(form=auth(), get_user_name_from_email=get_user_name_from_email)
 
 
 @cache.action()
