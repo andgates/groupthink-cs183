@@ -1,0 +1,15 @@
+{{ extend 'layout.html' }}
+
+<div class="mycontent">
+
+    <h2>
+        {{if args:}}
+            Edit project
+        {{else:}}
+            Create project
+        {{pass}}
+    </h2>
+
+    {{=form}}
+
+</div>

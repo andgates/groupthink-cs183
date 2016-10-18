@@ -8,18 +8,62 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
+import json
+
+def get_user_name_from_email(email):
+    """Returns a string corresponding to the user first and last names,
+    given the user email."""
+    u = db(db.auth_user.email == email).select().first()
+    if u is None:
+        return 'None'
+    else:
+        return ' '.join([u.first_name, u.last_name])
+
 
 def index():
     """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    This is the main controller.
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
+    Returns: A dictionary of projects and associated user names.
     """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to web2py!'))
 
+    # Gets a list of the 20 most recent projects, orders by date created
+    projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
+
+    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email)
+
+
+@auth.requires_login()
+def edit():
+    """
+    This is the page to create / edit / delete a project.
+    """
+    args = None
+    form = None
+
+    if request.args(0) is None:
+        # Create a new project if there are no arguments
+        form = SQLFORM(db.project)
+    else:
+        # If there are arguments, edit a project
+        q = ((db.project.user_email == auth.user.email) &
+                (db.project.id == request.args(0)))
+        # Get project record
+        project = db(q).select().first()
+        # Invariant: Check if project exists
+        if project is None:
+            session.flash = T('Not Authorized')
+            redirect(URL('default', 'index'))
+
+        args = request.args(0)
+        form = SQLFORM(db.project, project, deletable=True, showid=False)
+        form.add_button('Cancel', URL('index'))
+
+    if form.process().accepted:
+        session.flash = T('Project created' if args is None else 'Project edited')
+        redirect(URL('default', 'index'))
+
+    return dict(args=args,form=form)
 
 def user():
     """
