@@ -11,7 +11,11 @@ import datetime
 
 #Class Table
 db.define_table('userClasses',
-                Field('class_name')
+                Field('class_name'),
+                Field('class_id'),
+                Field('class_info'),
+                # This can be a student object
+                Field('enrolled_students'),
                 )
 #Project Table
 db.define_table('project',
