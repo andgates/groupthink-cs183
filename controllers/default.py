@@ -23,14 +23,9 @@ def get_user_name_from_email(email):
 def index():
     """
     This is the main controller.
-
-    Returns: A dictionary of projects and associated user names.
     """
 
-    # Gets a list of the 20 most recent projects, orders by date created
-    projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
-
-    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email)
+    return
 
 @auth.requires_login()
 def project():
