@@ -25,7 +25,7 @@ def index():
     This is the main controller.
     """
 
-    return
+    return dict()
 
 @auth.requires_login()
 def project():

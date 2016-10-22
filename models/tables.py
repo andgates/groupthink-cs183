@@ -9,16 +9,17 @@
 
 import datetime
 
-#Class Table
-db.define_table('userClasses',
-                Field('class_name'),
-                Field('class_id'),
-                Field('class_info'),
-                # This can be a student object
+# Courses Table
+db.define_table('course',
+                Field('course_name'),
+                Field('course_id'),
+                Field('course_info'),
+                # This could be a student object
                 Field('enrolled_students'),
                 )
-#Project Table
+# Project Table
 db.define_table('project',
+                Field('course_id'),
                 Field('user_email', default=auth.user.email if auth.user_id else None),
                 Field('project_name'),
                 Field('current_members'),
@@ -28,12 +29,12 @@ db.define_table('project',
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 )
 
-#User Table
+# Student Table
 db.define_table('student',
                 Field('user_email'),
                 Field('addtl_info'),
                 Field('skills'),
-                Field('classes'),
+                Field('enrolled courses'),
                 )
 
 # When submitting a project, the field should not be empty
