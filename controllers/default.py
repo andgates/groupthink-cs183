@@ -9,6 +9,7 @@
 # -------------------------------------------------------------------------
 
 import json
+import random, string
 
 def get_user_name_from_email(email):
     """Returns a string corresponding to the user first and last names,
@@ -19,6 +20,8 @@ def get_user_name_from_email(email):
     else:
         return ' '.join([u.first_name, u.last_name])
 
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def index():
     """
@@ -33,11 +36,47 @@ def create_course():
     form = SQLFORM(db.course)
     form.add_button('Cancel', URL('project'))
 
+
+
     if form.process().accepted:
         session.flash = T('Class created')
-        redirect(URL('default', 'course_id_display'))
+
+        q = (db.course.admin_email == auth.user.email)
+
+        course = db(q).selcet().first()
+
+        if course is None:
+            session.flash = T('User has no course')
+
+        all_ids = db(db.course.course_id)
+        unique = False
+        while (unique == False):
+            c_id = id_generator()
+            if c_id not in all_ids:
+                unique = True
+
+        course.course_id = c_id
+        course.update_record()
+
+        redirect(URL('default', 'display_course_id'))
+
+
 
     return dict(form=form)
+
+@auth.requires_login()
+def display_course_id():
+    """
+    This is the page to display course id
+    """
+    q = (db.course.admin_email == auth.user.email)
+
+    course = db(q).selcet().first()
+
+    c_id = course.course_id
+
+
+    return dict(c_id=c_id)
 
 
 @auth.requires_login()

@@ -16,6 +16,7 @@ db.define_table('course',
                 Field('course_info'),
                 # This could be a student object
                 Field('enrolled_students'),
+                Field('admin_email', default=auth.user.email if auth.user_id else None)
                 )
 # Project Table
 db.define_table('project',
