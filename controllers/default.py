@@ -28,6 +28,19 @@ def index():
     return dict()
 
 @auth.requires_login()
+def create_course():
+
+    form = SQLFORM(db.course)
+    form.add_button('Cancel', URL('project'))
+
+    if form.process().accepted:
+        session.flash = T('Class created')
+        redirect(URL('default', 'course_id_display'))
+
+    return dict(form=form)
+
+
+@auth.requires_login()
 def project():
     """
     This is the project controller.

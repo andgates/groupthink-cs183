@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+
+<div class="post_listing center">
+
+{{logged_in = auth.user_id is not None}}
+
+    <div class="page-header clearfix">
+    <h2>GroupThink</h2>
+    <h3>Enter course name:</h3>
+
+    {{=form}}
+
+    </div>
+</div>
