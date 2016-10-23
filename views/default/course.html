@@ -1,3 +1,21 @@
+{{extend 'layout.html'}}
+
+<div class="post_listing center">
+
+    {{logged_in = auth.user_id is not None}}
+
+    <div class="page-header clearfix">
+        <h2 class="pull-left">GroupThink: Enrolled Courses</h2>
+        {{if logged_in:}}
+            <a href="{{=URL('default', 'join')}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> Join Course
+            </a>
+        {{else:}}
+            <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
+                    Log in <i class="fa fa-sign-in"></i>
+            </a>
+        {{pass}}
+    </div>
 
 
     <div class="text-left">
