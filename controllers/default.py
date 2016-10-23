@@ -31,52 +31,67 @@ def index():
     return dict()
 
 @auth.requires_login()
-def create_course():
+def edit_course():
+    """
+    This is the page to create / edit / delete a project.
+    """
+    args = None
+    form = None
 
-    form = SQLFORM(db.course)
-    form.add_button('Cancel', URL('project'))
+    if request.args(0) is None:
+        # Create a new project if there are no arguments
+        form = SQLFORM(db.course)
+        form.add_button('Cancel', URL('course'))
+    else:
+        # If there are arguments, edit a project
+        q = ((db.course.admin_email == auth.user.email) &
+                (db.course.id == request.args(0)))
+        # Get project record
+        project = db(q).select().first()
+        # Invariant: Check if project exists
+        if project is None:
+            session.flash = T('Not Authorized')
+            redirect(URL('default', 'project'))
 
-
+        args = request.args(0)
+        form = SQLFORM(db.course, project, deletable=True, showid=False)
+        form.add_button('Cancel', URL('course'))
 
     if form.process().accepted:
-        session.flash = T('Class created')
+        session.flash = T('Course created' if args is None else 'Course edited')
+        redirect(URL('default', 'course'))
 
-        q = (db.course.admin_email == auth.user.email)
-
-        course = db(q).selcet().first()
-
-        if course is None:
-            session.flash = T('User has no course')
-
-        all_ids = db(db.course.course_id)
-        unique = False
-        while (unique == False):
-            c_id = id_generator()
-            if c_id not in all_ids:
-                unique = True
-
-        course.course_id = c_id
-        course.update_record()
-
-        redirect(URL('default', 'display_course_id'))
-
-
+    return dict(args=args,form=form)
 
     return dict(form=form)
 
-@auth.requires_login()
-def display_course_id():
-    """
-    This is the page to display course id
-    """
-    q = (db.course.admin_email == auth.user.email)
+def course():
 
-    course = db(q).selcet().first()
+    courses = db(db.course).select()
 
-    c_id = course.course_id
+    return dict(courses=courses)
+
+def join_validation(form):
+    q = form.vars.enrolled_courses == db.course.course_id
+
+    course = db(q).select().first()
+
+    if course is None:
+        form.errors.enrolled_courses = "Course does not exist"
+
+def join():
+
+    form=SQLFORM(db.student)
+
+    if form.process(onvalidation=join_validation).accepted:
+        session.flash = "Class Joined"
+        redirect(URL('default','course'))
+    else:
+        session.flash = T("Nothin happened")
+    return dict(form=form)
 
 
-    return dict(c_id=c_id)
+
 
 
 @auth.requires_login()
