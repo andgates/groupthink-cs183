@@ -91,9 +91,6 @@ def join():
     return dict(form=form)
 
 
-
-
-
 @auth.requires_login()
 def project():
     """
