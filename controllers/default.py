@@ -65,6 +65,7 @@ def edit_course():
 
     return dict(form=form)
 
+@auth.requires_login()
 def course():
 
     courses = db(db.course).select()
@@ -79,6 +80,7 @@ def join_validation(form):
     if course is None:
         form.errors.enrolled_courses = "Course does not exist"
 
+@auth.requires_login()
 def join():
 
     form=SQLFORM(db.student)
@@ -86,8 +88,7 @@ def join():
     if form.process(onvalidation=join_validation).accepted:
         session.flash = "Class Joined"
         redirect(URL('default','course'))
-    else:
-        session.flash = T("Nothin happened")
+
     return dict(form=form)
 
 

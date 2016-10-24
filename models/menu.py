@@ -5,8 +5,9 @@
 # Customize your APP title, subtitle and menus here
 # ----------------------------------------------------------------------------------------------------------------------
 
-response.logo = A(B('web', SPAN(2), 'py'), XML('&trade;&nbsp;'),
-                  _class="navbar-brand", _href="http://www.web2py.com/",
+response.logo = A(B('GroupThink'), XML('&trade;&nbsp;'),
+                  # It's a really bad idea to use absolute URLs but the URL helper function wasn't working
+                  _class="navbar-brand", _href="http://127.0.0.1:8000/groupthink/default/index",
                   _id="web2py-logo")
 response.title = request.application.replace('_', ' ').title()
 response.subtitle = ''
@@ -49,6 +50,12 @@ def _():
     # useful links to internal and external resources
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
+        # Begin GroupThink modifications to menu
+        (T('Enrolled Courses'), False, URL('default', 'course')),
+        (T('Join Course'), False, URL('default', 'join')),
+        (T('Create Course'), False, URL('default', 'edit_course')),
+        (T('View Projects'), False, URL('default', 'project')),
+        # End Groupthink Modifications
         (T('My Sites'), False, URL('admin', 'default', 'site')),
         (T('This App'), False, '#', [
             (T('Design'), False, URL('admin', 'default', 'design/%s' % app)),
