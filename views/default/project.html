@@ -38,7 +38,12 @@
                     <p>Project Name: {{=p.project_name}}</p>
                     <p>Project Info: {{=p.project_info}} </p>
                     <p>Current Members: {{=p.current_members}} </p>
-                    <p>Needed Skills: {{=p.needed_skills}} </p>
+                    Needed Skills:
+                        <ul>
+                        {{for i in p.needed_skills:}}
+                            <li>{{=i}}</li>
+                        {{pass}}
+                        </ul>
                     {{if p.accepting_members:}}
                         <p>Accepting Members: Yes</p>
                     {{else:}}
