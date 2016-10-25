@@ -39,6 +39,11 @@
                     <p>Project Info: {{=p.project_info}} </p>
                     <p>Current Members: {{=p.current_members}} </p>
                     <p>Needed Skills: {{=p.needed_skills}} </p>
+                    {{if p.accepting_members:}}
+                        <p>Accepting Members: Yes</p>
+                    {{else:}}
+                        <p>Accepting Members: No</p>
+                    {{pass}}
 
                 </div>
                 <div class="panel-footer clearfix">

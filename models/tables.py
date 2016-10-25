@@ -28,6 +28,7 @@ db.define_table('project',
                 Field('needed_skills'),
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
+                Field('accepting_members', 'boolean'),
                 )
 
 # Student Table
