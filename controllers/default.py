@@ -181,3 +181,14 @@ def call():
     return service()
 
 
+
+@auth.requires_login()
+def members():
+
+    members=db(db.course)
+    #numStudents=db(db.course.numStudents)
+    #members = db(db.course).select(course.en)....
+
+    #members="class members";
+
+    return dict(members=members,get_user_name_from_email=get_user_name_from_email)

@@ -14,8 +14,9 @@ db.define_table('course',
                 Field('course_name'),
                 Field('course_id'),
                 Field('course_info'),
+                #Field('numStudents', type='integer'),
                 # This could be a student object
-                Field('enrolled_students'),
+                Field('enrolled_students', 'list:string'),
                 Field('admin_email', default=auth.user.email if auth.user_id else None),
                 )
 # Project Table

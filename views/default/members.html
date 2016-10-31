@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+
+<div class="memberPage">
+
+
+
+    {{for i in range(6):}}
+
+
+        <div class="profile-sidebar" id="smallProf">
+
+				<div class="profile-userpic">
+
+					<img src="/groupthink/static/images/noprofilemale.gif" class="img-responsive" alt="/groupthink/static/images/noprofilemale.gif">
+				</div>
+
+				<div class="profile-usertitle">
+					<div class="profile-usertitle-name" style="text-transform: uppercase">
+                        {{=get_user_name_from_email(auth.user.email)}}
+					</div>
+					<div class="profile-usertitle-job">
+						UCSC Student
+					</div>
+				</div>
+
+				<div class="profile-userbuttons" id="smallButtons">
+                    <button type="button" class="glyphicon glyphicon-envelope" style="margin-bottom:10px;">  Message</button>
+                    <button type="button" class="glyphicon glyphicon-user" style="margin-bottom:10px;"> Profile</button>
+
+				</div>
+        </div>
+
+
+    {{pass}}
+
+
+
+
+</div>
+
+
+
