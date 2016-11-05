@@ -28,6 +28,15 @@ def index():
     This is the main controller.
     """
 
+    if auth.user:
+        res = False
+        email = db(db.student.user_email == auth.user.email).select()
+        if email:
+            res = True
+        if (res != True):
+            db.student.insert(
+                user_email=auth.user.email,
+            )
     return dict()
 
 @auth.requires_login()
@@ -69,8 +78,16 @@ def edit_course():
 def course():
 
     courses = db(db.course).select()
+    students = db(db.student).select()
 
-    return dict(courses=courses)
+    return dict(courses=courses, students=students)
+
+@auth.requires_login()
+def student():
+
+    students = db(db.student).select()
+
+    return dict(students=students)
 
 def join_validation(form):
     q = form.vars.enrolled_courses == db.course.course_id
@@ -86,6 +103,10 @@ def join():
     form=SQLFORM(db.student)
 
     if form.process(onvalidation=join_validation).accepted:
+        email = db(db.course.course_id == form.enrolled_courses).select()
+        db.course.insert(
+            student = db(db.student.user_email == auth.user.email).select()
+        )
         session.flash = "Class Joined"
         redirect(URL('default','course'))
 

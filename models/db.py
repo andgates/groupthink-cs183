@@ -62,15 +62,12 @@ from gluon.tools import Auth, Service, PluginManager
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=myconf.get('host.names'))
+
 # GroupThink modifications to the auth table
 auth.settings.extra_fields['auth_user']= [
-  Field('address'),
-  Field('city'),
-  Field('zip'),
   Field('phone')]
 service = Service()
 plugins = PluginManager()
-
 # create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)
 

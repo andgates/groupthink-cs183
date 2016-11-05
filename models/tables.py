@@ -12,11 +12,11 @@ import datetime
 # Courses Table
 db.define_table('course',
                 Field('course_name'),
-                Field('course_id'),
+                Field('course_id', 'string', unique=True),
                 Field('course_info'),
                 #Field('numStudents', type='integer'),
                 # This could be a student object
-                Field('enrolled_students', 'list:string'),
+                Field('enrolled_students', 'list:reference student'),
                 Field('admin_email', default=auth.user.email if auth.user_id else None),
                 )
 # Project Table
@@ -34,11 +34,15 @@ db.define_table('project',
 
 # Student Table
 db.define_table('student',
+                Field('first_name'),
+                Field('last_name'),
                 Field('user_email'),
                 Field('addtl_info'),
                 Field('skills'),
-                Field('enrolled_courses'),
+                Field('enrolled_courses', 'list:string'),
                 )
+
+
 
 # When submitting a project, the field should not be empty
 db.project.project_name.requires = IS_NOT_EMPTY()
@@ -50,6 +54,8 @@ db.project.updated_on.readable = db.project.updated_on.writable = False
 db.project.course_id.readable = db.project.course_id.writable = False
 
 # Quick fix for joining classes
+db.student.first_name.readable = db.student.first_name.writable = False
+db.student.last_name.readable = db.student.last_name.writable = False
 db.student.user_email.readable = db.student.user_email.writable = False
 db.student.skills.readable = db.student.skills.writable = False
 db.student.addtl_info.readable = db.student.addtl_info.writable = False

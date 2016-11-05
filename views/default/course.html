@@ -20,26 +20,41 @@
 
     <div class="text-left">
     {{if courses:}}
+        {{myCourses = []}}
+        {{for r in students:}}
+            {{if (r.user_email == auth.user.email):}}
+                {{if r.enrolled_courses is not None:}}
+                    {{for d in r.enrolled_courses:}}
+                        {{myCourses[d] = r.enrolled_courses}}
+                    {{pass}}
+                {{pass}}
+            {{pass}}
+        {{pass}}
+
         {{for c in courses:}}
             {{own_p = auth.user_id and c.admin_email == auth.user.email}}
-            <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
-                <div class="panel-heading clearfix">
+            {{for d in myCourses:}}
+                {{if c.course_id == d:}}
+                    <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
+                        <div class="panel-heading clearfix">
 
-                    {{if own_p:}}
-                        <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
-                            Edit <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                    {{pass}}
-                </div>
-                <div class="panel-body">
-                    <p>Course Name: {{=c.course_name}}</p>
-                    <p>Course ID: {{=c.course_id}} </p>
+                            {{if own_p:}}
+                                <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
+                                    Edit <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            {{pass}}
+                        </div>
+                        <div class="panel-body">
+                            <p>Course Name: {{=c.course_name}}</p>
+                            <p>Course ID: {{=c.course_id}} </p>
 
-                </div>
-                <div class="panel-footer clearfix">
-                    <span class="badge pull-right">#{{=c.id}}</span>
-                </div>
-            </div>
+                        </div>
+                        <div class="panel-footer clearfix">
+                            <span class="badge pull-right">#{{=c.id}}</span>
+                        </div>
+                    </div>
+                {{pass}}
+            {{pass}}
         {{pass}}
     {{else:}}
         <div class="alert alert-warning" role="alert">
@@ -47,3 +62,4 @@
         </div>
     {{pass}}
     </div>
+</div>
