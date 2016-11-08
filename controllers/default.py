@@ -100,15 +100,16 @@ def join_validation(form):
 @auth.requires_login()
 def join():
 
-    form=SQLFORM(db.student)
+    form = SQLFORM.grid(db.course.course_id == db.student.enrolled_courses)
 
-    if form.process(onvalidation=join_validation).accepted:
-        email = db(db.course.course_id == form.enrolled_courses).select()
-        db.course.insert(
-            student = db(db.student.user_email == auth.user.email).select()
-        )
-        session.flash = "Class Joined"
-        redirect(URL('default','course'))
+    #if form.process(onvalidation=join_validation).accepted:
+    email = db(db.course.course_id == db.student.enrolled_courses and db.student.user_email == auth.user.email).select().first()
+    courses = db(db.course.course_id == db.student.enrolled_courses).select().first()
+    if courses:
+        courses.enrolled_students=email.user_email
+        courses.update_record()
+    session.flash = "Class Joined"
+    redirect(URL('default','course'))
 
     return dict(form=form)
 
