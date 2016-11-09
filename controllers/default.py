@@ -109,7 +109,8 @@ def join():
                     if d.user_email == auth.user.email:
                         for e in d.enrolled_courses:
                             if e == c.course_id:
-                               session.flash = "Already Enrolled"
+                                session.flash = "Already Enrolled"
+                                break;
                         if d.enrolled_courses == None:
                             # set the property
                             d.enrolled_courses = c.course_id
