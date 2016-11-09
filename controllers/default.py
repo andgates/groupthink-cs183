@@ -101,46 +101,44 @@ def courseVerification(course_id):
 
 @auth.requires_login()
 def join():
-    valid = True
+    valid = None
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
 
     if form.process().accepted:
         courses = db(db.course).select()
         students = db(db.student).select()
-
         for c in courses:
             if c.course_id == form.vars.course_id:
                 if c.enrolled_students:
                     if auth.user.email in c.enrolled_students:
+                        session.flash = "Already Enrolled"
+                        redirect(URL('default','join'))
                         break
                     else:
                         c.enrolled_students.append(auth.user.email)
                         c.update_record()
-                        redirect(URL('default', 'course'))
-                        session.flash = "Class Joined"
                 else:
                     c.enrolled_students = auth.user.email
                     c.update_record()
-                    redirect(URL('default', 'course'))
-                    session.flash = "Class Joined"
-            else:
-                valid = None
-                session.flash = "Error Joining Class"
+                valid = True
+
         if valid:
             for d in students:
                 if d.user_email == auth.user.email:
                     if d.enrolled_courses:
-                        if form.vars.course_id in d.enrolled_courses:
-                            session.flash = "Already Enrolled"
-                            break
-                        else:
-                            d.enrolled_courses.append(form.vars.course_id)
-                            d.update_record()
+                        d.enrolled_courses.append(form.vars.course_id)
+                        d.update_record()
+                        session.flash = "Class Joined"
+                        redirect(URL('default', 'course'))
                     else:
                         d.enrolled_courses = form.vars.course_id
                         d.update_record()
-
+                        session.flash = "Class Joined"
+                        redirect(URL('default', 'course'))
+        else:
+            session.flash = "Course Not Found"
+            redirect(URL('default', 'join'))
     return dict(form=form)
 
 @auth.requires_login()
