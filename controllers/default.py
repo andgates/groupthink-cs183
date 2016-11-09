@@ -89,46 +89,51 @@ def student():
 
     return dict(students=students)
 
-def join_validation(form):
-    q = form.vars.enrolled_courses == db.course.course_id
-
-    course = db(q).select().first()
-
-    if course is None:
-        form.errors.enrolled_courses = "Course does not exist"
-
 @auth.requires_login()
 def join():
-#    update = db.course(request.args(0))
-#    form = SQLFORM(db.course, update)
-    test = "FUCK"
+    #We use a .facctory so that sql form does not create
+    #We make and arbitrary course_id and get it
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
+
     if form.process().accepted:
-        email = db(db.course).select()
-        for c in email:
+        #get iterable version of course table
+        courses = db(db.course).select()
+        students = db(db.student).select()
+        for c in courses:
+            #check course_id for the one taken in
             if c.course_id == form.vars.course_id:
+                #if the the cocurse we want add the current email
+                #if no students yet add (cant append to nonetype)
+                for d in students:
+                    if d.user_email == auth.user.email:
+                        for e in d.enrolled_courses:
+                            if e == c.course_id:
+                               session.flash = "Already Enrolled"
+                        if d.enrolled_courses == None:
+                            # set the property
+                            d.enrolled_courses = c.course_id
+                            # update the record we just edited
+                            d.update_record()
+                        else:
+                            d.enrolled_courses.append(c.course_id)
+                            d.update_record()
+
                 if c.enrolled_students == None:
+                    #set the property
                     c.enrolled_students = auth.user.email
+                    #update the record we just edited
                     c.update_record()
                 else:
                     c.enrolled_students.append(auth.user.email)
                     c.update_record()
-    else:
-        test = "SUPER FUCK"
-
-    return dict(form=form, test=test)
-#    #if form.process(onvalidation=join_validation).accepted:
-#    email = db(db.course.course_id == db.student.enrolled_courses and db.student.user_email == auth.user.email).select().first()
-#    courses = db(db.course.course_id == db.student.enrolled_courses).select().first()
-#    if courses:
-#        courses.enrolled_students=email.user_email
-#        courses.update_record()
-#    session.flash = "Class Joined"
-
-
-
-
+                #can jump we found the course
+                redirect(URL('default','course'))
+                session.flash = "Class Joined"
+            else:
+                #error in iput try again
+                session.flash = "Error Joining Class"
+    return dict(form=form)
 
 @auth.requires_login()
 def project():
