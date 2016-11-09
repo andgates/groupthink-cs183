@@ -37,7 +37,12 @@
                 <div class="panel-body">
                     <p>Project Name: {{=p.project_name}}</p>
                     <p>Project Info: {{=p.project_info}} </p>
-                    <p>Current Members: {{=p.current_members}} </p>
+                    Current Members:
+                        <ul>
+                            {{for i in p.current_members:}}
+                                <li>{{=i}}</li>
+                            {{pass}}
+                        </ul>
                     Needed Skills:
                         <ul>
                         {{for i in p.needed_skills:}}
