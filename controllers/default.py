@@ -99,19 +99,31 @@ def join_validation(form):
 
 @auth.requires_login()
 def join():
+#    update = db.course(request.args(0))
+#    form = SQLFORM(db.course, update)
+    test = "FUCK"
+    form = SQLFORM.factory(
+        Field('course_id', requires=IS_NOT_EMPTY()))
+    if form.process().accepted:
+        email = db(db.course).select()
+        for c in email:
+            if c.course_id == form.vars.course_id:
+                c.enrolled_students.append(auth.user.email)
+                c.update_record()
+    else:
+        test = "SUPER FUCK"
 
-    form = SQLFORM.grid(db.course.course_id == db.student.enrolled_courses)
+    return dict(form=form, test=test)
+#    #if form.process(onvalidation=join_validation).accepted:
+#    email = db(db.course.course_id == db.student.enrolled_courses and db.student.user_email == auth.user.email).select().first()
+#    courses = db(db.course.course_id == db.student.enrolled_courses).select().first()
+#    if courses:
+#        courses.enrolled_students=email.user_email
+#        courses.update_record()
+#    session.flash = "Class Joined"
 
-    #if form.process(onvalidation=join_validation).accepted:
-    email = db(db.course.course_id == db.student.enrolled_courses and db.student.user_email == auth.user.email).select().first()
-    courses = db(db.course.course_id == db.student.enrolled_courses).select().first()
-    if courses:
-        courses.enrolled_students=email.user_email
-        courses.update_record()
-    session.flash = "Class Joined"
-    redirect(URL('default','course'))
 
-    return dict(form=form)
+
 
 
 @auth.requires_login()
