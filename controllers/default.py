@@ -108,8 +108,12 @@ def join():
         email = db(db.course).select()
         for c in email:
             if c.course_id == form.vars.course_id:
-                c.enrolled_students.append(auth.user.email)
-                c.update_record()
+                if c.enrolled_students == None:
+                    c.enrolled_students = auth.user.email
+                    c.update_record()
+                else:
+                    c.enrolled_students.append(auth.user.email)
+                    c.update_record()
     else:
         test = "SUPER FUCK"
 
