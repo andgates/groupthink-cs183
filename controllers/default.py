@@ -35,6 +35,8 @@ def index():
             res = True
         if (res != True):
             db.student.insert(
+                first_name = auth.user.first_name,
+                last_name = auth.user.last_name,
                 user_email=auth.user.email,
             )
     return dict()
@@ -89,51 +91,56 @@ def student():
 
     return dict(students=students)
 
+def courseVerification(course_id):
+    courses = db(db.course).select()
+    res = None
+    for c in courses:
+        if c.course_id == course_id:
+            res=True
+    return dict(res=res)
+
 @auth.requires_login()
 def join():
-    #We use a .facctory so that sql form does not create
-    #We make and arbitrary course_id and get it
+    valid = True
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
 
     if form.process().accepted:
-        #get iterable version of course table
         courses = db(db.course).select()
         students = db(db.student).select()
-        for c in courses:
-            #check course_id for the one taken in
-            if c.course_id == form.vars.course_id:
-                #if the the cocurse we want add the current email
-                #if no students yet add (cant append to nonetype)
-                for d in students:
-                    if d.user_email == auth.user.email:
-                        for e in d.enrolled_courses:
-                            if e == c.course_id:
-                                session.flash = "Already Enrolled"
-                                break;
-                        if d.enrolled_courses == None:
-                            # set the property
-                            d.enrolled_courses = c.course_id
-                            # update the record we just edited
-                            d.update_record()
-                        else:
-                            d.enrolled_courses.append(c.course_id)
-                            d.update_record()
 
-                if c.enrolled_students == None:
-                    #set the property
-                    c.enrolled_students = auth.user.email
-                    #update the record we just edited
-                    c.update_record()
+        for c in courses:
+            if c.course_id == form.vars.course_id:
+                if c.enrolled_students:
+                    if auth.user.email in c.enrolled_students:
+                        break
+                    else:
+                        c.enrolled_students.append(auth.user.email)
+                        c.update_record()
+                        redirect(URL('default', 'course'))
+                        session.flash = "Class Joined"
                 else:
-                    c.enrolled_students.append(auth.user.email)
+                    c.enrolled_students = auth.user.email
                     c.update_record()
-                #can jump we found the course
-                redirect(URL('default','course'))
-                session.flash = "Class Joined"
+                    redirect(URL('default', 'course'))
+                    session.flash = "Class Joined"
             else:
-                #error in iput try again
+                valid = None
                 session.flash = "Error Joining Class"
+        if valid:
+            for d in students:
+                if d.user_email == auth.user.email:
+                    if d.enrolled_courses:
+                        if form.vars.course_id in d.enrolled_courses:
+                            session.flash = "Already Enrolled"
+                            break
+                        else:
+                            d.enrolled_courses.append(form.vars.course_id)
+                            d.update_record()
+                    else:
+                        d.enrolled_courses = form.vars.course_id
+                        d.update_record()
+
     return dict(form=form)
 
 @auth.requires_login()

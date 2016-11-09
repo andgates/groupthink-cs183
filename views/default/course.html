@@ -29,26 +29,27 @@
 
         {{for c in courses:}}
             {{own_p = auth.user_id and c.admin_email == auth.user.email}}
-            {{for d in myCourses:}}
-                {{if c.course_name == d:}}
-                    <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
-                        <div class="panel-heading clearfix">
-
-                            {{if own_p:}}
-                                <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
-                                    Edit <i class="fa fa-pencil-square-o"></i>
-                                </a>
-                            {{pass}}
+            {{if myCourses:}}
+                {{for d in myCourses:}}
+                    {{if c.course_id == d:}}
+                        <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
+                            <div class="panel-heading clearfix">
+                                {{if own_p:}}
+                                    <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
+                                        Edit <i class="fa fa-pencil-square-o"></i>
+                                    </a>
+                                {{pass}}
+                            </div>
+                            <div class="panel-body">
+                                <p>Course Name: {{=c.course_name}}</p>
+                                <p>Course ID: {{=c.course_id}} </p>
+                                <p>Course Information: {{=c.course_info}}</p>
+                            </div>
+                            <div class="panel-footer clearfix">
+                                <span class="badge pull-right">#{{=c.id}}</span>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <p>Course Name: {{=c.course_name}}</p>
-                            <p>Course ID: {{=c.course_id}} </p>
-                            <p>Course Information: {{=c.course_info}}</p>
-                        </div>
-                        <div class="panel-footer clearfix">
-                            <span class="badge pull-right">#{{=c.id}}</span>
-                        </div>
-                    </div>
+                    {{pass}}
                 {{pass}}
             {{pass}}
         {{pass}}
