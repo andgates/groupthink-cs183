@@ -2,28 +2,21 @@
 
 <div class="post_listing center">
 
-    {{logged_in = auth.user_id is not None}}
-
     <div class="page-header clearfix">
-        <h2 class="pull-left">{{=course_name}}: Project List</h2>
-        {{if logged_in:}}
+        <h4 class="pull-left">Project Name: {{=p.project_name}} Course Name: {{=course_name}}</h4>
             <a href="{{=URL('default', 'edit_project', args=[course_id])}}" class="btn btn-info pull-right pull-right">
                 <i class="fa fa-plus"></i> Post Project
             </a>
             <a href="{{=URL('default', 'members', args=[course_id])}}" class="btn btn-info pull-right pull-right">
                 <i class="fa fa-plus"></i> View Course Members
             </a>
-        {{else:}}
-            <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
-                    Log in <i class="fa fa-sign-in"></i>
+            <a href="{{=URL('default', 'project_list', args=[course_id])}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> View All Projects
             </a>
-        {{pass}}
     </div>
 
 
     <div class="text-left">
-    {{if projects:}}
-        {{for p in projects:}}
             {{own_p = auth.user_id and p.user_email == auth.user.email}}
             <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
                 <div class="panel-heading clearfix">
@@ -31,9 +24,6 @@
                         {{=get_user_name_from_email(p.user_email)}}
                         <small>{{=p.user_email}}</small>
                     </h2>
-                    <a href="{{=URL('default', 'project', args=[course_id,p.id])}}" class="btn btn-primary btn-sm pull-right">
-                        View Project <i class="fa fa-pencil-square-o"></i>
-                    </a>
                     {{if own_p:}}
                         <a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}" class="btn btn-primary btn-sm pull-right">
                             Edit <i class="fa fa-pencil-square-o"></i>
@@ -72,11 +62,5 @@
                     <span class="badge pull-right">#{{=p.id}}</span>
                 </div>
             </div>
-        {{pass}}
-    {{else:}}
-        <div class="alert alert-warning" role="alert">
-            There aren't any projects yet! {{='Create one with the button above.' if logged_in else 'Log in to create one.'}}
-        </div>
-    {{pass}}
     </div>
 </div>

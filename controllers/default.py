@@ -165,7 +165,24 @@ def project_list():
 
     return dict(projects=projects,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name)
+@auth.requires_login()
+def project():
 
+    if request.args(0) is None:
+        session.flash = T('No course selected')
+        redirect(URL('default', 'enrolled_courses'))
+    else:
+        # Extract course_id,project_id from url argument (Button on individual project)
+        course_id, project_id = request.args[:2]
+        # Query database for project with correct course_id
+        project = db(db.project.course_id == course_id and db.project.id == project_id).select().first()
+
+        # Extract course name for webpage heading
+        course = db(db.course.course_id == course_id).select().first()
+        course_name = course.course_name
+
+    return dict(p=project,get_user_name_from_email=get_user_name_from_email,
+        course_id=course_id,course_name=course_name)
 
 @auth.requires_login()
 def edit_project():
