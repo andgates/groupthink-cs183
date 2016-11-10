@@ -40,9 +40,10 @@ db.define_table('student',
                 Field('addtl_info'),
                 Field('skills'),
                 Field('enrolled_courses', 'list:string'),
+                Field('username'),
                 )
 
-
+db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable = False
 
 # When submitting a project, the field should not be empty
 db.project.project_name.requires = IS_NOT_EMPTY()

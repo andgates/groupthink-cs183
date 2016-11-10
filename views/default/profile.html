@@ -1,0 +1,111 @@
+{{extend 'layout.html'}}
+
+<script>
+    function openTab(tabName) {
+        var i;
+        var x =document.getElementsByClassName("tabcontent");
+        for (i=0; i < x.length;i++){
+            x[i].style.display="none";          //hide the tabs that weren't selected
+        }
+        document.getElementById(tabName).style.display="block";
+    }
+</script>
+
+<div class="container">
+<div class="row profile">
+<div class="col-md-3">
+<div class="profile-sidebar">
+
+<div class="profile-userpic">
+
+  <img src="/groupthink/static/images/noprofilemale.gif" class="img-responsive" alt="/groupthink/static/images/noprofilemale.gif">
+</div>
+
+<div class="profile-usertitle">
+  <div class="profile-usertitle-name">
+    {{=get_user_name_from_email(current_profile.email)}}
+  </div>
+  <div class="profile-usertitle-job">
+    UCSC Student
+  </div>
+</div>
+
+<div class="profile-userbuttons">
+  <button type="button" class="btn btn-danger btn-sm">Message</button>
+</div>
+
+<div class="profile-usermenu">
+  <ul class="nav">
+    <li class="active">
+      <a href="#">
+      <i class="glyphicon glyphicon-home"></i>
+      Profile </a>
+    </li>
+    {{if auth.user.username == current_profile.username:}}
+      <li>
+        <a href="{{=URL('default', 'user', args=['profile'])}}">
+          <i class="glyphicon glyphicon-edit"></i>
+          Edit Profile </a>
+    <li>
+      <a href="#">
+      <i class="glyphicon glyphicon-user"></i>
+      Account Settings </a>
+    {{pass}}
+  </ul>
+</div>
+<!-- END MENU -->
+</div>
+</div>
+
+
+<div class="col-md-9">
+    <div class="profile-content">
+
+ <ul class = "tab">
+           <li><a href="javascript:void(0)" onclick="openTab('Projects')"> My Projects </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab('Skills')"> Skills </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab('Interests')"> Interests </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab('Schedule')"> Schedule </a> </li>
+       </ul>
+
+        <div id="Projects" class="tabcontent">
+            {{if projects:}}
+              {{for p in projects:}}
+                <a href="#">{{=p.project_name}}</a>
+
+              {{pass}}
+            {{else:}}
+              <p> No projects yet. </p>
+            {{pass}}
+        </div>
+
+        <div id="Skills" class="tabcontent">
+          {{if current_profile.skills:}}
+            <p>Skills:
+            <ul>
+            {{for skill in current_profile.skills:}}
+             <li> {{=skill}}</li>
+
+            {{pass}}
+            </ul>
+          {{else:}}
+            <p> This person has no skills. </p>
+          {{pass}}
+
+        </div>
+
+        <div id="Interests" class="tabcontent">
+            <p>This is the content for the interests tab</p>
+        </div>
+
+        <div id="Schedule" class="tabcontent">
+            <p>This is the content for the schedule tab</p>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+<br>
+<br>

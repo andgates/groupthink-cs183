@@ -39,6 +39,7 @@ def index():
                 first_name = auth.user.first_name,
                 last_name = auth.user.last_name,
                 user_email=auth.user.email,
+                username=auth.username
             )
 
     ## Redirect the user to their enrolled courses page upon log in
@@ -233,51 +234,18 @@ def edit_project():
 
     return dict(form=form,args=args)
 
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/bulk_register
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
-    """
+@auth.requires_login()
+def profile():
 
-    # A messy fix for using student table separate from auth
-    # Users weren't getting added to the student table because they didn't always visit index.html after signup
-    auth.settings.register_onaccept = redirect_after_signup
+    args = request.args(0)
 
-    return dict(form=auth(), get_user_name_from_email=get_user_name_from_email)
+    current_profile = db(db.auth_user.username == args).select().first()
 
-def redirect_after_signup(form):
-    redirect(URL('default', 'index'))
-
-@cache.action()
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
+    # Query for projects made by user
+    projects = db(db.project.user_email == current_profile.email).select()
 
 
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
-
+    return dict(current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
 
 @auth.requires_login()
 def members():
@@ -304,3 +272,48 @@ def members():
 
 
     return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name)
+
+
+def redirect_after_signup(form):
+    redirect(URL('default', 'index'))
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/bulk_register
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
+    """
+
+    # A messy fix for using student table separate from auth
+    # Users weren't getting added to the student table because they didn't always visit index.html after signup
+    auth.settings.register_onaccept = redirect_after_signup
+
+    return dict(form=auth())
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
