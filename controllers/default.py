@@ -42,7 +42,7 @@ def index():
             )
 
     ## Redirect the user to their enrolled courses page upon log in
-    redirect(URL('default', 'course'))
+    redirect(URL('default', 'enrolled_courses'))
 
     ## We should also redirect a new user to the edit profile page once that is setup
 
@@ -59,7 +59,7 @@ def edit_course():
     if request.args(0) is None:
         # Create a new course if there are no arguments
         form = SQLFORM(db.course)
-        form.add_button('Cancel', URL('course'))
+        form.add_button('Cancel', URL('enrolled_courses'))
     else:
         # If there are arguments, edit a course
         q = ((db.course.admin_email == auth.user.email) &
@@ -69,20 +69,20 @@ def edit_course():
         # Invariant: Check if project exists
         if course is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'course'))
+            redirect(URL('default', 'enrolled_courses'))
 
         args = request.args(0)
         form = SQLFORM(db.course, course, deletable=True, showid=False)
-        form.add_button('Cancel', URL('course'))
+        form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
         session.flash = T('Course created' if args is None else 'Course edited')
-        redirect(URL('default', 'course'))
+        redirect(URL('default', 'enrolled_courses'))
 
     return dict(args=args,form=form)
 
 @auth.requires_login()
-def course():
+def enrolled_courses():
 
     courses = db(db.course).select()
     students = db(db.student).select()
@@ -128,28 +128,28 @@ def join():
                         d.enrolled_courses.append(form.vars.course_id)
                         d.update_record()
                         session.flash = "Class Joined"
-                        redirect(URL('default', 'course'))
+                        redirect(URL('default', 'enrolled_courses'))
                     else:
                         d.enrolled_courses = form.vars.course_id
                         d.update_record()
                         session.flash = "Class Joined"
-                        redirect(URL('default', 'course'))
+                        redirect(URL('default', 'enrolled_courses'))
         else:
             session.flash = "Course Not Found"
             redirect(URL('default', 'join'))
     return dict(form=form)
 
 @auth.requires_login()
-def project():
+def project_list():
     """
-    This is the project controller.
+    This is the project list controller.
 
-    Returns: A dictionary of projects and associated user names.
+    Returns: A dictionary of projects and associated info for a given course_id.
     """
 
     if request.args(0) is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'course'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # Extract course_id from url argument (Button on enrolled_courses page)
         course_id = request.args(0)
@@ -168,7 +168,7 @@ def project():
 
 
 @auth.requires_login()
-def edit():
+def edit_project():
     """
     This is the page to create / edit / delete a project.
     """
@@ -194,7 +194,7 @@ def edit():
         form = SQLFORM(db.project)
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project', args=course_id))
+        form.add_button('Cancel', URL('project_list', args=course_id))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
@@ -204,15 +204,15 @@ def edit():
         # Invariant: Check if project exists
         if project is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'project', args=course_id))
+            redirect(URL('default', 'project_list', args=course_id))
 
         form = SQLFORM(db.project, project, deletable=True, showid=False)
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project', args=course_id))
+        form.add_button('Cancel', URL('project_list', args=course_id))
 
     if form.process().accepted:
         session.flash = T('Project created' if project_id is None else 'Project edited')
-        redirect(URL('default', 'project', args=course_id))
+        redirect(URL('default', 'project_list', args=course_id))
 
     return dict(form=form,args=args)
 
@@ -267,7 +267,7 @@ def members():
 
     if request.args(0) is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'course'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # Extract the course_id from the argument ("View Course Members" button in project.html)
         course_id = request.args(0)

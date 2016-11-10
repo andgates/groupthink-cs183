@@ -51,7 +51,7 @@ def _():
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
         # Begin GroupThink modifications to menu
-        (T('Enrolled Courses'), False, URL('default', 'course')),
+        (T('Enrolled Courses'), False, URL('default', 'enrolled_courses')),
         (T('Join Course'), False, URL('default', 'join')),
         (T('Create Course'), False, URL('default', 'edit_course')),
         # End Groupthink Modifications
