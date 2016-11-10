@@ -65,7 +65,7 @@ auth = Auth(db, host_names=myconf.get('host.names'))
 
 # GroupThink modifications to the auth table
 auth.settings.extra_fields['auth_user']= [
-    Field('username', unique=True, length=100),
+    Field('username', unique = True, length=100),
     Field('phone'),
     Field('addtl_info'),
     Field('skills', 'list:string'),
@@ -75,7 +75,7 @@ auth.settings.extra_fields['auth_user']= [
 service = Service()
 plugins = PluginManager()
 # create all tables needed by auth if not custom tables
-auth.define_tables(username=False, signature=False)
+auth.define_tables(username=True, signature=False)
 
 # configure email
 mail = auth.settings.mailer
