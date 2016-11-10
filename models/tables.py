@@ -33,6 +33,7 @@ db.define_table('project',
                 )
 
 # Student Table
+"""
 db.define_table('student',
                 Field('first_name'),
                 Field('last_name'),
@@ -42,6 +43,7 @@ db.define_table('student',
                 Field('enrolled_courses', 'list:string'),
                 Field('username'),
                 )
+"""
 
 # Force login with email rather than username
 auth.settings.login_userfield = 'email'
@@ -58,11 +60,13 @@ db.project.updated_on.readable = db.project.updated_on.writable = False
 db.project.course_id.readable = db.project.course_id.writable = False
 
 # Quick fix for joining classes
+"""
 db.student.first_name.readable = db.student.first_name.writable = False
 db.student.last_name.readable = db.student.last_name.writable = False
 db.student.user_email.readable = db.student.user_email.writable = False
 db.student.skills.readable = db.student.skills.writable = False
 db.student.addtl_info.readable = db.student.addtl_info.writable = False
+"""
 
 
 #db.course.course_id.readable = db.course.course_id.writable = False
