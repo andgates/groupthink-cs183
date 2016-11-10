@@ -54,7 +54,6 @@ def _():
         (T('Enrolled Courses'), False, URL('default', 'course')),
         (T('Join Course'), False, URL('default', 'join')),
         (T('Create Course'), False, URL('default', 'edit_course')),
-        (T('View Projects'), False, URL('default', 'project')),
         # End Groupthink Modifications
         (T('My Sites'), False, URL('admin', 'default', 'site')),
         (T('This App'), False, '#', [

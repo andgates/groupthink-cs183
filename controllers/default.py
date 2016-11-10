@@ -25,9 +25,10 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def index():
     """
-    This is the main controller.
+    Index is not really used in the app
     """
 
+    # Checks to see if the user is in the student database, adds them if needed.
     if auth.user:
         res = False
         email = db(db.student.user_email == auth.user.email).select()
@@ -39,33 +40,39 @@ def index():
                 last_name = auth.user.last_name,
                 user_email=auth.user.email,
             )
+
+    ## Redirect the user to their enrolled courses page upon log in
+    redirect(URL('default', 'course'))
+
+    ## We should also redirect a new user to the edit profile page once that is setup
+
     return dict()
 
 @auth.requires_login()
 def edit_course():
     """
-    This is the page to create / edit / delete a project.
+    This is the page to create / edit / delete a course.
     """
     args = None
     form = None
 
     if request.args(0) is None:
-        # Create a new project if there are no arguments
+        # Create a new course if there are no arguments
         form = SQLFORM(db.course)
         form.add_button('Cancel', URL('course'))
     else:
-        # If there are arguments, edit a project
+        # If there are arguments, edit a course
         q = ((db.course.admin_email == auth.user.email) &
                 (db.course.id == request.args(0)))
-        # Get project record
-        project = db(q).select().first()
+        # Get course record
+        course = db(q).select().first()
         # Invariant: Check if project exists
-        if project is None:
+        if course is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'project'))
+            redirect(URL('default', 'course'))
 
         args = request.args(0)
-        form = SQLFORM(db.course, project, deletable=True, showid=False)
+        form = SQLFORM(db.course, course, deletable=True, showid=False)
         form.add_button('Cancel', URL('course'))
 
     if form.process().accepted:
@@ -73,8 +80,6 @@ def edit_course():
         redirect(URL('default', 'course'))
 
     return dict(args=args,form=form)
-
-    return dict(form=form)
 
 @auth.requires_login()
 def course():
@@ -149,11 +154,19 @@ def project():
     Returns: A dictionary of projects and associated user names.
     """
 
+    args = None
+
+    if request.args(0) is None:
+        session.flash = T('No course selected')
+        redirect(URL('default', 'course'))
+    else:
+        args = request.args(0)
+        projects = db(db.project.course_id == args).select(orderby=~db.project.created_on)
 
     # Gets a list of the 20 most recent projects, orders by date created
-    projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
+    #projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
 
-    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email)
+    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email,args=args)
 
 
 @auth.requires_login()
@@ -161,33 +174,49 @@ def edit():
     """
     This is the page to create / edit / delete a project.
     """
-    args = None
     form = None
+    args = None
 
-    if request.args(0) is None:
+    # Get the arguments from the URL request
+    args = request.args
+
+    # If there is only one argument (course_id), then we are creating a post
+    if len(args) == 1:
+        new_post = True
+        # Extract the first entry in the args list
+        course_id = args(0)
+        project_id = None
+    # Otherwise, we're editing a project. Extract post id and course_id
+    else:
+        new_post = False
+        course_id, project_id = request.args[:2]
+
+    if new_post:
         # Create a new project if there are no arguments
         form = SQLFORM(db.project)
-        form.add_button('Cancel', URL('project'))
+        # Fill the course_id field with the current course_id
+        form.vars.course_id = course_id
+        form.add_button('Cancel', URL('project', args=course_id))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
-                (db.project.id == request.args(0)))
+                (db.project.id == project_id))
         # Get project record
         project = db(q).select().first()
         # Invariant: Check if project exists
         if project is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'project'))
+            redirect(URL('default', 'project', args=course_id))
 
-        args = request.args(0)
         form = SQLFORM(db.project, project, deletable=True, showid=False)
-        form.add_button('Cancel', URL('project'))
+        form.vars.course_id = course_id
+        form.add_button('Cancel', URL('project', args=course_id))
 
     if form.process().accepted:
-        session.flash = T('Project created' if args is None else 'Project edited')
-        redirect(URL('default', 'project'))
+        session.flash = T('Project created' if project_id is None else 'Project edited')
+        redirect(URL('default', 'project', args=course_id))
 
-    return dict(args=args,form=form)
+    return dict(form=form,args=args)
 
 def user():
     """

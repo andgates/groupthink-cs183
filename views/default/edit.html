@@ -2,13 +2,13 @@
 
 <div class="mycontent">
 
-    <h2>
-        {{if args:}}
-            Edit project
-        {{else:}}
-            Create project
-        {{pass}}
-    </h2>
+  <h2>
+      {{if len(args)==1:}}
+          Create project
+      {{else:}}
+          Edit project
+      {{pass}}
+  </h2>
 
     {{=form}}
 

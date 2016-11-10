@@ -10,6 +10,9 @@
             <a href="{{=URL('default', 'join')}}" class="btn btn-info pull-right pull-right">
                 <i class="fa fa-plus"></i> Join Course
             </a>
+            <a href="{{=URL('default', 'edit_course')}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> Create Course
+            </a>
         {{else:}}
             <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
                     Log in <i class="fa fa-sign-in"></i>
@@ -32,8 +35,11 @@
             {{if myCourses:}}
                 {{for d in myCourses:}}
                     {{if c.course_id == d:}}
-                        <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
+                        <div class="panel panel-info">
                             <div class="panel-heading clearfix">
+                              <a href="{{=URL('default', 'project', args=[c.course_id])}}" class="btn btn-primary btn-sm pull-left">
+                                  View {{=c.course_name}} <i class="fa fa-graduation-cap"></i>
+                              </a>
                                 {{if own_p:}}
                                     <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
                                         Edit <i class="fa fa-pencil-square-o"></i>

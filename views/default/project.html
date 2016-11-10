@@ -5,9 +5,9 @@
     {{logged_in = auth.user_id is not None}}
 
     <div class="page-header clearfix">
-        <h2 class="pull-left">GroupThink: Project List</h2>
+        <h2 class="pull-left">{{=args}}: Project List</h2>
         {{if logged_in:}}
-            <a href="{{=URL('default', 'edit')}}" class="btn btn-info pull-right pull-right">
+            <a href="{{=URL('default', 'edit', args=[args])}}" class="btn btn-info pull-right pull-right">
                 <i class="fa fa-plus"></i> Post Project
             </a>
         {{else:}}
@@ -29,7 +29,7 @@
                         <small>{{=p.user_email}}</small>
                     </h2>
                     {{if own_p:}}
-                        <a href="{{=URL('default', 'edit', args=[p.id])}}" class="btn btn-primary btn-sm pull-right">
+                        <a href="{{=URL('default', 'edit', args=[args,p.id])}}" class="btn btn-primary btn-sm pull-right">
                             Edit <i class="fa fa-pencil-square-o"></i>
                         </a>
                     {{pass}}
