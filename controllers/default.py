@@ -344,6 +344,36 @@ def user():
 
     return dict(form=auth())
 
+@auth.requires_login()
+def statistics():
+    course_id = request.args(0)
+    if course_id is None:
+        session.flash = T('No course selected')
+        redirect(URL('default', 'enrolled_courses'))
+    else:
+        # Query database for project with correct course_id
+        students = db(db.auth_user).select()
+        members = []
+        for s in students:
+            # Invariant, if a student has no courses, enrolled_courses will not be iterable
+            if s.enrolled_courses == None:
+                pass
+            # Add the students that are enrolled in the current course
+            elif course_id in s.enrolled_courses:
+                members.append(s)
+
+        projects = db(db.project.course_id == course_id).select()
+
+
+
+        # Extract course name for webpage heading
+        course = db(db.course.course_id == course_id).select().first()
+        #course_name = course.course_name
+
+
+    return dict(p = projects, members = members, course = course)
+
+
 @cache.action()
 def download():
     """

@@ -1,0 +1,48 @@
+{{extend 'layout.html'}}
+
+<div class="post_listing center">
+
+    <div class="page-header clearfix">
+        <h4 class="pull-left">Course Name: {{=course.course_name}}</h4>
+            <a href="{{=URL('default', 'edit', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> Post Project
+            </a>
+            <a href="{{=URL('default', 'members', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> View Course Members
+            </a>
+            <a href="{{=URL('default', 'project_list', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> View All Projects
+            </a>
+    </div>
+
+
+    <div class="text-left">
+            {{own_c = auth.user_id and course.admin_email == auth.user.email}}
+            <div class="panel {{='panel-info' if own_c else 'panel-primary'}}">
+                <div class="panel-heading clearfix">
+                    <h2 class="panel-title pull-left">
+                        {{=course.course_name}}
+                    </h2>
+                    {{if own_c:}}
+                        <a href="{{=URL('default', 'edit_course', args=[course.course_id])}}" class="btn btn-primary btn-sm pull-right">
+                            Edit(BREAKS) <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    {{pass}}
+                </div>
+                <div class="panel-body">
+                    <p>Course Name: {{=course.course_name}}</p>
+                    <p>Course Info: {{=course.course_info}} </p>
+                    Current Members:
+                        <ul>
+                            {{for i in members:}}
+                                <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                            {{pass}}
+                        </ul>
+                   <p>Number of Projects: {{=len(p)}} </p>
+                </div>
+                <div class="panel-footer clearfix">
+
+                </div>
+            </div>
+    </div>
+</div>
