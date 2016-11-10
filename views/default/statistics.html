@@ -23,16 +23,11 @@
                     <h2 class="panel-title pull-left">
                         {{=course.course_name}}
                     </h2>
-                    {{if own_c:}}
-                        <a href="{{=URL('default', 'edit_course', args=[course.course_id])}}" class="btn btn-primary btn-sm pull-right">
-                            Edit(BREAKS) <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                    {{pass}}
                 </div>
                 <div class="panel-body">
                     <p>Course Name: {{=course.course_name}}</p>
                     <p>Course Info: {{=course.course_info}} </p>
-                    Current Members:
+                    Enrolled Students:
                         <ul>
                             {{for i in members:}}
                                 <li>{{=' '.join([i.first_name, i.last_name])}}</li>
