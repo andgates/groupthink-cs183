@@ -210,6 +210,8 @@ def project():
         # get a list of students
         for i in students:
             # is this student in the course the projects in
+            # This checks to make sure the user is enrolled in at least one course
+            # Otherwise 'if course_id in i.enrolled_courses' will through an error
             if i.enrolled_courses:
                 if course_id in i.enrolled_courses:
                     # loop throught the skils
