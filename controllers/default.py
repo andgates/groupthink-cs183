@@ -208,20 +208,21 @@ def project():
         # get a list of students
         for i in students:
             # is this student in the course the projects in
-            if course_id in i.enrolled_courses:
-                # loop throught the skils
-                # we have to check case so simple query doesnt work
-                for j in project.needed_skills:
-                    # check this person even has skills
-                    if i.skills:
-                        # loop through those skills
-                        for k in i.skills:
-                            # compare the skill in lowercase, so its not case sensitive
-                            if j.lower() == k.lower():
-                                # check that the student isnt already counted
-                                if i not in matchingStudents:
-                                    # add the student
-                                    matchingStudents.append(i)
+            if i.enrolled_courses:
+                if course_id in i.enrolled_courses:
+                    # loop throught the skils
+                    # we have to check case so simple query doesnt work
+                    for j in project.needed_skills:
+                        # check this person even has skills
+                        if i.skills:
+                            # loop through those skills
+                            for k in i.skills:
+                                # compare the skill in lowercase, so its not case sensitive
+                                if j.lower() == k.lower():
+                                    # check that the student isnt already counted
+                                    if i not in matchingStudents:
+                                        # add the student
+                                        matchingStudents.append(i)
 
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
