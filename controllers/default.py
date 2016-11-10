@@ -29,6 +29,7 @@ def index():
     """
 
     # Checks to see if the user is in the student database, adds them if needed.
+    """
     if auth.user:
         res = False
         email = db(db.student.user_email == auth.user.email).select()
@@ -44,6 +45,7 @@ def index():
                 skills=auth.user.skills,
                 enrolled_courses=auth.user.enrolled_courses
             )
+    """
 
     ## Redirect the user to their enrolled courses page upon log in
     redirect(URL('default', 'enrolled_courses'))
@@ -89,7 +91,7 @@ def edit_course():
 def enrolled_courses():
 
     courses = db(db.course).select()
-    students = db(db.student).select()
+    students = db(db.auth_user).select()
 
     return dict(courses=courses, students=students)
 
@@ -113,7 +115,7 @@ def join():
     if form.process().accepted:
         # create iterable objects of the dbs
         courses = db(db.course).select()
-        students = db(db.student).select()
+        students = db(db.auth_user).select()
         # check courses first so we can jump out if its not a real course
         for c in courses:
             # check is the course is equal to a valid course
@@ -143,7 +145,7 @@ def join():
             # similiar to course find the student and add course to their list of enrolled courses
             # use the same = and append functions. Jump back to courses when complete
             for d in students:
-                if d.user_email == auth.user.email:
+                if d.email == auth.user.email:
                     if d.enrolled_courses:
                         d.enrolled_courses.append(form.vars.course_id)
                         d.update_record()
@@ -203,7 +205,7 @@ def project():
         course_name = course.course_name
 
         # Matching Algorithm
-        students = db(db.student).select()
+        students = db(db.auth_user).select()
         matchingStudents = []
         # get a list of students
         for i in students:
@@ -302,7 +304,7 @@ def members():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
         # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
-        students = db(db.student).select()
+        students = db(db.auth_user).select()
         members = []
         for s in students:
             # Invariant, if a student has no courses, enrolled_courses will not be iterable
