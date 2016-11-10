@@ -65,7 +65,7 @@ auth = Auth(db, host_names=myconf.get('host.names'))
 
 # GroupThink modifications to the auth table
 auth.settings.extra_fields['auth_user']= [
-    Field('username'),
+    Field('username', unique=True, length=100),
     Field('phone'),
     Field('addtl_info'),
     Field('skills', 'list:string'),

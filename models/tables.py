@@ -43,6 +43,9 @@ db.define_table('student',
                 Field('username'),
                 )
 
+# Force login with email rather than username
+auth.settings.login_userfield = 'email'
+
 db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable = False
 
 # When submitting a project, the field should not be empty

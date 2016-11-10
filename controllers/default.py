@@ -39,7 +39,7 @@ def index():
                 first_name = auth.user.first_name,
                 last_name = auth.user.last_name,
                 user_email=auth.user.email,
-                username=auth.username
+                username=auth.user.username
             )
 
     ## Redirect the user to their enrolled courses page upon log in
