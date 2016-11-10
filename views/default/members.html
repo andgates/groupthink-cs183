@@ -1,11 +1,12 @@
 {{extend 'layout.html'}}
 
+<h2>{{=course_name}}</h2>
+
 <div class="memberPage">
 
 
 
-    {{for i in range(6):}}
-
+    {{for m in members:}}
 
         <div class="profile-sidebar" id="smallProf">
 
@@ -16,7 +17,7 @@
 
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name" style="text-transform: uppercase">
-                        {{=get_user_name_from_email(auth.user.email)}}
+                        {{=get_user_name_from_email(m.user_email)}}
 					</div>
 					<div class="profile-usertitle-job">
 						UCSC Student
@@ -37,6 +38,3 @@
 
 
 </div>
-
-
-

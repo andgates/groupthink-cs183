@@ -25,7 +25,7 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def index():
     """
-    Index is not really used in the app
+    Index is only used to verify if a user is in the student database currently.
     """
 
     # Checks to see if the user is in the student database, adds them if needed.
@@ -89,13 +89,6 @@ def course():
 
     return dict(courses=courses, students=students)
 
-@auth.requires_login()
-def student():
-
-    students = db(db.student).select()
-
-    return dict(students=students)
-
 def courseVerification(course_id):
     courses = db(db.course).select()
     res = None
@@ -154,19 +147,24 @@ def project():
     Returns: A dictionary of projects and associated user names.
     """
 
-    args = None
-
     if request.args(0) is None:
         session.flash = T('No course selected')
         redirect(URL('default', 'course'))
     else:
-        args = request.args(0)
-        projects = db(db.project.course_id == args).select(orderby=~db.project.created_on)
+        # Extract course_id from url argument (Button on enrolled_courses page)
+        course_id = request.args(0)
+        # Query database for all projects with correct course_id
+        projects = db(db.project.course_id == course_id).select(orderby=~db.project.created_on)
+
+        # Extract course name for webpage heading
+        course = db(db.course.course_id == course_id).select().first()
+        course_name = course.course_name
 
     # Gets a list of the 20 most recent projects, orders by date created
     #projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
 
-    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email,args=args)
+    return dict(projects=projects,get_user_name_from_email=get_user_name_from_email,
+        course_id=course_id,course_name=course_name)
 
 
 @auth.requires_login()
@@ -235,10 +233,14 @@ def user():
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
 
-
+    # A messy fix for using student table separate from auth
+    # Users weren't getting added to the student table because they didn't always visit index.html after signup
+    auth.settings.register_onaccept = redirect_after_signup
 
     return dict(form=auth(), get_user_name_from_email=get_user_name_from_email)
 
+def redirect_after_signup(form):
+    redirect(URL('default', 'index'))
 
 @cache.action()
 def download():
@@ -263,10 +265,25 @@ def call():
 @auth.requires_login()
 def members():
 
-    members=db(db.course)
-    #numStudents=db(db.course.numStudents)
-    #members = db(db.course).select(course.en)....
+    if request.args(0) is None:
+        session.flash = T('No course selected')
+        redirect(URL('default', 'course'))
+    else:
+        # Extract the course_id from the argument ("View Course Members" button in project.html)
+        course_id = request.args(0)
+        # Get the course name for displaying on the webpage
+        course = db(db.course.course_id == course_id).select().first()
+        course_name = course.course_name
+        # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
+        students = db(db.student).select()
+        members = []
+        for s in students:
+            # Invariant, if a student has no courses, enrolled_courses will not be iterable
+            if s.enrolled_courses == None:
+                pass
+            # Add the students that are enrolled in the current course
+            elif course_id in s.enrolled_courses:
+                members.append(s)
 
-    #members="class members";
 
-    return dict(members=members,get_user_name_from_email=get_user_name_from_email)
+    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name)

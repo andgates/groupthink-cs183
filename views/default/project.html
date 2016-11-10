@@ -5,10 +5,13 @@
     {{logged_in = auth.user_id is not None}}
 
     <div class="page-header clearfix">
-        <h2 class="pull-left">{{=args}}: Project List</h2>
+        <h2 class="pull-left">{{=course_name}}: Project List</h2>
         {{if logged_in:}}
-            <a href="{{=URL('default', 'edit', args=[args])}}" class="btn btn-info pull-right pull-right">
+            <a href="{{=URL('default', 'edit', args=[course_id])}}" class="btn btn-info pull-right pull-right">
                 <i class="fa fa-plus"></i> Post Project
+            </a>
+            <a href="{{=URL('default', 'members', args=[course_id])}}" class="btn btn-info pull-right pull-right">
+                <i class="fa fa-plus"></i> View Course Members
             </a>
         {{else:}}
             <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
@@ -29,7 +32,7 @@
                         <small>{{=p.user_email}}</small>
                     </h2>
                     {{if own_p:}}
-                        <a href="{{=URL('default', 'edit', args=[args,p.id])}}" class="btn btn-primary btn-sm pull-right">
+                        <a href="{{=URL('default', 'edit', args=[course_id,p.id])}}" class="btn btn-primary btn-sm pull-right">
                             Edit <i class="fa fa-pencil-square-o"></i>
                         </a>
                     {{pass}}
