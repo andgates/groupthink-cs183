@@ -50,7 +50,12 @@
                     {{else:}}
                         <p>Accepting Members: No</p>
                     {{pass}}
-
+                    Find Members:
+                        <ul>
+                        {{for i in matches:}}
+                            <li>{{=i.user_email}}</li>
+                        {{pass}}
+                        </ul>
                 </div>
                 <div class="panel-footer clearfix">
                     <div class="pull-left">

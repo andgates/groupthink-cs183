@@ -39,7 +39,10 @@ def index():
                 first_name = auth.user.first_name,
                 last_name = auth.user.last_name,
                 user_email=auth.user.email,
-                username=auth.user.username
+                username=auth.user.username,
+                addtl_info=auth.user.addtl_info,
+                skills=auth.user.skills,
+                enrolled_courses=auth.user.enrolled_courses
             )
 
     ## Redirect the user to their enrolled courses page upon log in
@@ -100,29 +103,45 @@ def courseVerification(course_id):
 
 @auth.requires_login()
 def join():
+    # bool used to track valid course ids
     valid = None
+    # form factory allows us to take in a variable without creating
+    # essentially a temp field
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
 
     if form.process().accepted:
+        # create iterable objects of the dbs
         courses = db(db.course).select()
         students = db(db.student).select()
+        # check courses first so we can jump out if its not a real course
         for c in courses:
+            # check is the course is equal to a valid course
             if c.course_id == form.vars.course_id:
+                # check if there are students, because cant append to none
                 if c.enrolled_students:
+                    # check if the user is already in the course
                     if auth.user.email in c.enrolled_students:
+                        # the user is in the class we can jump back to courses
                         session.flash = "Already Enrolled"
                         redirect(URL('default','join'))
                         break
                     else:
+                        # not in the course and courses isn't empty then we use append
                         c.enrolled_students.append(auth.user.email)
                         c.update_record()
                 else:
+                    # enrolled students was empty so the user cant be in the class
+                    # the list was empty so you =  instead of append
                     c.enrolled_students = auth.user.email
                     c.update_record()
+                # the course is real change the validator
                 valid = True
 
+        # only handle linking to the student if the course is real
         if valid:
+            # similiar to course find the student and add course to their list of enrolled courses
+            # use the same = and append functions. Jump back to courses when complete
             for d in students:
                 if d.user_email == auth.user.email:
                     if d.enrolled_courses:
@@ -135,6 +154,7 @@ def join():
                         d.update_record()
                         session.flash = "Class Joined"
                         redirect(URL('default', 'enrolled_courses'))
+        # if the course wasnt valid flash and reload the join page
         else:
             session.flash = "Course Not Found"
             redirect(URL('default', 'join'))
@@ -182,8 +202,29 @@ def project():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
+        # Matching Algorithm
+        students = db(db.student).select()
+        matchingStudents = []
+        # get a list of students
+        for i in students:
+            # is this student in the course the projects in
+            if course_id in i.enrolled_courses:
+                # loop throught the skils
+                # we have to check case so simple query doesnt work
+                for j in project.needed_skills:
+                    # check this person even has skills
+                    if i.skills:
+                        # loop through those skills
+                        for k in i.skills:
+                            # compare the skill in lowercase, so its not case sensitive
+                            if j.lower() == k.lower():
+                                # check that the student isnt already counted
+                                if i not in matchingStudents:
+                                    # add the student
+                                    matchingStudents.append(i)
+
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
-        course_id=course_id,course_name=course_name)
+        course_id=course_id,course_name=course_name, matches=matchingStudents)
 
 @auth.requires_login()
 def edit_project():

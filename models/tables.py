@@ -38,7 +38,7 @@ db.define_table('student',
                 Field('last_name'),
                 Field('user_email'),
                 Field('addtl_info'),
-                Field('skills'),
+                Field('skills', 'list:string'),
                 Field('enrolled_courses', 'list:string'),
                 Field('username'),
                 )
