@@ -5,5 +5,13 @@
     <h2>Join a course</h2>
 
     {{=form}}
+    {{if course:}}
+        <h2>{{=course.course_id}}</h2>
+        <ul>
+            {{for i in course.enrolled_students:}}
+                <li>{{=i}}</li>
+            {{pass}}
+        </ul>
+    {{pass}}
 
 </div>

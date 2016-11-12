@@ -69,7 +69,8 @@ auth.settings.extra_fields['auth_user']= [
     Field('phone'),
     Field('addtl_info'),
     Field('skills', 'list:string'),
-    Field('enrolled_courses', 'list:string'),
+    # Field('enrolled_courses', 'list:reference'),
+    Field('enrolled_courses', 'list:reference course'),
     ]
 
 service = Service()

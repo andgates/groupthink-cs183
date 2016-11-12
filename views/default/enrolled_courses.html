@@ -20,52 +20,41 @@
         {{pass}}
     </div>
 
-
     <div class="text-left">
-    {{if courses:}}
-        {{myCourses = []}}
-        {{for r in students:}}
-            {{if (r.email == auth.user.email):}}
-                {{myCourses = r.enrolled_courses}}
+        {{if student.enrolled_courses:}}
+            {{for d in student.enrolled_courses:}}
+                {{own_p = auth.user_id and d.admin_email == auth.user.email}}
+                <div class="panel panel-info">
+                    <div class="panel-heading clearfix">
+                      <a href="{{=URL('default', 'project_list', args=[d.course_id])}}" class="btn btn-primary btn-sm pull-left">
+                          View {{=d.course_name}} <i class="fa fa-graduation-cap"></i>
+                      </a>
+                        {{if own_p:}}
+                            <a href="{{=URL('default', 'edit_course', args=[d.id])}}" class="btn btn-primary btn-sm pull-right">
+                                Edit <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                            <a href="{{=URL('default', 'statistics', args=[d.course_id])}}" class="btn btn-primary btn-sm pull-right">
+                                Statistics <i class="fa fa-pie-chart"></i>
+                            </a>
+                        {{pass}}
+                    </div>
+                    <div class="panel-body">
+                        <p>Course Name: {{=d.course_name}}</p>
+                        <p>Course ID: {{=d.course_id}} </p>
+                        <p>Course Information: {{=d.course_info}}</p>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <span class="badge pull-right">#{{=d.id}}</span>
+                    </div>
+                </div>
             {{pass}}
+        {{else:}}
+            <div class="alert alert-warning" role="alert">
+                There aren't any classes yet!
+            </div>
         {{pass}}
-
-        {{for c in courses:}}
-            {{own_p = auth.user_id and c.admin_email == auth.user.email}}
-            {{if myCourses:}}
-                {{for d in myCourses:}}
-                    {{if c.course_id == d:}}
-                        <div class="panel panel-info">
-                            <div class="panel-heading clearfix">
-                              <a href="{{=URL('default', 'project_list', args=[c.course_id])}}" class="btn btn-primary btn-sm pull-left">
-                                  View {{=c.course_name}} <i class="fa fa-graduation-cap"></i>
-                              </a>
-                                {{if own_p:}}
-                                    <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm pull-right">
-                                        Edit <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                    <a href="{{=URL('default', 'statistics', args=[c.course_id])}}" class="btn btn-primary btn-sm pull-right">
-                                        Statistics <i class="fa fa-pie-chart"></i>
-                                    </a>
-                                {{pass}}
-                            </div>
-                            <div class="panel-body">
-                                <p>Course Name: {{=c.course_name}}</p>
-                                <p>Course ID: {{=c.course_id}} </p>
-                                <p>Course Information: {{=c.course_info}}</p>
-                            </div>
-                            <div class="panel-footer clearfix">
-                                <span class="badge pull-right">#{{=c.id}}</span>
-                            </div>
-                        </div>
-                    {{pass}}
-                {{pass}}
-            {{pass}}
-        {{pass}}
-    {{else:}}
-        <div class="alert alert-warning" role="alert">
-            There aren't any classes yet!
-        </div>
-    {{pass}}
     </div>
+
+
+
 </div>

@@ -91,9 +91,9 @@ def edit_course():
 def enrolled_courses():
 
     courses = db(db.course).select()
-    students = db(db.auth_user).select()
+    student = db(db.auth_user.email == auth.user.email).select().first()
 
-    return dict(courses=courses, students=students)
+    return dict(courses=courses, student=student)
 
 def courseVerification(course_id):
     courses = db(db.course).select()
@@ -111,7 +111,7 @@ def join():
     # essentially a temp field
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
-
+    """
     if form.process().accepted:
         # create iterable objects of the dbs
         courses = db(db.course).select()
@@ -160,7 +160,54 @@ def join():
         else:
             session.flash = "Course Not Found"
             redirect(URL('default', 'join'))
-    return dict(form=form)
+    """
+    # create iterable objects of the dbs
+    courses = db(db.course).select()
+    students = db(db.auth_user).select()
+
+    # get a reference to the specific student
+    studentReference = db(db.auth_user.email == auth.user.email).select().first()
+    # this will hold the selected course. cant do here the query uses the form
+    # so the form must be first accepted
+    selectedCourse = ""
+
+    if form.process().accepted:
+        # run a query to see if the course exist
+        selectedCourse = db(db.course.course_id == form.vars.course_id).select().first()
+        #if the course exist
+        if selectedCourse:
+            # check if there are enrolled courses
+            if studentReference.enrolled_courses:
+                # before adding make sure that the course isnt there already
+                # this is the only way i could get validation to work cannot just check for reference
+                for i in studentReference.enrolled_courses:
+                    if i.course_id == form.vars.course_id:
+                        session.flash = "Already Enrolled"
+                        # this will redirect the page and break out of the whole function
+                        redirect(URL('default', 'enrolled_courses'))
+                # must append if the list isnt empty
+                studentReference.enrolled_courses.append(selectedCourse)
+                studentReference.update_record()
+            else:
+                # if the list is empty use =
+                studentReference.enrolled_courses = selectedCourse
+                studentReference.update_record()
+            # after adding to the student add, the student to the course
+            if selectedCourse.enrolled_students:
+                selectedCourse.enrolled_students.append(studentReference)
+                selectedCourse.update_record()
+            else:
+                selectedCourse.enrolled_students = studentReference
+                selectedCourse.update_record()
+            # after adding go back to enrolled courses
+            session.flash = "Course Joined"
+            redirect(URL('default', 'enrolled_courses'))
+        # query returned none, therefore the course doesnt exist
+        else:
+            session.flash = "Course Not Found"
+            redirect(URL('default', 'join'))
+
+    return dict(form=form, student=studentReference, course=selectedCourse)
 
 @auth.requires_login()
 def project_list():
