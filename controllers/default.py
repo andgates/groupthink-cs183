@@ -95,6 +95,7 @@ def enrolled_courses():
 
     return dict(courses=courses, student=student)
 
+# Believe I made this obsolete
 def courseVerification(course_id):
     courses = db(db.course).select()
     res = None
@@ -251,13 +252,15 @@ def project():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
+        # Matching using reference
         matchingStudents = []
         for d in course.enrolled_students:
             q = db(db.auth_user.id == d).select().first()
-            for f in project.needed_skills:
-                if f.lower():
-                    if q not in matchingStudents:
-                        matchingStudents.append(q)
+            for e in d.skills:
+                for f in project.needed_skills:
+                    if f.lower() == d.lower():
+                        if q not in matchingStudents:
+                            matchingStudents.append(q)
 
 
         # Matching Algorithm
@@ -364,6 +367,17 @@ def members():
         # Get the course name for displaying on the webpage
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
+        """
+        I think this will be easier now that we have the references in the enrolled students
+        members = []
+        # loops through the enrolled students and link the references to students
+        for s in course.enrolled_students:
+            q = db(db.auth_user.id == s).select().first()
+            # add them to the list of members so we can pull there info
+            members.append(q)
+        """
+
+
         # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
         students = db(db.auth_user).select()
         members = []
@@ -413,6 +427,7 @@ def statistics():
         session.flash = T('No course selected')
         redirect(URL('default', 'enrolled_courses'))
     else:
+        """"
         # Query database for project with correct course_id
         students = db(db.auth_user).select()
         members = []
@@ -425,7 +440,18 @@ def statistics():
                 members.append(s)
 
         projects = db(db.project.course_id == course_id).select()
+        """
 
+        # find the course
+        course = db(db.course.course_id == course_id).select().first()
+        members = []
+        # loops through the enrolled students and link the references to students
+        for s in course.enrolled_students:
+            q = db(db.auth_user.id == s).select().first()
+            # add them to the list of members so we can pull there info
+            members.append(q)
+        # get the projects for the course
+        projects = db(db.project.course_id == course_id).select()
 
 
         # Extract course name for webpage heading

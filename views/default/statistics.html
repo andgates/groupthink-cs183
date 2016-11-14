@@ -30,7 +30,9 @@
                     Enrolled Students:
                         <ul>
                             {{for i in members:}}
-                                <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                {{if i:}}
+                                    <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                {{pass}}
                             {{pass}}
                         </ul>
                    <p>Number of Projects: {{=len(p)}} </p>
