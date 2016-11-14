@@ -251,7 +251,17 @@ def project():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
+        matchingStudents = []
+        for d in course.enrolled_students:
+            q = db(db.auth_user.id == d).select().first()
+            for f in project.needed_skills:
+                if f.lower():
+                    if q not in matchingStudents:
+                        matchingStudents.append(q)
+
+
         # Matching Algorithm
+        """
         students = db(db.auth_user).select()
         matchingStudents = []
         # get a list of students
@@ -274,6 +284,8 @@ def project():
                                     if i not in matchingStudents:
                                         # add the student
                                         matchingStudents.append(i)
+        """
+
 
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
@@ -389,6 +401,7 @@ def user():
 
     # A messy fix for using student table separate from auth
     # Users weren't getting added to the student table because they didn't always visit index.html after signup
+
     auth.settings.register_onaccept = redirect_after_signup
 
     return dict(form=auth())

@@ -27,7 +27,7 @@ db.define_table('project',
                 Field('project_name'),
                 Field('current_members', 'list:string'),
                 Field('project_info'),
-                Field('needed_skills', 'list:string'),
+                Field('needed_skills', 'list:string', requires=IS_LOWER()),
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 Field('accepting_members', 'boolean'),
@@ -48,6 +48,7 @@ db.define_table('student',
 
 # Force login with email rather than username
 auth.settings.login_userfield = 'email'
+
 
 db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable = False
 
