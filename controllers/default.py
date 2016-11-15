@@ -367,17 +367,17 @@ def members():
         # Get the course name for displaying on the webpage
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
-        """
-        I think this will be easier now that we have the references in the enrolled students
+
+
         members = []
         # loops through the enrolled students and link the references to students
         for s in course.enrolled_students:
             q = db(db.auth_user.id == s).select().first()
             # add them to the list of members so we can pull there info
             members.append(q)
-        """
 
 
+        """""
         # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
         students = db(db.auth_user).select()
         members = []
@@ -388,7 +388,7 @@ def members():
             # Add the students that are enrolled in the current course
             elif course_id in s.enrolled_courses:
                 members.append(s)
-
+        """
 
     return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name)
 

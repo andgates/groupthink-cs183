@@ -20,40 +20,38 @@
         {{pass}}
     </div>
 
-    <div class="text-left">
+
         {{if student.enrolled_courses:}}
             {{for d in student.enrolled_courses:}}
                 {{own_p = auth.user_id and d.admin_email == auth.user.email}}
-                <div class="panel panel-info">
-                    <div class="panel-heading clearfix">
-                      <a href="{{=URL('default', 'project_list', args=[d.course_id])}}" class="btn btn-primary btn-sm pull-left">
-                          View {{=d.course_name}} <i class="fa fa-graduation-cap"></i>
-                      </a>
-                        {{if own_p:}}
-                            <a href="{{=URL('default', 'edit_course', args=[d.id])}}" class="btn btn-primary btn-sm pull-right">
+                <div class="post">
+
+                    <div class="post-buttons">
+                    {{if own_p:}}
+                            <a href="{{=URL('default', 'edit_course', args=[d.id])}}" class="btn">
                                 Edit <i class="fa fa-pencil-square-o"></i>
                             </a>
-                            <a href="{{=URL('default', 'statistics', args=[d.course_id])}}" class="btn btn-primary btn-sm pull-right">
+                            <a href="{{=URL('default', 'statistics', args=[d.course_id])}}" class="btn">
                                 Statistics <i class="fa fa-pie-chart"></i>
                             </a>
-                        {{pass}}
+                    {{pass}}
                     </div>
-                    <div class="panel-body">
-                        <p>Course Name: {{=d.course_name}}</p>
-                        <p>Course ID: {{=d.course_id}} </p>
-                        <p>Course Information: {{=d.course_info}}</p>
-                    </div>
-                    <div class="panel-footer clearfix">
-                        <span class="badge pull-right">#{{=d.id}}</span>
+                        <p class="course-name">{{=d.course_name}}</p>
+                        <p class="course-id">Course ID: {{=d.course_id}} </p>
+                        <p  class="course-info">{{=d.course_info}}</p>
+                    <div class="post-footer">
+                        <a href="{{=URL('default', 'project_list', args=[d.course_id])}}" type="button" class="btn">
+                          View {{=d.course_name}} <i class="fa fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
-            {{pass}}
-        {{else:}}
-            <div class="alert alert-warning" role="alert">
-                There aren't any classes yet!
-            </div>
         {{pass}}
-    </div>
+        {{else:}}
+                <div class="alert alert-warning" role="alert">
+                    There aren't any classes yet!
+                </div>
+         {{pass}}
+
 
 
 
