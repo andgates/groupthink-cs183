@@ -25,34 +25,20 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def index():
     """
-    Index is only used to verify if a user is in the student database currently.
+    Index is the dashboard for logged in users.
     """
 
-    # Checks to see if the user is in the student database, adds them if needed.
-    """
+    current_profile = None
+
     if auth.user:
-        res = False
-        email = db(db.student.user_email == auth.user.email).select()
-        if email:
-            res = True
-        if (res != True):
-            db.student.insert(
-                first_name = auth.user.first_name,
-                last_name = auth.user.last_name,
-                user_email=auth.user.email,
-                username=auth.user.username,
-                addtl_info=auth.user.addtl_info,
-                skills=auth.user.skills,
-                enrolled_courses=auth.user.enrolled_courses
-            )
-    """
+        current_profile = db(db.auth_user.email == auth.user.email).select().first()
 
     ## Redirect the user to their enrolled courses page upon log in
-    redirect(URL('default', 'enrolled_courses'))
+    #redirect(URL('default', 'enrolled_courses'))
 
     ## We should also redirect a new user to the edit profile page once that is setup
 
-    return dict()
+    return dict(current_profile=current_profile)
 
 @auth.requires_login()
 def edit_course():

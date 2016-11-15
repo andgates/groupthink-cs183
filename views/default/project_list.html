@@ -20,6 +20,25 @@
         {{pass}}
     </div>
 
+<!--
+<div class="row">
+  {{if projects:}}
+      {{for p in projects:}}
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="..." alt="...">
+      <div class="caption">
+        <h3>{{=p.project_name}}</h3>
+        <p>{{=p.project_info}}</p>
+        <p><a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}" class="btn btn-primary" role="button">Edit</a> <a href="{{=URL('default', 'project', args=[course_id,p.id])}}" class="btn btn-default" role="button">View Project</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{{pass}}
+{{pass}}
+-->
+
 
     <div class="text-left">
     {{if projects:}}
@@ -79,4 +98,5 @@
         </div>
     {{pass}}
     </div>
+
 </div>
