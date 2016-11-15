@@ -17,7 +17,9 @@
 
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name" style="text-transform: uppercase">
-                        {{=get_user_name_from_email(m.email)}}
+                        {{if m:}}
+                            {{=get_user_name_from_email(m.email)}}
+                        {{pass}}
 					</div>
 					<div class="profile-usertitle-job">
 						UCSC Student
@@ -26,7 +28,9 @@
 
 				<div class="profile-userbuttons" id="smallButtons">
                     <button type="button" class="glyphicon glyphicon-envelope" style="margin-bottom:10px;">  Message</button>
-                    <a href="{{=URL('default', 'profile', args=[m.username])}}">
+                    {{if m:}}
+                        <a href="{{=URL('default', 'profile', args=[m.username])}}">
+                    {{pass}}
                     <button type="button" class="glyphicon glyphicon-user" style="margin-bottom:10px;"> Profile</button>
                     </a>
 
