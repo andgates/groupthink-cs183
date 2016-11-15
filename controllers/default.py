@@ -254,13 +254,21 @@ def project():
 
         # Matching using reference
         matchingStudents = []
+        # loop through references
         for d in course.enrolled_students:
+            # find the student
             q = db(db.auth_user.id == d).select().first()
-            for e in d.skills:
-                for f in project.needed_skills:
-                    if f.lower() == d.lower():
-                        if q not in matchingStudents:
-                            matchingStudents.append(q)
+            # match sure the student has info
+            if q:
+                # loop through students skills
+                for e in q.skills:
+                    # loop through the projects skills
+                    for f in project.needed_skills:
+                        # do comparison in lowercase so not case sensitive
+                        if f.lower() == e.lower():
+                            # if the student isnt already counted add them
+                            if q not in matchingStudents:
+                                matchingStudents.append(q)
 
 
         # Matching Algorithm
