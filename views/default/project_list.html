@@ -1,5 +1,6 @@
 {{extend 'layout.html'}}
 
+<!--
 <div class="post_listing center">
 
     {{logged_in = auth.user_id is not None}}
@@ -19,8 +20,71 @@
             </a>
         {{pass}}
     </div>
+-->
+
+<div class='page-header'>
+
+  <h1>{{=course_name}}: Project List</h1>
+
+    <a href="{{=URL('default', 'edit_project', args=[course_id])}}" class="btn btn-info">
+        <i class="fa fa-plus"></i> Post Project
+    </a>
+    <a href="{{=URL('default', 'members', args=[course_id])}}" class="btn btn-info">
+        <i class="fa fa-users"></i> View Course Members
+    </a>
+</div>
+
+<div class"container">
+<div class="row flex">
+  {{if projects:}}
+      {{for p in projects:}}
+        {{own_p = auth.user_id and p.user_email == auth.user.email}}
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title"><a href="{{=URL('default', 'project', args=[course_id,p.id])}}">{{=p.project_name}}</a></h2>
+            </div>
+            <div class="panel-body">
+              {{=p.project_info}}
+            </div>
+            <div class="panel-footer">
+              <a href="{{=URL('default', 'project', args=[course_id,p.id])}}">
+              <button class="btn btn-default btn-block">View</button>
+              </a>
+              {{if own_p:}}
+                  <a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}">
+                    <button class="btn btn-edit btn-block"> Edit </button>
+                  </a>
+              {{pass}}
+            </div>
+          </div>
+        </div><!-- /.col-sm-4 -->
+      {{pass}}
+    {{pass}}
+      </div>
+    </div>
+
+<!--
+<div class="row">
+  {{if projects:}}
+      {{for p in projects:}}
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="..." alt="...">
+      <div class="caption">
+        <h3>{{=p.project_name}}</h3>
+        <p>{{=p.project_info}}</p>
+        <p><a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}" class="btn btn-primary" role="button">Edit</a> <a href="{{=URL('default', 'project', args=[course_id,p.id])}}" class="btn btn-default" role="button">View Project</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{{pass}}
+{{pass}}
+-->
 
 
+<!--
     <div class="text-left">
     {{if projects:}}
         {{for p in projects:}}
@@ -79,4 +143,4 @@
         </div>
     {{pass}}
     </div>
-</div>
+-->

@@ -7,27 +7,19 @@
     <div class="page-header clearfix">
     {{if logged_in:}}
         <h2>GroupThink</h2>
-        <h3>Thanks for logging in. You can new view projects posted.</h3>
+        <h3>Dashboard</h3>
 
-        <a href="{{=URL('default','members')}}" class="btn btn-info pull-right pull-right">
-            <i class="fa fa-plus"></i> View Class Members
+
+        <a href="{{=URL('default', 'project_list')}}" class="btn btn-info pull-right pull-right">
+            <i class="fa fa-plus"></i> My Projects
         </a>
 
-
-        <a href="{{=URL('default', 'project')}}" class="btn btn-info pull-right pull-right">
-            <i class="fa fa-plus"></i> View Projects
+        <a href="{{=URL('default', 'enrolled_courses')}}" class="btn btn-info pull-right pull-right">
+            <i class="fa fa-plus"></i> My Courses
         </a>
 
-        <a href="{{=URL('default', 'join')}}" class="btn btn-info pull-right pull-right">
-            <i class="fa fa-plus"></i> Join Course
-        </a>
-
-        <a href="{{=URL('default', 'edit_course')}}" class="btn btn-info pull-right pull-right">
-            <i class="fa fa-plus"></i> Edit Course
-        </a>
-
-        <a href="{{=URL('default', 'course')}}" class="btn btn-info pull-right pull-right">
-            <i class="fa fa-plus"></i> Enrolled Course
+        <a href="{{=URL('default', 'profile', args=[current_profile.username])}}" class="btn btn-info pull-right pull-right">
+            <i class="fa fa-plus"></i> My Profile
         </a>
 
     {{else:}}
