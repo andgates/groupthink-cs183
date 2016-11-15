@@ -38,6 +38,7 @@
 <div class="row flex">
   {{if projects:}}
       {{for p in projects:}}
+        {{own_p = auth.user_id and p.user_email == auth.user.email}}
         <div class="col-md-3">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -46,9 +47,16 @@
             <div class="panel-body">
               {{=p.project_info}}
             </div>
-            <a href="{{=URL('default', 'project', args=[course_id,p.id])}}">
-            <div class="panel-footer"><button class="btn btn-default btn-block">View Project</button></div>
-            </a>
+            <div class="panel-footer">
+              <a href="{{=URL('default', 'project', args=[course_id,p.id])}}">
+              <button class="btn btn-default btn-block">View</button>
+              </a>
+              {{if own_p:}}
+                  <a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}">
+                    <button class="btn btn-edit btn-block"> Edit </button>
+                  </a>
+              {{pass}}
+            </div>
           </div>
         </div><!-- /.col-sm-4 -->
       {{pass}}
