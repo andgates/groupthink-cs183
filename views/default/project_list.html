@@ -2,6 +2,7 @@
 
 <div class="container center">
 
+  {{logged_in = auth.user_id is not None}}
 
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" class="active"><a href="{{=URL('default', 'project_list', args=[course_id])}}">Projects</a></li>
