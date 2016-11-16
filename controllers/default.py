@@ -384,7 +384,7 @@ def members():
                 members.append(s)
         """
 
-    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name)
+    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name,course_id=course_id)
 
 
 def redirect_after_signup(form):
