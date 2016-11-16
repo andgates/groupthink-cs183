@@ -19,6 +19,7 @@ db.define_table('course',
                 # Field('enrolled_students', 'list:string'),
                 Field('enrolled_students', 'list:reference auth.user'),
                 Field('admin_email', default=auth.user.email if auth.user_id else None),
+                Field('term', 'string'),
                 )
 # Project Table
 db.define_table('project',
