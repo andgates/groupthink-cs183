@@ -2,10 +2,10 @@
 
 <div class="container center">
 
-<ul class="nav nav-tabs nav-justified">
-  <li role="presentation"><a href="{{=URL('default', 'project_list', args=[course_id])}}">Projects</a></li>
-  <li role="presentation" class="active"><a href="{{=URL('default', 'members', args=[course_id])}}">Memebers</a></li>
-</ul>
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation"><a href="{{=URL('default', 'project_list', args=[course_id])}}">Projects</a></li>
+    <li role="presentation" class="active"><a href="{{=URL('default', 'members', args=[course_id])}}">Memebers</a></li>
+  </ul>
 
   <div class="clearfix jumbotron">
 
@@ -52,6 +52,10 @@
     {{pass}}
 
 
+    <h2>Matching Members</h2>
+    {{for m in coursework_members:}}
+      {{=get_user_name_from_email(m.email)}}
+    {{pass}}
 
 
 </div>

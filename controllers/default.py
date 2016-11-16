@@ -349,8 +349,32 @@ def profile():
 
     return dict(current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
 
+
+def coursework_match(current_student, all_students):
+
+    matchingStudents = []
+
+    if current_student.coursework == None:
+        return None
+
+    for s_id in all_students:
+        other_student = db(db.auth_user.id == s_id).select().first()
+        if other_student:
+            if other_student.coursework:
+                for c in other_student.coursework:
+                    for d in current_student.coursework:
+                        if c.lower() == d.lower():
+                            if other_student not in matchingStudents:
+                                matchingStudents.append(other_student)
+
+    return matchingStudents
+
+
+
 @auth.requires_login()
 def members():
+
+    current_user = db(db.auth_user.id == auth.user.id).select().first()
 
     if request.args(0) is None:
         session.flash = T('No course selected')
@@ -370,6 +394,8 @@ def members():
             # add them to the list of members so we can pull there info
             members.append(q)
 
+        coursework_members = coursework_match(current_user, course.enrolled_students)
+
 
         """""
         # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
@@ -384,7 +410,7 @@ def members():
                 members.append(s)
         """
 
-    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name,course_id=course_id)
+    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name,course_id=course_id,coursework_members=coursework_members)
 
 
 def redirect_after_signup(form):
