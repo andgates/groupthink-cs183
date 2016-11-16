@@ -68,6 +68,17 @@ def edit_course():
         form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
+        # query the new course
+        newCourse = db(db.course.course_id == form.vars.course_id).select().first()
+        # query the user
+        admin = db(db.auth_user.email == auth.user.email).select().first()
+        # add the new course to the admins enrolled courses
+        if admin.enrolled_courses:
+            admin.enrolled_courses.append(newCourse)
+            admin.update_record()
+        else:
+            admin.enrolled_courses = newCourse
+            admin.update_record()
         session.flash = T('Course created' if args is None else 'Course edited')
         redirect(URL('default', 'enrolled_courses'))
 
@@ -98,56 +109,7 @@ def join():
     # essentially a temp field
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
-    """
-    if form.process().accepted:
-        # create iterable objects of the dbs
-        courses = db(db.course).select()
-        students = db(db.auth_user).select()
-        # check courses first so we can jump out if its not a real course
-        for c in courses:
-            # check is the course is equal to a valid course
-            if c.course_id == form.vars.course_id:
-                # check if there are students, because cant append to none
-                if c.enrolled_students:
-                    # check if the user is already in the course
-                    if auth.user.email in c.enrolled_students:
-                        # the user is in the class we can jump back to courses
-                        session.flash = "Already Enrolled"
-                        redirect(URL('default','join'))
-                        break
-                    else:
-                        # not in the course and courses isn't empty then we use append
-                        c.enrolled_students.append(auth.user.email)
-                        c.update_record()
-                else:
-                    # enrolled students was empty so the user cant be in the class
-                    # the list was empty so you =  instead of append
-                    c.enrolled_students = auth.user.email
-                    c.update_record()
-                # the course is real change the validator
-                valid = True
 
-        # only handle linking to the student if the course is real
-        if valid:
-            # similiar to course find the student and add course to their list of enrolled courses
-            # use the same = and append functions. Jump back to courses when complete
-            for d in students:
-                if d.email == auth.user.email:
-                    if d.enrolled_courses:
-                        d.enrolled_courses.append(form.vars.course_id)
-                        d.update_record()
-                        session.flash = "Class Joined"
-                        redirect(URL('default', 'enrolled_courses'))
-                    else:
-                        d.enrolled_courses = form.vars.course_id
-                        d.update_record()
-                        session.flash = "Class Joined"
-                        redirect(URL('default', 'enrolled_courses'))
-        # if the course wasnt valid flash and reload the join page
-        else:
-            session.flash = "Course Not Found"
-            redirect(URL('default', 'join'))
-    """
     # create iterable objects of the dbs
     courses = db(db.course).select()
     students = db(db.auth_user).select()
@@ -256,34 +218,6 @@ def project():
                             if q not in matchingStudents:
                                 matchingStudents.append(q)
 
-
-        # Matching Algorithm
-        """
-        students = db(db.auth_user).select()
-        matchingStudents = []
-        # get a list of students
-        for i in students:
-            # is this student in the course the projects in
-            # This checks to make sure the user is enrolled in at least one course
-            # Otherwise 'if course_id in i.enrolled_courses' will through an error
-            if i.enrolled_courses:
-                if course_id in i.enrolled_courses:
-                    # loop throught the skils
-                    # we have to check case so simple query doesnt work
-                    for j in project.needed_skills:
-                        # check this person even has skills
-                        if i.skills:
-                            # loop through those skills
-                            for k in i.skills:
-                                # compare the skill in lowercase, so its not case sensitive
-                                if j.lower() == k.lower():
-                                    # check that the student isnt already counted
-                                    if i not in matchingStudents:
-                                        # add the student
-                                        matchingStudents.append(i)
-        """
-
-
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
 
@@ -338,7 +272,7 @@ def edit_project():
 
 @auth.requires_login()
 def profile():
-
+ 
     args = request.args(0)
 
     current_profile = db(db.auth_user.username == args).select().first()
@@ -386,7 +320,6 @@ def members():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
-
         members = []
         # loops through the enrolled students and link the references to students
         for s in course.enrolled_students:
@@ -395,20 +328,6 @@ def members():
             members.append(q)
 
         coursework_members = coursework_match(current_user, course.enrolled_students)
-
-
-        """""
-        # Query all students. (This is really inefficient but I see no way to get just the students enrolled in a given course)
-        students = db(db.auth_user).select()
-        members = []
-        for s in students:
-            # Invariant, if a student has no courses, enrolled_courses will not be iterable
-            if s.enrolled_courses == None:
-                pass
-            # Add the students that are enrolled in the current course
-            elif course_id in s.enrolled_courses:
-                members.append(s)
-        """
 
     return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name,course_id=course_id,coursework_members=coursework_members)
 
@@ -447,21 +366,6 @@ def statistics():
         session.flash = T('No course selected')
         redirect(URL('default', 'enrolled_courses'))
     else:
-        """"
-        # Query database for project with correct course_id
-        students = db(db.auth_user).select()
-        members = []
-        for s in students:
-            # Invariant, if a student has no courses, enrolled_courses will not be iterable
-            if s.enrolled_courses == None:
-                pass
-            # Add the students that are enrolled in the current course
-            elif course_id in s.enrolled_courses:
-                members.append(s)
-
-        projects = db(db.project.course_id == course_id).select()
-        """
-
         # find the course
         course = db(db.course.course_id == course_id).select().first()
         members = []
