@@ -53,8 +53,10 @@
 
 
     <h2>Matching Members</h2>
-    {{for m in coursework_members:}}
-      {{=get_user_name_from_email(m.email)}}
+    {{if coursework_members:}}
+        {{for m in coursework_members:}}
+          {{=get_user_name_from_email(m.email)}}
+        {{pass}}
     {{pass}}
 
 
