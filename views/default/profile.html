@@ -1,14 +1,20 @@
 {{extend 'layout.html'}}
 
 <script>
-    function openTab(tabName) {
+    function openTab(evt,tabName) {
         var i;
         var x =document.getElementsByClassName("tabcontent");
         for (i=0; i < x.length;i++){
             x[i].style.display="none";          //hide the tabs that weren't selected
         }
+
         document.getElementById(tabName).style.display="block";
-    }
+        evt.currentTarget.className+= "active";
+        }
+
+
+
+
 </script>
 
 <div class="container">
@@ -18,7 +24,8 @@
 
 <div class="profile-userpic">
 
-  <img src="/groupthink/static/images/noprofilemale.gif" class="img-responsive" alt="/groupthink/static/images/noprofilemale.gif">
+  <img src="{{=URL('default','download', args=[current_profile.picture])}}" class="img-responsive" onerror="this.src='/groupthink/static/images/noprofilemale.gif' ">
+
 </div>
 
 <div class="profile-usertitle">
@@ -31,25 +38,23 @@
 </div>
 
 <div class="profile-userbuttons">
+    {{if auth.user.username != current_profile.username:}}
   <button type="button" class="btn btn-danger btn-sm">Message</button>
+    {{pass}}
 </div>
 
 <div class="profile-usermenu">
   <ul class="nav">
-    <li class="active">
-      <a href="#">
-      <i class="glyphicon glyphicon-home"></i>
-      Profile </a>
-    </li>
+
     {{if auth.user.username == current_profile.username:}}
+        <li>
+        <a href="#">
+          <i class="glyphicon glyphicon-alert"></i>
+          Notifications </a>
       <li>
         <a href="{{=URL('default', 'user', args=['profile'])}}">
           <i class="glyphicon glyphicon-edit"></i>
           Edit Profile </a>
-    <li>
-      <a href="#">
-      <i class="glyphicon glyphicon-user"></i>
-      Account Settings </a>
     {{pass}}
   </ul>
 </div>
@@ -62,17 +67,21 @@
     <div class="profile-content">
 
  <ul class = "tab">
-           <li><a href="javascript:void(0)" onclick="openTab('Projects')"> My Projects </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab('Skills')"> Skills </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab('Interests')"> Interests </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab('Schedule')"> Schedule </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab(event,'Projects')" class="active" >Projects </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab(event,'Skills')" class="nonactive"> Skills </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab(event,'Interests')" class="nonactive"> Interests </a> </li>
+           <li><a href="javascript:void(0)" onclick="openTab(event,'Schedule')" class="nonactive"> Schedule </a> </li>
        </ul>
 
         <div id="Projects" class="tabcontent">
             {{if projects:}}
               {{for p in projects:}}
-                <a href="#">{{=p.project_name}}</a>
+                <ul>
+                <li><a style="display: inline" href="#">{{=p.project_name}}:</a>
+                   <p style="display: inline" >{{=p.project_info}}</p>
+                </li>
 
+                </ul>
               {{pass}}
             {{else:}}
               <p> No projects yet. </p>

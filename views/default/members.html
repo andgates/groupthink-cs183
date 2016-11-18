@@ -21,9 +21,11 @@
 
         <div class="profile-sidebar" id="smallProf">
 
+
 				<div class="profile-userpic">
 
-					<img src="/groupthink/static/images/noprofilemale.gif" class="img-responsive" alt="/groupthink/static/images/noprofilemale.gif">
+                    <img src="{{=URL('default','download', args=[m.picture])}}" class="img-responsive" onerror="this.src='/groupthink/static/images/noprofilemale.gif' ">
+
 				</div>
 
 				<div class="profile-usertitle">
