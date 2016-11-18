@@ -73,9 +73,16 @@ def edit_course():
         # query the user
         admin = db(db.auth_user.email == auth.user.email).select().first()
         # add the new course to the admins enrolled courses
+        # Check to see if the student is enrolled in at least one course
         if admin.enrolled_courses:
-            admin.enrolled_courses.append(newCourse)
-            admin.update_record()
+            # If the admin is already in the course, they must be editing.
+            if newCourse.id in admin.enrolled_courses:
+                # Don't add anything to enrolled_courses
+                pass
+            # The admin isn't enrolled in this course, add them
+            else:
+                admin.enrolled_courses.append(newCourse)
+                admin.update_record()
         else:
             admin.enrolled_courses = newCourse
             admin.update_record()
@@ -221,6 +228,30 @@ def project():
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
 
+
+def member_validation(form):
+    ugly_emails = []
+
+    if type(form.vars.current_members) == str:
+        if db(db.auth_user.email == form.vars.current_members).select().first():
+            pass
+        else:
+            form.errors.current_members = form.vars.current_members + " does not exist"
+    else:
+        for email in form.vars.current_members:
+            # Check to see if the email is in the auth_user database
+            if db(db.auth_user.email == email).select().first():
+                # That email was in the database, no worries man
+                pass
+            else:
+                ugly_emails.append(email)
+                ugly_string = ""
+                for ugly in ugly_emails:
+                    ugly_string = ugly_string + ", " + ugly
+                form.errors.current_members = ugly_string + " not found."
+
+
+
 @auth.requires_login()
 def edit_project():
     """
@@ -264,7 +295,7 @@ def edit_project():
         form.vars.course_id = course_id
         form.add_button('Cancel', URL('project_list', args=course_id))
 
-    if form.process().accepted:
+    if form.process(onvalidation=member_validation).accepted:
         session.flash = T('Project created' if project_id is None else 'Project edited')
         redirect(URL('default', 'project_list', args=course_id))
 
@@ -272,7 +303,7 @@ def edit_project():
 
 @auth.requires_login()
 def profile():
- 
+
     args = request.args(0)
 
     current_profile = db(db.auth_user.username == args).select().first()

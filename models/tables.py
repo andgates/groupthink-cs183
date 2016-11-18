@@ -28,7 +28,7 @@ db.define_table('project',
                 Field('project_name'),
                 Field('current_members', 'list:string'),
                 Field('project_info'),
-                Field('needed_skills', 'list:string', requires=IS_LOWER()),
+                Field('needed_skills', 'list:string'),
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
                 Field('updated_on', 'datetime', update=datetime.datetime.utcnow()),
                 Field('accepting_members', 'boolean'),
@@ -53,9 +53,15 @@ auth.settings.login_userfield = 'email'
 
 db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable = False
 
-# When submitting a project, the field should not be empty
+# When submitting a project, these fields should not be empty
 db.project.project_name.requires = IS_NOT_EMPTY()
 db.project.project_info.requires = IS_NOT_EMPTY()
+db.project.current_members.requires = IS_NOT_EMPTY(error_message='Add yourself to current members!')
+
+
+# This doesn't seem to be working, we can look into it later
+#db.project.current_members.requires = IS_EMAIL(error_message='Invalid email!')
+#db.project.needed_skills.requires = IS_LOWER()
 
 # Don't display time by default in forms
 db.project.created_on.readable = db.project.created_on.writable = False
