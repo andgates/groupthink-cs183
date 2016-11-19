@@ -1,27 +1,43 @@
 # -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
 
-# -------------------------------------------------------------------------
-# This is a sample controller
+"""
+GroupThink
+
+"""
+
+
+# ---s is the default controller for Grputhink
 # - index is the default action of any application
-# - user is required for authentication and authorization
-# - download is for downloading files uploaded in the db (does streaming)
-# -------------------------------------------------------------------------
+# - user is required for authentication and authorizati
+# Built in modules
+import json, random, string
 
-import json
-import random, string
+__author__ = "Sean Dougher, Savanna Jordan, Ryan Monroe, and Michael Gates"
+__email__ = "mjgates@ucsc.edu"
+__version__ = "0.011111"
+__status__ = "Development"
+__date__ = "11/19/2016"
+
+##### Make this a function
+"""
+        # Extract course name for webpage heading
+        course = db(db.course.course_id == course_id).select().first()
+        course_name = course.course_name
+"""
+
 
 def get_user_name_from_email(email):
     """Returns a string corresponding to the user first and last names,
     given the user email."""
+
+    #gets the user based on user email
     u = db(db.auth_user.email == email).select().first()
     if u is None:
+        #if there is no name, returns none
         return 'None'
     else:
+        #otherwise, returns first and last name
         return ' '.join([u.first_name, u.last_name])
-
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 def index():
     """
@@ -30,36 +46,43 @@ def index():
 
     current_profile = None
 
+    #Current user logged in
     if auth.user:
         current_profile = db(db.auth_user.email == auth.user.email).select().first()
 
-    ## Redirect the user to their enrolled courses page upon log in
-    #redirect(URL('default', 'enrolled_courses'))
 
-    ## We should also redirect a new user to the edit profile page once that is setup
+    #TODO @Michael: Create my projects list
 
+
+    #Returns a dict containing the current profile
     return dict(current_profile=current_profile)
 
 @auth.requires_login()
+#adds ability to edit course
 def edit_course():
     """
     This is the page to create / edit / delete a course.
     """
-    args = None
-    form = None
 
+    args = None                             #Args = arguments
+    form = None                             #form = form that user interacts with
+
+    # Create a new course if there are no arguments
     if request.args(0) is None:
-        # Create a new course if there are no arguments
+        #Creates a new form using the course database
         form = SQLFORM(db.course)
+        #adds a cancel button to return
         form.add_button('Cancel', URL('enrolled_courses'))
+    # If there are arguments, edit a course
     else:
-        # If there are arguments, edit a course
-        q = ((db.course.admin_email == auth.user.email) &
+        #Queries for user that matches admin email, and is enrolled in a specific course
+        q = ((db.course.admin_email == auth.user.email) and
                 (db.course.id == request.args(0)))
         # Get course record
         course = db(q).select().first()
         # Invariant: Check if project exists
         if course is None:
+            #User is not authorized
             session.flash = T('Not Authorized')
             redirect(URL('default', 'enrolled_courses'))
 
@@ -68,15 +91,16 @@ def edit_course():
         form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
-        # query the new course
+        # query for the new course
         newCourse = db(db.course.course_id == form.vars.course_id).select().first()
-        # query the user
+        # query the user(admin)
         admin = db(db.auth_user.email == auth.user.email).select().first()
         # add the new course to the admins enrolled courses
         # Check to see if the student is enrolled in at least one course
         if admin.enrolled_courses:
             # If the admin is already in the course, they must be editing.
             if newCourse.id in admin.enrolled_courses:
+                # @TODO: Update to insert_or_update()
                 # Don't add anything to enrolled_courses
                 pass
             # The admin isn't enrolled in this course, add them
@@ -84,6 +108,7 @@ def edit_course():
                 admin.enrolled_courses.append(newCourse)
                 admin.update_record()
         else:
+            #Otherwise, they are enrolled in this course
             admin.enrolled_courses = newCourse
             admin.update_record()
         session.flash = T('Course created' if args is None else 'Course edited')
@@ -92,13 +117,22 @@ def edit_course():
     return dict(args=args,form=form)
 
 @auth.requires_login()
+#Displays all enrolled courses to the current user
 def enrolled_courses():
 
+    #TODO: Michael
+    # Updated:
+    # my_courses = db(db.course.course_id.contains(db.auth_user.enrolled_courses)).select()
+    # list_my_courses = [for c in my_courses]
+
+    #Gets the courses from the course database
     courses = db(db.course).select()
+    #Gets the current user
     student = db(db.auth_user.email == auth.user.email).select().first()
 
     return dict(courses=courses, student=student)
 
+"""
 # Believe I made this obsolete
 def courseVerification(course_id):
     courses = db(db.course).select()
@@ -107,19 +141,23 @@ def courseVerification(course_id):
         if c.course_id == course_id:
             res=True
     return dict(res=res)
+"""
 
 @auth.requires_login()
+#Allows user to join a course
 def join():
-    # bool used to track valid course ids
-    valid = None
     # form factory allows us to take in a variable without creating
     # essentially a temp field
     form = SQLFORM.factory(
         Field('course_id', requires=IS_NOT_EMPTY()))
 
-    # create iterable objects of the dbs
+    #returns iterable course object
     courses = db(db.course).select()
+    #returns iterable student object
     students = db(db.auth_user).select()
+
+    #TODO: Update studentReference to use one query to check if student is already enrolled
+    #TODO: Look into how difficult it will be to add an enrollment table
 
     # get a reference to the specific student
     studentReference = db(db.auth_user.email == auth.user.email).select().first()
@@ -135,9 +173,10 @@ def join():
             # check if there are enrolled courses
             if studentReference.enrolled_courses:
                 # before adding make sure that the course isnt there already
-                # this is the only way i could get validation to work cannot just check for reference
+                #loops through enrolled courses, finding matching course_id
                 for i in studentReference.enrolled_courses:
                     if i.course_id == form.vars.course_id:
+                        #if user is already enrolled...
                         session.flash = "Already Enrolled"
                         # this will redirect the page and break out of the whole function
                         redirect(URL('default', 'enrolled_courses'))
@@ -145,10 +184,10 @@ def join():
                 studentReference.enrolled_courses.append(selectedCourse)
                 studentReference.update_record()
             else:
-                # if the list is empty use =
+                # if the list is empty, set the enrolled course to the selected course
                 studentReference.enrolled_courses = selectedCourse
                 studentReference.update_record()
-            # after adding to the student add, the student to the course
+            # after adding to the student, add the student to the course
             if selectedCourse.enrolled_students:
                 selectedCourse.enrolled_students.append(studentReference)
                 selectedCourse.update_record()
@@ -170,6 +209,8 @@ def project_list():
     """
     This is the project list controller.
 
+    Displays list of projects for a give course
+
     Returns: A dictionary of projects and associated info for a given course_id.
     """
 
@@ -182,17 +223,19 @@ def project_list():
         # Query database for all projects with correct course_id
         projects = db(db.project.course_id == course_id).select(orderby=~db.project.created_on)
 
+        #TODO: CALL FUNCTION BELOW
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
-    # Gets a list of the 20 most recent projects, orders by date created
-    #projects = db(db.project).select(orderby=~db.project.created_on, limitby=(0,20))
-
     return dict(projects=projects,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name)
+
 @auth.requires_login()
 def project():
+    """
+    Gets project information and displays to user
+    """
 
     if request.args(0) is None:
         session.flash = T('No course selected')
@@ -203,6 +246,7 @@ def project():
         # Query database for project with correct course_id
         project = db(db.project.course_id == course_id and db.project.id == project_id).select().first()
 
+        #TODO: CALL FUNCTION BELOW:
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
@@ -210,7 +254,6 @@ def project():
         # List to store matching student objects
         matchingStudents = []
 
-        ########################################################
         # Great way to efficiently query database
         # Query database for students enrolled in current course that also have at least one skill needed
         # A "rows" object is returned that contains all students in the course, with any of the needed skills
@@ -223,30 +266,43 @@ def project():
         course_id=course_id,course_name=course_name, matches=matchingStudents)
 
 
-def member_validation(form):
-    ugly_emails = []
 
+def member_validation(form):
+    """
+    Function to make sure a user is in the database, given an email
+    """
+    unknown_emails = []
+
+##########################################
+#Update: include contains instead of a for loop
+
+    #only one argument, being a string
     if type(form.vars.current_members) == str:
+        #user exists
         if db(db.auth_user.email == form.vars.current_members).select().first():
             pass
+        #user does not exist, output error to user
         else:
             form.errors.current_members = form.vars.current_members + " does not exist"
     else:
+        #loops through all emails in database
         for email in form.vars.current_members:
             # Check to see if the email is in the auth_user database
             if db(db.auth_user.email == email).select().first():
-                # That email was in the database, no worries man
+                # That email was in the database
                 pass
             else:
-                ugly_emails.append(email)
-                ugly_string = ""
-                for ugly in ugly_emails:
-                    ugly_string = ugly_string + ", " + ugly
-                form.errors.current_members = ugly_string + " not found."
+                #outputs each email that was not found in the database
+                unknown_emails.append(email)
+                unknown_string = ""
+                for unknown in unknown_emails:
+                    unknown_string = unknown_string + ", " + unknown
+                form.errors.current_members = unknown_string + " not found."
 
 
 
 @auth.requires_login()
+#Allows user to edit project information
 def edit_project():
     """
     This is the page to create / edit / delete a project.
@@ -369,7 +425,8 @@ def members():
 
         #coursework_members = coursework_match(current_user, course.enrolled_students)
 
-    return dict(members=members,get_user_name_from_email=get_user_name_from_email,course_name=course_name,course_id=course_id,coursework_members=coursework_members)
+    return dict(members=members,get_user_name_from_email=get_user_name_from_email,
+                course_name=course_name,course_id=course_id,coursework_members=coursework_members)
 
 
 def redirect_after_signup(form):
