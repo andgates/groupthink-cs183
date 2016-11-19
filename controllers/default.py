@@ -210,21 +210,35 @@ def project():
         # Matching using reference
         matchingStudents = []
         # loop through references
-        for d in course.enrolled_students:
+        #for d in course.enrolled_students:
             # find the student
-            q = db(db.auth_user.id == d).select().first()
-            # match sure the student has info
-            if q:
-                # loop through students skills
-                for e in q.skills:
-                    # loop through the projects skills
-                    for f in project.needed_skills:
-                        # do comparison in lowercase so not case sensitive
-                        if f.lower() == e.lower():
-                            # if the student isnt already counted add them
-                            if q not in matchingStudents:
-                                matchingStudents.append(q)
+            #q = db(db.auth_user.id == d).select().first()
 
+        ########################################################
+        # Great way to efficiently query database
+        # Query database for students enrolled in current course
+        # A "rows" object is returned that contains all students in the course, with any of the needed skills
+        students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(project.needed_skills)).select()
+
+        # This is just adding each "student" row object to a regular list, using list comprehension
+        matchingStudents = [s for s in students]
+
+
+
+
+        """
+        # match sure the student has info
+        if q:
+            # loop through students skills
+            for e in q.skills:
+                # loop through the projects skills
+                for f in project.needed_skills:
+                    # do comparison in lowercase so not case sensitive
+                    if f.lower() == e.lower():
+                        # if the student isnt already counted add them
+                        if q not in matchingStudents:
+                            matchingStudents.append(q)
+        """
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
 
