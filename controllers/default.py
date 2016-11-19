@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-GroupThink
+GroupThink™
 
 """
 
@@ -123,7 +123,7 @@ def enrolled_courses():
     #TODO: Michael
     # Updated:
     # my_courses = db(db.course.course_id.contains(db.auth_user.enrolled_courses)).select()
-    # list_my_courses = [for c in my_courses]
+    # list_my_courses = [c for c in my_courses]
 
     #Gets the courses from the course database
     courses = db(db.course).select()
@@ -205,6 +205,7 @@ def join():
     return dict(form=form, student=studentReference, course=selectedCourse)
 
 @auth.requires_login()
+#Displays list of current projects to user
 def project_list():
     """
     This is the project list controller.
@@ -232,6 +233,7 @@ def project_list():
         course_id=course_id,course_name=course_name)
 
 @auth.requires_login()
+#Displays project information to user
 def project():
     """
     Gets project information and displays to user
@@ -265,8 +267,6 @@ def project():
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)
 
-
-
 def member_validation(form):
     """
     Function to make sure a user is in the database, given an email
@@ -289,12 +289,13 @@ def member_validation(form):
         for email in form.vars.current_members:
             # Check to see if the email is in the auth_user database
             if db(db.auth_user.email == email).select().first():
-                # That email was in the database
+                # That email was in the database, no worries man
                 pass
             else:
                 #outputs each email that was not found in the database
                 unknown_emails.append(email)
                 unknown_string = ""
+                ### if there's only one unkown email, skip the for loop
                 for unknown in unknown_emails:
                     unknown_string = unknown_string + ", " + unknown
                 form.errors.current_members = unknown_string + " not found."
@@ -352,10 +353,12 @@ def edit_project():
     return dict(form=form,args=args)
 
 @auth.requires_login()
+#displays profile to user
 def profile():
 
     args = request.args(0)
 
+    #gets current user's profile
     current_profile = db(db.auth_user.username == args).select().first()
 
     # Query for projects made by user
@@ -364,38 +367,8 @@ def profile():
 
     return dict(current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
 
-
-def coursework_match(current_student, all_students):
-
-    matchingStudents = []
-
-    ########################################################
-    # Great way to efficiently query database
-    # Query database for students enrolled in current course that also have at least one skill needed
-    # A "rows" object is returned that contains all students in the course, with any of the needed skills
-    students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(project.needed_skills)).select()
-
-    # This is just adding each "student" row object to a regular list, using list comprehension
-    matchingStudents = [s for s in students]
-
-    if current_student.coursework == None:
-        return None
-
-    for s_id in all_students:
-        other_student = db(db.auth_user.id == s_id).select().first()
-        if other_student:
-            if other_student.coursework:
-                for c in other_student.coursework:
-                    for d in current_student.coursework:
-                        if c.lower() == d.lower():
-                            if other_student not in matchingStudents:
-                                matchingStudents.append(other_student)
-
-    return matchingStudents
-
-
-
 @auth.requires_login()
+#displays membersbps
 def members():
 
     current_user = db(db.auth_user.id == auth.user.id).select().first()
@@ -406,32 +379,28 @@ def members():
     else:
         # Extract the course_id from the argument ("View Course Members" button in project.html)
         course_id = request.args(0)
-        # Get the course name for displaying on the webpage
+
+        #TODO: CALL EXTRACT NAME FUNCTIONEE AL:OODO# Get the course name for displaying on the webpage
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
+        # Que?™eries for all members in a given course
         rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
 
+        # The ol' toss em'in a list ♪
         members = [m for m in rows_members]
 
+        # Queries for members­ that have matching previous coursework (people who have taken the same class in the past)
         rows_coursework = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.coursework.contains(current_user.coursework)).select()
 
+        # Toss em' in a list ♫
         coursework_members = [m for m in rows_coursework]
-        # loops through the enrolled students and link the references to students
-        #for s in course.enrolled_students:
-        #    q = db(db.auth_user.id == s).select().first()
-            # add them to the list of members so we can pull there info
-        #    members.append(q)
 
-        #coursework_members = coursework_match(current_user, course.enrolled_students)
 
     return dict(members=members,get_user_name_from_email=get_user_name_from_email,
                 course_name=course_name,course_id=course_id,coursework_members=coursework_members)
 
-
-def redirect_after_signup(form):
-    redirect(URL('default', 'index'))
-
+#Built-in function for web2py, that does something
 def user():
     """
     exposes:
@@ -449,14 +418,10 @@ def user():
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
 
-    # A messy fix for using student table separate from auth
-    # Users weren't getting added to the student table because they didn't always visit index.html after signup
-
-    auth.settings.register_onaccept = redirect_after_signup
-
     return dict(form=auth())
 
 @auth.requires_login()
+#Displays various statistics to admin
 def statistics():
     course_id = request.args(0)
     if course_id is None:
@@ -467,10 +432,12 @@ def statistics():
         course = db(db.course.course_id == course_id).select().first()
         members = []
         # loops through the enrolled students and link the references to students
-        for s in course.enrolled_students:
-            q = db(db.auth_user.id == s).select().first()
-            # add them to the list of members so we can pull there info
-            members.append(q)
+        #TODO: update to use query with contains
+        if course.enrolled_students:
+            for s in course.enrolled_students:
+                q = db(db.auth_user.id == s).select().first()
+                # add them to the list of members so we can pull there info
+                members.append(q)
         # get the projects for the course
         projects = db(db.project.course_id == course_id).select()
 
