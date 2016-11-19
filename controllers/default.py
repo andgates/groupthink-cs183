@@ -391,7 +391,8 @@ def members():
         members = [m for m in rows_members]
 
         # Queries for members­ that have matching previous coursework (people who have taken the same class in the past)
-        rows_coursework = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.coursework.contains(current_user.coursework)).select()
+        rows_coursework = db(db.auth_user.enrolled_courses.contains(course.id)
+                            and db.auth_user.coursework.contains(current_user.coursework)).select()
 
         # Toss em' in a list ♫
         coursework_members = [m for m in rows_coursework]
@@ -430,14 +431,17 @@ def statistics():
     else:
         # find the course
         course = db(db.course.course_id == course_id).select().first()
+
         members = []
-        # loops through the enrolled students and link the references to students
-        #TODO: update to use query with contains
-        if course.enrolled_students:
-            for s in course.enrolled_students:
-                q = db(db.auth_user.id == s).select().first()
-                # add them to the list of members so we can pull there info
-                members.append(q)
+
+        # Que?™eries for all members in a given course
+        rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
+
+        members = [m for m in rows_members]
+
+        #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
+        #not db.project.curent_members.contains(auth_user.email))
+
         # get the projects for the course
         projects = db(db.project.course_id == course_id).select()
 

@@ -73,7 +73,8 @@ auth.settings.extra_fields['auth_user']= [
     Field('enrolled_courses', 'list:reference course'),
     Field('coursework', 'list:string'),
     Field('picture','upload', uploadfield='picture_file'),
-    Field('picture_file', 'blob')
+    Field('picture_file', 'blob'),
+    Field('my_projects', 'list:reference project'),
     ]
 
 service = Service()
