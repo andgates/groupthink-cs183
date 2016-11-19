@@ -27,10 +27,9 @@
             {{own_p = auth.user_id and p.user_email == auth.user.email}}
             <div class="panel {{='panel-info' if own_p else 'panel-primary'}}">
                 <div class="panel-heading clearfix">
-                    <h2 class="panel-title pull-left">
-                        {{=get_user_name_from_email(p.user_email)}}
-                        <small>{{=p.user_email}}</small>
-                    </h2>
+                    <h5 class="pull-left">
+                        {{=p.project_name}}
+                    </h5>
                     <a href="{{=URL('default', 'project', args=[course_id,p.id])}}" class="btn btn-primary btn-sm pull-right">
                         View Project <i class="fa fa-folder-open"></i>
                     </a>
