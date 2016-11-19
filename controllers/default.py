@@ -216,7 +216,7 @@ def project():
 
         ########################################################
         # Great way to efficiently query database
-        # Query database for students enrolled in current course
+        # Query database for students enrolled in current course that also have at least one skill needed
         # A "rows" object is returned that contains all students in the course, with any of the needed skills
         students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(project.needed_skills)).select()
 
@@ -311,7 +311,7 @@ def edit_project():
 
     if form.process(onvalidation=member_validation).accepted:
         session.flash = T('Project created' if project_id is None else 'Project edited')
-        redirect(URL('default', 'project_list', args=course_id))
+        redirect(URL('default', 'project', args=[course_id,form.vars.id]))
 
     return dict(form=form,args=args)
 
