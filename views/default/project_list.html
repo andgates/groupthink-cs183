@@ -5,21 +5,20 @@
   {{logged_in = auth.user_id is not None}}
 
   <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="active"><a href="{{=URL('default', 'project_list', args=[course_id])}}">Projects</a></li>
-    <li role="presentation"><a href="{{=URL('default', 'members', args=[course_id])}}">Memebers</a></li>
+    <li role="presentation" class="active"><a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a></li>
+    <li role="presentation"><a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a></li>
   </ul>
 
     <div class="clearfix jumbotron">
 
-      <h2 class="pull-left">{{=course_name}}</h2>
 
       <p>
-        <a class="btn btn-primary pull-right" href="{{=URL('default', 'edit_project', args=[course_id])}}" role="button">
+        <a class="btn btn-primary center" href="{{=URL('default', 'edit_project', args=[course_id])}}" role="button">
           <i class="fa fa-plus"></i> Post Project
         </a>
       </p>
 
-    </div>
+
 
     <div class="text-left">
     {{if projects:}}
@@ -79,4 +78,6 @@
     {{pass}}
     </div>
 
+
+   </div>
 </div>

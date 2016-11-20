@@ -233,17 +233,11 @@ ul.tab li a:focus .active{
   padding: 5%;
   padding-bottom: 300px;;
   border: 1px solid #ccc;
-}
-
-
-#Bio.tabcontent{
   text-align: left;
   font-size: 16px;
   font-weight: 400;
   text-wrap: normal;
-
 }
-
 
 
 .nonactive{
@@ -284,7 +278,7 @@ ul.tab li a:focus .active{
   -moz-transform: scale(1);
   transition: all 200ms ease-in;
   transform: scale(1);
-  width: 330px;
+  width: 250px;
   height: 350px;
 
 }
@@ -312,3 +306,4 @@ ul.tab li a:focus .active{
   margin-left: 10px;
 
 }
+

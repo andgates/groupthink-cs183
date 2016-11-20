@@ -1,6 +1,9 @@
 {{extend 'layout.html'}}
 
 <script>
+
+    console.log("very nice");
+
     function openTab(evt,tabName) {
         var i;
         var x =document.getElementsByClassName("tabcontent");
@@ -10,7 +13,6 @@
 
         document.getElementById(tabName).style.display="block";
         }
-
 </script>
 
 
@@ -101,7 +103,11 @@
         </div>
 
         <div id="Bio" class="tabcontent">
-            <p>{{=current_profile.addtl_info}}</p>
+            {{if current_profile.addtl_info:}}
+                <p>{{=current_profile.addtl_info}}</p>
+            {{else:}}
+                <p> This person has no Bio.</p>
+            {{pass}}
         </div>
 
         <div id="Schedule" class="tabcontent">

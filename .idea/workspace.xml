@@ -6,6 +6,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/myapp.css" afterPath="$PROJECT_DIR$/static/css/myapp.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/default/members.html" afterPath="$PROJECT_DIR$/views/default/members.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/default/profile.html" afterPath="$PROJECT_DIR$/views/default/profile.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/default/project_list.html" afterPath="$PROJECT_DIR$/views/default/project_list.html" />
     </list>
     <ignored path="groupthink.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +29,7 @@
     <favorites_list name="groupthink" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.9">
+    <splitter split-orientation="vertical" split-proportion="0.74721783">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="enrolled_courses.html" pinned="false" current-in-tab="false">
@@ -41,14 +42,22 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="tables.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/models/tables.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="195">
+                  <caret line="30" column="38" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="default.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/controllers/default.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="852">
-                  <caret line="449" column="0" selection-start-line="449" selection-start-column="0" selection-end-line="449" selection-end-column="0" />
-                  <folding>
-                    <marker date="1479593169000" expanded="true" signature="16593:16622" ph="..." />
-                  </folding>
+                <state relative-caret-position="1797">
+                  <caret line="512" column="0" selection-start-line="512" selection-start-column="0" selection-end-line="512" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -56,19 +65,11 @@
           <file leaf-file-name="members.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/views/default/members.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="933">
-                  <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="tables.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/models/tables.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="195">
-                  <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
-                  <folding />
+                <state relative-caret-position="-28">
+                  <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
+                  <folding>
+                    <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -76,8 +77,8 @@
           <file leaf-file-name="profile.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/views/default/profile.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="165">
-                  <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+                <state relative-caret-position="228">
+                  <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -87,21 +88,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="project_list.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/views/default/project_list.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="myapp.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/static/css/myapp.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="750">
-                  <caret line="241" column="19" selection-start-line="241" selection-start-column="19" selection-end-line="241" selection-end-column="19" />
+                <state relative-caret-position="51">
+                  <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -133,6 +124,7 @@
         <option value="$PROJECT_DIR$/views/default/enrolled_courses.html" />
         <option value="$PROJECT_DIR$/controllers/default.py" />
         <option value="$PROJECT_DIR$/models/db.py" />
+        <option value="$PROJECT_DIR$/views/default/project_list.html" />
         <option value="$PROJECT_DIR$/views/default/members.html" />
         <option value="$PROJECT_DIR$/static/css/myapp.css" />
         <option value="$PROJECT_DIR$/views/default/profile.html" />
@@ -841,7 +833,7 @@
         <state relative-caret-position="1125">
           <caret line="75" column="5" selection-start-line="75" selection-start-column="5" selection-end-line="75" selection-end-column="5" />
           <folding>
-            <marker date="1479584540000" expanded="true" signature="2617:2753" ph="..." />
+            <marker date="1479605357000" expanded="true" signature="2617:2753" ph="..." />
           </folding>
         </state>
       </provider>
@@ -877,14 +869,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/members.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="933">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/default/statistics.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -895,18 +879,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="852">
-          <caret line="449" column="0" selection-start-line="449" selection-start-column="0" selection-end-line="449" selection-end-column="0" />
-          <folding>
-            <marker date="1479593169000" expanded="true" signature="16593:16622" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/project_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="1797">
+          <caret line="512" column="0" selection-start-line="512" selection-start-column="0" selection-end-line="512" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -914,23 +888,41 @@
     <entry file="file://$PROJECT_DIR$/models/tables.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
+          <caret line="30" column="38" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/project_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/members.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/myapp.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="241" column="19" selection-start-line="241" selection-start-column="19" selection-end-line="241" selection-end-column="19" />
+        <state relative-caret-position="51">
+          <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/default/profile.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        <state relative-caret-position="228">
+          <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
           <folding />
         </state>
       </provider>
