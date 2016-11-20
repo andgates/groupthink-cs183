@@ -276,6 +276,8 @@ def member_validation(form):
 ##########################################
 #Update: include contains instead of a for loop
 
+    this_project = form.vars.id
+
     #only one argument, being a string
     if type(form.vars.current_members) == str:
         #user exists
@@ -289,8 +291,9 @@ def member_validation(form):
         for email in form.vars.current_members:
             # Check to see if the email is in the auth_user database
             if db(db.auth_user.email == email).select().first():
-                # That email was in the database, no worries man
+                # The user was there, no wories man :'(
                 pass
+
             else:
                 #outputs each email that was not found in the database
                 unknown_emails.append(email)
@@ -347,6 +350,50 @@ def edit_project():
         form.add_button('Cancel', URL('project_list', args=course_id))
 
     if form.process(onvalidation=member_validation).accepted:
+        this_project = db(db.project.id == form.vars.id).select().first()
+        # There was only one user email entered
+        if type(form.vars.current_members) == str:
+            # Get the one user entered
+            the_user = db(db.auth_user.email == form.vars.current_members).select().first()
+            print("The User:", the_user)
+            # Check if the user has at least one project
+            if the_user.my_projects:
+                # If the user is already in the project, they must be editing.
+                if this_project.id in the_user.my_projects:
+                    # @TODO: Update to insert_or_update()
+                    # Don't add anything to my_projects
+                    pass
+                # The user isn't already in this project, add them
+                else:
+                    the_user.my_projects.append(this_project)
+                    the_user.update_record()
+            else:
+                # Otherwise, this is thier first project
+                the_user.my_projects = this_project
+                the_user.update_record()
+        # Multiple emails entered
+        else:
+            for email in form.vars.current_members:
+                # Check to see if the email is in the auth_user database
+                if db(db.auth_user.email == email).select().first():
+                    # Get the one user entered
+                    the_user = db(db.auth_user.email == email).select().first()
+                    # Check if the user has at least one project
+                    if the_user.my_projects:
+                        # If the user is already in the project, they must be editing.
+                        if this_project.id in the_user.my_projects:
+                            # @TODO: Update to insert_or_update()
+                            # Don't add anything to my_projects
+                            pass
+                        # The user isn't already in this project, add them
+                        else:
+                            the_user.my_projects.append(this_project)
+                            the_user.update_record()
+                    else:
+                        # Otherwise, this is thier first project
+                        the_user.my_projects = this_project
+                        the_user.update_record()
+
         session.flash = T('Project created' if project_id is None else 'Project edited')
         redirect(URL('default', 'project', args=[course_id,form.vars.id]))
 

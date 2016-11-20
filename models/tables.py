@@ -52,6 +52,7 @@ auth.settings.login_userfield = 'email'
 
 
 db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable = False
+db.auth_user.my_projects.readable = db.auth_user.my_projects.writable = False
 
 # When submitting a project, these fields should not be empty
 db.project.project_name.requires = IS_NOT_EMPTY()

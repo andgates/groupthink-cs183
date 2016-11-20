@@ -35,7 +35,7 @@
                     Current Members:
                         <ul>
                             {{for i in p.current_members:}}
-                                <li>{{=i}}</li>
+                                <li>{{=get_user_name_from_email(i)}}</li>
                             {{pass}}
                         </ul>
                     Needed Skills:
