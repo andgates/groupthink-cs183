@@ -38,7 +38,7 @@
                    <p>Number of Projects: {{=len(p)}} </p>
                    <p>Students not in projects: </p>
                    <ul>
-                       {{for i in in_projects:}}
+                       {{for i in not_in_projects:}}
                            {{if i:}}
                                <li>{{=' '.join([i.first_name, i.last_name])}}</li>
                            {{pass}}

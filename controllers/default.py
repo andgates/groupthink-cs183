@@ -503,8 +503,14 @@ def statistics():
 
         in_projects = [n for n in rows_in_projects]
 
+        not_in_projects = []
 
-    return dict(p = projects, members = members, course = course,in_projects=in_projects)
+        for m in members:
+            if m not in in_projects:
+                not_in_projects.append(m)
+
+
+    return dict(p = projects, members = members, course = course,not_in_projects=not_in_projects)
 
 
 @cache.action()
