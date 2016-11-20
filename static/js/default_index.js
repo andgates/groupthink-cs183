@@ -6,6 +6,24 @@ var app = function() {
 
     Vue.config.silent = false; // show all warnings
 
+    self.groupthink = function () {
+       self.vue.shout = !self.vue.shout;
+    };
+
+    self.vue = new Vue({
+        el: "#vue-div",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+            shout: false
+        },
+        methods: {
+            groupthink: self.groupthink
+        }
+
+    });
+
+    $("#vue-div").show();
     return self;
 };
 

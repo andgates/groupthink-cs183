@@ -1,10 +1,8 @@
 {{extend 'layout.html'}}
 
-{{block header}}
+{{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 {{end}}
-
-<script src="{{=URL('static', 'js/default_index.js')}}"></script>
 
 <div class="post_listing center">
 
@@ -27,7 +25,10 @@
         <a href="{{=URL('default', 'profile', args=[current_profile.username])}}" class="btn btn-info pull-right pull-right">
             <i class="fa fa-plus"></i> My Profile
         </a>
-
+        <div id="vue-div" class="display:none">
+            <button v-on:click="groupthink()" class="btn btn-default" >GroupThink</button>
+                <p v-if="shout">GROUPTHINK!!!</p>
+        </div>
     {{else:}}
         <h2>GroupThink</h2>
         <h3>Start thinking with GroupThink today. Login or Sign up.</h3>
@@ -37,3 +38,5 @@
     {{pass}}
     </div>
 </div>
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
