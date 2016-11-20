@@ -36,6 +36,14 @@
                             {{pass}}
                         </ul>
                    <p>Number of Projects: {{=len(p)}} </p>
+                   <p>Students not in projects: </p>
+                   <ul>
+                       {{for i in in_projects:}}
+                           {{if i:}}
+                               <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                           {{pass}}
+                       {{pass}}
+                   </ul>
                 </div>
                 <div class="panel-footer clearfix">
 

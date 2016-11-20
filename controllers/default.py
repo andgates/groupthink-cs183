@@ -489,16 +489,22 @@ def statistics():
         #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
         #not db.project.curent_members.contains(auth_user.email))
 
+        project_ids = []
         # get the projects for the course
         projects = db(db.project.course_id == course_id).select()
-
+        for p in projects:
+            project_ids.append(p.id)
 
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         #course_name = course.course_name
 
+        rows_in_projects = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.my_projects.contains(project_ids)).select()
 
-    return dict(p = projects, members = members, course = course)
+        in_projects = [n for n in rows_in_projects]
+
+
+    return dict(p = projects, members = members, course = course,in_projects=in_projects)
 
 
 @cache.action()
