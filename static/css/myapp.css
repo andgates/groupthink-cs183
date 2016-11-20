@@ -117,21 +117,23 @@ body {
 .profile-userpic img {
   float: none;
   margin: 0 auto;
-  width: 50%;
-  height: 50%;
-  border-radius: 50% !important;
+  width: 135px;
+  height: 125px;
+  border-radius: 35% !important;
 }
 
 .profile-usertitle {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .profile-usertitle-name {
   color: #5a7391;
   font-size: 16px;
   font-weight: 600;
+  margin-top: 15px;
   margin-bottom: 7px;
+  text-align: center;
 }
 
 .profile-usertitle-job {
@@ -139,19 +141,19 @@ body {
   color: #5b9bd1;
   font-size: 12px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
+
 
 .profile-userbuttons {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .profile-userbuttons .btn {
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 600;
-  padding: 6px 15px;
   margin-right: 5px;
 }
 
@@ -233,6 +235,17 @@ ul.tab li a:focus .active{
   border: 1px solid #ccc;
 }
 
+
+#Bio.tabcontent{
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  text-wrap: normal;
+
+}
+
+
+
 .nonactive{
   display: none;
 }
@@ -241,33 +254,38 @@ ul.tab li a:focus .active{
   display: block;
 }
 
-
 .memberPage{
   display: table;
   table-layout:fixed;
 }
 
+#smallButtons.profile-userbuttons {
+  margin-bottom: 5px;
+}
 
-
+#smallButtons.profile-userbuttons .btn{
+  width:100px;
+  height: 30px;
+  text-align: center;
+}
 
 #smallProf.profile-sidebar{
-  border-radius: 30%;
-  width: 300px;
-  height: 300px;
 
+  border: 3px solid #ccc;
+  border-radius: 10px;
   margin: 20px 15px 20px 15px;
-
-    display:inline-block;
-    border:0;
-    position: relative;
-    -webkit-transition: all 200ms ease-in;
-    -webkit-transform: scale(1);
-    -ms-transition: all 200ms ease-in;
-    -ms-transform: scale(1);
-    -moz-transition: all 200ms ease-in;
-    -moz-transform: scale(1);
-    transition: all 200ms ease-in;
-    transform: scale(1);
+  display:inline-block;
+  position: relative;
+  -webkit-transition: all 200ms ease-in;
+  -webkit-transform: scale(1);
+  -ms-transition: all 200ms ease-in;
+  -ms-transform: scale(1);
+  -moz-transition: all 200ms ease-in;
+  -moz-transform: scale(1);
+  transition: all 200ms ease-in;
+  transform: scale(1);
+  width: 330px;
+  height: 350px;
 
 }
 
@@ -284,9 +302,13 @@ ul.tab li a:focus .active{
     transform: scale(1.1);
 }
 
-
-
-
-#memberPage ul {
+.matching-info{
+  font-size: 9px;
+  font-weight: 400;
+  text-wrap: normal;
+  text-align: center;
+  height: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
 
 }

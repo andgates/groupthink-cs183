@@ -18,49 +18,57 @@
 
 
     {{for m in members:}}
-
-        <div class="profile-sidebar" id="smallProf">
+        {{if m:}}
+            <div class="profile-sidebar" id="smallProf">
 
 
 				<div class="profile-userpic">
-
-                    <img src="{{=URL('default','download', args=[m.picture])}}" class="img-responsive" onerror="this.src='/groupthink/static/images/noprofilemale.gif' ">
-
+                    <img src="{{=URL('default','download', args=[m.picture])}}" class="img-responsive" onerror="this.src='/groupthink/static/images/noprofilemale.gif'">
 				</div>
 
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name" style="text-transform: uppercase">
-                        {{if m:}}
-                            {{=get_user_name_from_email(m.email)}}
+                <div class="profile-usertitle-name" style="text-transform: uppercase">
+                        {{=get_user_name_from_email(m.email)}}
+                </div>
+
+                <div class="profile-usertitle-job">
+                        @{{=m.username}}
+                </div>
+
+                <div class="matching-info">
+                    {{if coursework_members:}}
+                        {{for c in coursework_members:}}
+                            {{if m.email != auth.user.email:}}
+                                {{if c.email == m.email:}}
+
+                                    <t class="glyphicon glyphicon-plus"> You and {{=get_user_name_from_email(m.email)}} have taken classes together!</t>
+
+                                {{pass}}
+                            {{pass}}
                         {{pass}}
-					</div>
-					<div class="profile-usertitle-job">
-						UCSC Student
-					</div>
-				</div>
+                    {{pass}}
+                </div>
 
 				<div class="profile-userbuttons" id="smallButtons">
-                    <button type="button" class="glyphicon glyphicon-envelope" style="margin-bottom:10px;">  Message</button>
+                    <button type="button" class="glyphicon glyphicon-envelope"> Message</button>
                     {{if m:}}
                         <a href="{{=URL('default', 'profile', args=[m.username])}}">
                     {{pass}}
-                    <button type="button" class="glyphicon glyphicon-user" style="margin-bottom:10px;"> Profile</button>
+                    <button type="button" class="glyphicon glyphicon-user" > Profile</button>
                     </a>
-
 				</div>
-        </div>
-
-
-    {{pass}}
-
-
-    <h2>Matching Members</h2>
-    {{if coursework_members:}}
-        {{for m in coursework_members:}}
-          {{=get_user_name_from_email(m.email)}}
+            </div>
         {{pass}}
     {{pass}}
 
+
+<!--
+    <h2>Matching Members</h2>
+    {{#if coursework_members:}}
+        {{#for m in coursework_members:}}
+          {{#=get_user_name_from_email(m.email)}}
+        {{#pass}}
+    {{#pass}}
+-->
 
 </div>
 
