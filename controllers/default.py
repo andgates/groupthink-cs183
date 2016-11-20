@@ -278,11 +278,22 @@ def member_validation(form):
 
     this_project = form.vars.id
 
+    course = db(db.course.course_id == form.vars.course_id).select().first()
+
     #only one argument, being a string
     if type(form.vars.current_members) == str:
         #user exists
         if db(db.auth_user.email == form.vars.current_members).select().first():
-            pass
+            current_profile = db(db.auth_user.email == form.vars.current_members).select().first()
+            print("current_profile enrolled_courses", "/n")
+            print(current_profile.enrolled_courses)
+            print("COURSE_ID", form.vars.course_id)
+            print("")
+
+            if course.id in current_profile.enrolled_courses:
+                pass
+            else:
+                form.errors.current_members = form.vars.current_members + " is not enrolled"
         #user does not exist, output error to user
         else:
             form.errors.current_members = form.vars.current_members + " does not exist"
@@ -291,8 +302,18 @@ def member_validation(form):
         for email in form.vars.current_members:
             # Check to see if the email is in the auth_user database
             if db(db.auth_user.email == email).select().first():
-                # The user was there, no wories man :'(
-                pass
+                # Check if the user is enrolled in the current course
+                current_profile = db(db.auth_user.email == email).select().first()
+                if course.id in current_profile.enrolled_courses:
+                    pass
+                else:
+                    # That user isn't in the course, gtfo()
+                    unknown_emails.append(email)
+                    unknown_string = ""
+                    ### if there's only one unkown email, skip the for loop
+                    for unknown in unknown_emails:
+                        unknown_string = unknown_string + ", " + unknown
+                    form.errors.current_members = unknown_string + " not enrolled."
 
             else:
                 #outputs each email that was not found in the database
@@ -355,7 +376,6 @@ def edit_project():
         if type(form.vars.current_members) == str:
             # Get the one user entered
             the_user = db(db.auth_user.email == form.vars.current_members).select().first()
-            print("The User:", the_user)
             # Check if the user has at least one project
             if the_user.my_projects:
                 # If the user is already in the project, they must be editing.
