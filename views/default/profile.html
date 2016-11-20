@@ -9,13 +9,10 @@
         }
 
         document.getElementById(tabName).style.display="block";
-        evt.currentTarget.className+= "active";
         }
 
-
-
-
 </script>
+
 
 <div class="container">
 <div class="row profile">
@@ -67,9 +64,9 @@
     <div class="profile-content">
 
  <ul class = "tab">
+           <li><a href="javascript:void(0)" onclick="openTab(event,'Bio')" class="nonactive"> Bio </a> </li>
            <li><a href="javascript:void(0)" onclick="openTab(event,'Projects')" class="active" >Projects </a> </li>
            <li><a href="javascript:void(0)" onclick="openTab(event,'Skills')" class="nonactive"> Skills </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab(event,'Interests')" class="nonactive"> Interests </a> </li>
            <li><a href="javascript:void(0)" onclick="openTab(event,'Schedule')" class="nonactive"> Schedule </a> </li>
        </ul>
 
@@ -103,8 +100,8 @@
 
         </div>
 
-        <div id="Interests" class="tabcontent">
-            <p>This is the content for the interests tab</p>
+        <div id="Bio" class="tabcontent">
+            <p>{{=current_profile.addtl_info}}</p>
         </div>
 
         <div id="Schedule" class="tabcontent">
