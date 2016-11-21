@@ -9,17 +9,58 @@
     <li role="presentation"><a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a></li>
   </ul>
 
-    <div class="clearfix jumbotron">
+  <div class="clearfix jumbotron">
 
 
-      <p>
-        <a class="btn btn-primary center" href="{{=URL('default', 'edit_project', args=[course_id])}}" role="button">
-          <i class="fa fa-plus"></i> Post Project
-        </a>
-      </p>
+    <a class="btn btn-primary center" href="{{=URL('default', 'edit_project', args=[course_id])}}" role="button">
+      <i class="fa fa-plus"></i> Post Project
+    </a>
+
+    <table class="table table-striped">
+      <thead>
+          <tr>
+              <th class="text-center">Project Name</th>
+              <th class="text-center">Tagline</th>
+              <th class="text-center">Team Members</th>
+              <th class="text-center">Accepting Members?</th>
+          </tr>
+      </thead>
+      <tbody>
+        {{if projects:}}
+          {{for p in projects:}}
+            {{own_p = auth.user_id and p.user_email == auth.user.email}}
+            <tr>
+                <td>{{=p.project_name}}</td>
+                <td>{{=p.project_info}}</td>
+                <td>
+                  <ul>
+                      {{for i in p.current_members:}}
+                          <li>{{=get_user_name_from_email(i)}}</li>
+                      {{pass}}
+                  </ul>
+                </td>
+                <td>
+                  {{if p.accepting_members:}}
+                      <p>Yes</p>
+                  {{else:}}
+                      <p>No</p>
+                  {{pass}}
+                </td>
+                <td>
+                  {{if own_p:}}
+                      <a href="{{=URL('default', 'edit_project', args=[course_id,p.id])}}" class="btn btn-primary btn-sm pull-right">
+                          Edit <i class="fa fa-pencil-square-o"></i>
+                      </a>
+                  {{pass}}
+                </td>
+            </tr>
+        {{pass}}
+          {{pass}}
+      </tbody>
+    </table>
 
 
-
+<!--
     <div class="text-left">
     {{if projects:}}
         {{for p in projects:}}
@@ -78,6 +119,6 @@
     {{pass}}
     </div>
 
-
+-->
    </div>
 </div>
