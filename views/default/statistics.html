@@ -27,26 +27,40 @@
                 <div class="panel-body">
                     <p>Course Name: {{=course.course_name}}</p>
                     <p>Course Info: {{=course.course_info}} </p>
-                    Enrolled Students:
-                        <ul>
-                            {{for i in members:}}
-                                {{if i:}}
-                                    <li>{{=' '.join([i.first_name, i.last_name])}}</li>
-                                {{pass}}
-                            {{pass}}
-                        </ul>
-                   <p>Number of Projects: {{=len(p)}} </p>
-                   <p>Students not in projects: </p>
-                   <ul>
-                       {{for i in not_in_projects:}}
-                           {{if i:}}
-                               <li>{{=' '.join([i.first_name, i.last_name])}}</li>
-                           {{pass}}
-                       {{pass}}
-                   </ul>
-                </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Enrolled Students: {{=len(members)}}
+                                <ul>
+                                    {{for i in members:}}
+                                        {{if i:}}
+                                            <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                        {{pass}}
+                                    {{pass}}
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                Number of Projects: {{=len(p)}}
+                                <ul>
+                                    {{for x in p:}}
+                                        {{if i:}}
+                                            <li>{{=x.project_name}}</li>
+                                        {{pass}}
+                                    {{pass}}
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                               Students not in projects: {{=len(not_in_projects)}}
+                               <ul>
+                                   {{for i in not_in_projects:}}
+                                       {{if i:}}
+                                           <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                       {{pass}}
+                                   {{pass}}
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
                 <div class="panel-footer clearfix">
-
                 </div>
             </div>
     </div>
