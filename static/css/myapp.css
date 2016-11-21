@@ -1,5 +1,6 @@
 
 
+
 .post_listing {
   margin: 10px 15px 15px 10px;
 
@@ -95,13 +96,9 @@
 
 
 
-
-
-
 body {
   background: rgba(34, 102, 102, 0.49);
 }
-
 
 /* Profile container */
 .profile {
@@ -199,7 +196,7 @@ body {
   min-height: 460px;
 }
 
-/* PROFILE TABS*/
+/* PROFILE TABS */
 ul.tab{
   list-style-type: none;
   margin: 0;
@@ -306,4 +303,3 @@ ul.tab li a:focus .active{
   margin-left: 10px;
 
 }
-

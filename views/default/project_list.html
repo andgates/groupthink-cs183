@@ -1,15 +1,19 @@
 {{extend 'layout.html'}}
 
-<div class="container center">
+<div class="container">
 
   {{logged_in = auth.user_id is not None}}
 
   <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="active"><a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a></li>
-    <li role="presentation"><a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a></li>
+    <li role="presentation" class="active">
+      <a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a>
+    </li>
+    <li role="presentation">
+      <a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a>
+    </li>
   </ul>
 
-  <div class="clearfix jumbotron">
+<div class="clearfix jumbotron">
 
 
     <a class="btn btn-primary center" href="{{=URL('default', 'edit_project', args=[course_id])}}" role="button">
@@ -30,7 +34,11 @@
           {{for p in projects:}}
             {{own_p = auth.user_id and p.user_email == auth.user.email}}
             <tr>
-                <td>{{=p.project_name}}</td>
+                <td>
+                  <a href="{{=URL('default', 'project', args=[course_id,p.id])}}">
+                      {{=p.project_name}}
+                  </a>
+                </td>
                 <td>{{=p.project_info}}</td>
                 <td>
                   <ul>
@@ -120,5 +128,6 @@
     </div>
 
 -->
-   </div>
+
 </div>
+</div> <!-- Main container -->
