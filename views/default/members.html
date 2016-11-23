@@ -2,12 +2,21 @@
 
 <div class="container center">
 
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation"><a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a></li>
-    <li role="presentation" class="active"><a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a></li>
+  <div class="nav">
+
+
+  <ul class="nav nav-tabs pull-left pull-left">
+    <li role="presentation">
+      <a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a>
+    </li>
+    <li role="presentation" class="active">
+      <a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a>
+    </li>
   </ul>
 
-<div class="clearfix jumbotron">
+  </div>
+
+<div class="panel">
 
 
 <div class="memberPage">
