@@ -386,7 +386,11 @@ def edit_project():
             session.flash = T('Not Authorized')
             redirect(URL('default', 'project_list', args=course_id))
 
-        form = SQLFORM(db.project, project, deletable=True, showid=False)
+        form = SQLFORM(db.project, project, deletable=True, showid=False,labels = {'project_name': 'What is the name of your project?','current_members':
+            'Add your email and the email of other team members:', 'project_info':'Please describe your project: '
+            'What is the design, purpose, and goal?','needed_skills':
+            'What skills and technologies are needed to develop this project?','accepting_members':
+            'Are you looking for more team members? If so, click this box!'})
         form.vars.course_id = course_id
         form.add_button('Cancel', URL('project_list', args=course_id))
 
