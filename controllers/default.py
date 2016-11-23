@@ -275,9 +275,11 @@ def project():
         # Query database for students enrolled in current course that also have at least one skill needed
         # A "rows" object is returned that contains all students in the course, with any of the needed skills
         students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(project.needed_skills)).select()
+        current_user = db(db.auth_user.email == auth.user.email).select().first()
 
         # This is just adding each "student" row object to a regular list, using list comprehension
         matchingStudents = [s for s in students]
+
 
     return dict(p=project,get_user_name_from_email=get_user_name_from_email,
         course_id=course_id,course_name=course_name, matches=matchingStudents)

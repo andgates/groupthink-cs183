@@ -53,7 +53,9 @@
                         Find Members:
                             <ul>
                             {{for i in matches:}}
-                                <li>{{=i.email}}</li>
+                                {{if i.email != auth.user.email:}}
+                                    <li>{{=i.first_name}} {{=i.last_name}}</li>
+                                {{pass}}
                             {{pass}}
                             </ul>
                     {{pass}}
