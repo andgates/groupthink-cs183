@@ -67,13 +67,13 @@ auth = Auth(db, host_names=myconf.get('host.names'))
 auth.settings.extra_fields['auth_user']= [
     Field('username', unique = True, length=100),
     Field('phone'),
-    Field('addtl_info'),
-    Field('skills', 'list:string'),
+    Field('addtl_info', label='Enter a short bio about yourself:'),
+    Field('skills', 'list:string', label='List any skills and technologies you have experience with'),
     # Field('enrolled_courses', 'list:reference'),
     Field('enrolled_courses', 'list:reference course'),
-    Field('coursework', 'list:string'),
+    Field('coursework', 'list:string',label='Enter past courses you have taken:'),
     Field('picture','upload', uploadfield='picture_file'),
-    Field('picture_file', 'blob'),
+    Field('picture_file', 'blob',label='Upload a profile picture'),
     Field('my_projects', 'list:reference project'),
     ]
 
