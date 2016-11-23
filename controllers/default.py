@@ -82,6 +82,9 @@ def edit_course():
     if request.args(0) is None:
         #Creates a new form using the course database
 
+        # Admin email must be current user
+        db.course.admin_email.writable = False
+
         form = SQLFORM(db.course, labels={'course_name': 'What is the name of the course?', 'course_id':
             'Please enter the course ID:', 'course_info': 'Please enter a brief course description:',
             'term': 'Please enter the current Term:'})
@@ -102,12 +105,16 @@ def edit_course():
             redirect(URL('default', 'enrolled_courses'))
 
         args = request.args(0)
+        # Course ID cannot be changed after being created
+        db.course.course_id.writable = False
+        # Admin email must be current user
+        db.course.admin_email.writable = False
         form = SQLFORM(db.course, course, deletable=True, showid=False)
         form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
         # query for the new course
-        newCourse = db(db.course.course_id == form.vars.course_id).select().first()
+        newCourse = db(db.course.id == form.vars.id).select().first()
         # query the user(admin)
         admin = db(db.auth_user.email == auth.user.email).select().first()
         # add the new course to the admins enrolled courses
@@ -364,7 +371,6 @@ def edit_project():
         if project is None:
             session.flash = T('Not Authorized')
             redirect(URL('default', 'project_list', args=course_id))
-
         form = SQLFORM(db.project, project, deletable=True, showid=False,labels = {'project_name': 'What is the name of your project?','current_members':
             'Add your email and the email of other team members:', 'project_info':'Please describe your project: '
             'What is the design, purpose, and goal?','needed_skills':
