@@ -321,7 +321,7 @@ def member_validation(form):
             if db(db.auth_user.email == email).select().first():
                 # Check if the user is enrolled in the current course
                 current_profile = db(db.auth_user.email == email).select().first()
-                if course.id in current_profile.enrolled_courses:
+                if current_profile.enrolled_courses is not None and course.id in current_profile.enrolled_courses:
                     pass
                 else:
                     # That user isn't in the course, gtfo()
