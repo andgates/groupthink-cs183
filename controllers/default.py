@@ -70,7 +70,11 @@ def edit_course():
     # Create a new course if there are no arguments
     if request.args(0) is None:
         #Creates a new form using the course database
-        form = SQLFORM(db.course)
+
+        form = SQLFORM(db.course, labels={'course_name': 'What is the name of the course?', 'course_id':
+            'Please enter the course ID:', 'course_info': 'Please enter a brief course description:',
+            'term': 'Please enter the current Term:'})
+
         #adds a cancel button to return
         form.add_button('Cancel', URL('enrolled_courses'))
     # If there are arguments, edit a course
@@ -88,6 +92,7 @@ def edit_course():
 
         args = request.args(0)
         form = SQLFORM(db.course, course, deletable=True, showid=False)
+
         form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
@@ -113,6 +118,8 @@ def edit_course():
             admin.update_record()
         session.flash = T('Course created' if args is None else 'Course edited')
         redirect(URL('default', 'enrolled_courses'))
+
+
 
     return dict(args=args,form=form)
 
@@ -351,7 +358,13 @@ def edit_project():
 
     if new_post:
         # Create a new project if there are no arguments
-        form = SQLFORM(db.project)
+        form = SQLFORM(db.project,labels = {'project_name': 'What is the name of your project?','current_members':
+            'Add your email and the email of other team members:', 'project_info':'Please describe your project: '
+            'What is the design, purpose, and goal?','needed_skills':
+            'What skills and technologies are needed to develop this project?','accepting_members':
+            'Are you looking for more team members? If so, click this box!'})
+
+
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
         form.add_button('Cancel', URL('project_list', args=course_id))
@@ -486,7 +499,9 @@ def user():
     also notice there is http://..../[app]/appadmin/manage/auth to allow administrator to manage users
     """
 
-    return dict(form=auth())
+    form = auth()
+
+    return dict(form=form)
 
 @auth.requires_login()
 #Displays various statistics to admin
