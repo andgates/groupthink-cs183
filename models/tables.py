@@ -55,6 +55,11 @@ db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable 
 db.auth_user.my_projects.readable = db.auth_user.my_projects.writable = False
 
 # When submitting a project, these fields should not be empty
+db.course.course_name.requires = IS_NOT_EMPTY(error_message='Please enter a Course Name')
+db.course.course_id.requires = IS_NOT_EMPTY(error_message='Please enter a unique course ID')
+db.course.term.requires = IS_NOT_EMPTY(error_message='Please enter a term')
+
+# When submitting a project, these fields should not be empty
 db.project.project_name.requires = IS_NOT_EMPTY()
 db.project.project_info.requires = IS_NOT_EMPTY()
 db.project.current_members.requires = IS_NOT_EMPTY(error_message='Add yourself to current members!')
