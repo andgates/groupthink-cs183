@@ -15,9 +15,10 @@
 
     <h2>GroupThink Dashboard</h2>
 
-  <a href="{{=URL('default', 'profile', args=[current_profile.username])}}"
-    class="btn btn-info btn-lg">
+  <a href="{{=URL('default', 'profile', args=[current_profile.username])}}">
+    <button type="button" class="btn btn-default btn-lg">
       <i class="fa fa-user"></i> My Profile
+    </button>
   </a>
 
 </div>
@@ -26,8 +27,10 @@
   <div class="panel panel-info">
     <div class="panel-heading clearfix">
       <h2> My Courses </h2>
-      <a href="{{=URL('default', 'enrolled_courses')}}" class="btn btn-info btn-lg">
+      <a href="{{=URL('default', 'enrolled_courses')}}">
+        <button type="button" class="btn btn-default btn-lg">
           <i class="fa fa-graduation-cap"></i> View All
+        </button>
       </a>
     </div>
         <div class="panel-body">
