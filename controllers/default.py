@@ -147,17 +147,6 @@ def enrolled_courses():
 
     return dict(courses=courses, student=student)
 
-"""
-# Believe I made this obsolete
-def courseVerification(course_id):
-    courses = db(db.course).select()
-    res = None
-    for c in courses:
-        if c.course_id == course_id:
-            res=True
-    return dict(res=res)
-"""
-
 @auth.requires_login()
 #Allows user to join a course
 def join():
@@ -170,9 +159,6 @@ def join():
     courses = db(db.course).select()
     #returns iterable student object
     students = db(db.auth_user).select()
-
-    #TODO: Update studentReference to use one query to check if student is already enrolled
-    #TODO: Look into how difficult it will be to add an enrollment table
 
     # get a reference to the specific student
     studentReference = db(db.auth_user.email == auth.user.email).select().first()
@@ -239,7 +225,6 @@ def project_list():
         # Query database for all projects with correct course_id
         projects = db(db.project.course_id == course_id).select(orderby=~db.project.created_on)
 
-        #TODO: CALL FUNCTION BELOW
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
@@ -263,7 +248,6 @@ def project():
         # Query database for project with correct course_id
         project = db(db.project.course_id == course_id and db.project.id == project_id).select().first()
 
-        #TODO: CALL FUNCTION BELOW:
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
@@ -289,9 +273,6 @@ def member_validation(form):
     Function to make sure a user is in the database, given an email
     """
     unknown_emails = []
-
-##########################################
-#Update: include contains instead of a for loop
 
     this_project = form.vars.id
 
@@ -474,7 +455,6 @@ def members():
         # Extract the course_id from the argument ("View Course Members" button in project.html)
         course_id = request.args(0)
 
-        #TODO: CALL EXTRACT NAME FUNCTIONEE AL:OODO# Get the course name for displaying on the webpage
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 

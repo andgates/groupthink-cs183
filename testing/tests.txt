@@ -1,1 +1,18 @@
 Testing for each function:
+
+def get_user_name_from_email(email):
+    This function is thoroughly tested in test.py
+
+def index():
+    if user is logged in, they will see their projects and classes
+    if user is not loged in, they will see the login page
+def edit_course():
+def enrolled_courses():
+def join():
+def project_list():
+def project():
+def member_validation(form):
+def edit_project():
+def profile():
+def members():
+def statistics():
