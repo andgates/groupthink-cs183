@@ -46,14 +46,16 @@
   <ul class="nav">
 
     {{if auth.user.username == current_profile.username:}}
-        <li>
-        <a href="#">
-          <i class="glyphicon glyphicon-alert"></i>
-          Notifications </a>
       <li>
         <a href="{{=URL('default', 'user', args=['profile'])}}">
           <i class="glyphicon glyphicon-edit"></i>
           Edit Profile </a>
+      </li>
+      <li>
+      <a href="{{=URL('default', 'user', args=['logout'])}}">
+        <i class="glyphicon glyphicon-alert"></i>
+        Logout </a>
+      </li>
     {{pass}}
   </ul>
 </div>
@@ -75,7 +77,7 @@
             {{if projects:}}
               {{for p in projects:}}
                 <ul>
-                <li><a style="display: inline" href="#">{{=p.project_name}}:</a>
+                <li><a style="display: inline" href="{{=URL('default', 'project', args=[p.course_id,p.id])}}">{{=p.project_name}}:</a>
                    <p style="display: inline" >{{=p.project_info}}</p>
                 </li>
 
@@ -108,7 +110,7 @@
                 <p> This person has no Bio.</p>
             {{pass}}
         </div>
-        
+
 
     </div>
 </div>

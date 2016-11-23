@@ -58,8 +58,6 @@ def index():
             my_projects = None
 
         if current_profile.enrolled_courses:
-            #my_courses = db(db.course.enrolled_students.contains(current_profile.id)).select()
-            #my_courses = db(db.auth_user.enrolled_courses).select()
             my_courses = [db(db.course.id == m).select().first() for m in current_profile.enrolled_courses if current_profile.enrolled_courses]
 
         else:

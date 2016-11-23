@@ -29,8 +29,11 @@ response.google_analytics_id = None
 # this is the main application menu add/remove items as required
 # ----------------------------------------------------------------------------------------------------------------------
 
+
+
 response.menu = [
     (T('Dashboard'), False, URL('default', 'index'), []),
+    (T('My Courses'), False, URL('default', 'enrolled_courses')),
     (T('My Courses'), False, URL('default', 'enrolled_courses')),
     (T('Join Course'), False, URL('default', 'join')),
     (T('Create Course'), False, URL('default', 'edit_course')),
