@@ -102,12 +102,13 @@ def edit_course():
             redirect(URL('default', 'enrolled_courses'))
 
         args = request.args(0)
+        db.course.course_id.writable = False
         form = SQLFORM(db.course, course, deletable=True, showid=False)
         form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
         # query for the new course
-        newCourse = db(db.course.course_id == form.vars.course_id).select().first()
+        newCourse = db(db.course.id == form.vars.id).select().first()
         # query the user(admin)
         admin = db(db.auth_user.email == auth.user.email).select().first()
         # add the new course to the admins enrolled courses
