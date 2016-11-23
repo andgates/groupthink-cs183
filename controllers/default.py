@@ -381,46 +381,48 @@ def edit_project():
     if form.process(onvalidation=member_validation).accepted:
         this_project = db(db.project.id == form.vars.id).select().first()
         # There was only one user email entered
-        if type(form.vars.current_members) == str:
-            # Get the one user entered
-            the_user = db(db.auth_user.email == form.vars.current_members).select().first()
-            # Check if the user has at least one project
-            if the_user.my_projects:
-                # If the user is already in the project, they must be editing.
-                if this_project.id in the_user.my_projects:
-                    # @TODO: Update to insert_or_update()
-                    # Don't add anything to my_projects
-                    pass
-                # The user isn't already in this project, add them
-                else:
-                    the_user.my_projects.append(this_project)
-                    the_user.update_record()
-            else:
-                # Otherwise, this is thier first project
-                the_user.my_projects = this_project
-                the_user.update_record()
-        # Multiple emails entered
-        else:
-            for email in form.vars.current_members:
-                # Check to see if the email is in the auth_user database
-                if db(db.auth_user.email == email).select().first():
-                    # Get the one user entered
-                    the_user = db(db.auth_user.email == email).select().first()
-                    # Check if the user has at least one project
-                    if the_user.my_projects:
-                        # If the user is already in the project, they must be editing.
-                        if this_project.id in the_user.my_projects:
-                            # @TODO: Update to insert_or_update()
-                            # Don't add anything to my_projects
-                            pass
-                        # The user isn't already in this project, add them
-                        else:
-                            the_user.my_projects.append(this_project)
-                            the_user.update_record()
+        if this_project is not None:
+            if type(form.vars.current_members) == str:
+                # Get the one user entered
+                the_user = db(db.auth_user.email == form.vars.current_members).select().first()
+                # Check if the user has at least one project
+                if the_user.my_projects:
+                    # If the user is already in the project, they must be editing.
+                    if this_project.id in the_user.my_projects:
+                        # Don't add anything to my_projects
+                        pass
+                    # The user isn't already in this project, add them
                     else:
-                        # Otherwise, this is thier first project
-                        the_user.my_projects = this_project
+                        the_user.my_projects.append(this_project)
                         the_user.update_record()
+                else:
+                    # Otherwise, this is thier first project
+                    the_user.my_projects = this_project
+                    the_user.update_record()
+            # Multiple emails entered
+            else:
+                for email in form.vars.current_members:
+                    # Check to see if the email is in the auth_user database
+                    if db(db.auth_user.email == email).select().first():
+                        # Get the one user entered
+                        the_user = db(db.auth_user.email == email).select().first()
+                        # Check if the user has at least one project
+                        if the_user.my_projects:
+                            # If the user is already in the project, they must be editing.
+                            if this_project.id in the_user.my_projects:
+                                # @TODO: Update to insert_or_update()
+                                # Don't add anything to my_projects
+                                pass
+                            # The user isn't already in this project, add them
+                            else:
+                                the_user.my_projects.append(this_project)
+                                the_user.update_record()
+                        else:
+                            # Otherwise, this is thier first project
+                            the_user.my_projects = this_project
+                            the_user.update_record()
+        else:
+            redirect(URL('default', 'project_list', args=[course_id]))
 
         session.flash = T('Project created' if project_id is None else 'Project edited')
         redirect(URL('default', 'project', args=[course_id,form.vars.id]))

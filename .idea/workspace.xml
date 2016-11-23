@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bb09e664-c553-47b3-94cf-7264da6ac564" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/default.py" afterPath="$PROJECT_DIR$/controllers/default.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testing/tests.txt" afterPath="$PROJECT_DIR$/testing/tests.txt" />
     </list>
     <ignored path="groupthink.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +28,8 @@
             <file leaf-file-name="default.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/controllers/default.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="652">
-                    <caret line="391" column="55" selection-start-line="391" selection-start-column="55" selection-end-line="391" selection-end-column="55" />
+                  <state relative-caret-position="343">
+                    <caret line="415" column="41" selection-start-line="415" selection-start-column="41" selection-end-line="415" selection-end-column="41" />
                     <folding />
                   </state>
                 </provider>
@@ -599,7 +598,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
+    <frame x="953" y="0" width="974" height="1047" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24217118" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -949,8 +948,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="391" column="55" selection-start-line="391" selection-start-column="55" selection-end-line="391" selection-end-column="55" />
+        <state relative-caret-position="343">
+          <caret line="415" column="41" selection-start-line="415" selection-start-column="41" selection-end-line="415" selection-end-column="41" />
           <folding />
         </state>
       </provider>
