@@ -5,25 +5,14 @@ GroupThink™
 
 """
 
-
-# ---s is the default controller for Grputhink
-# - index is the default action of any application
-# - user is required for authentication and authorizati
 # Built in modules
 import json, random, string
 
 __author__ = "Sean Dougher, Savanna Jordan, Ryan Monroe, and Michael Gates"
-__email__ = "mjgates@ucsc.edu"
-__version__ = "0.011111"
-__status__ = "Development"
-__date__ = "11/19/2016"
-
-##### Make this a function
-"""
-        # Extract course name for webpage heading
-        course = db(db.course.course_id == course_id).select().first()
-        course_name = course.course_name
-"""
+__email__ = "mjgates@ucsc.edu, sjdoughe@ucsc.edu, srjordan@ucsc.edu, rmonroe@ucsc.edu"
+__version__ = "1"
+__status__ = "Release"
+__date__ = "11/23/2016"
 
 
 def get_user_name_from_email(email):
@@ -69,7 +58,7 @@ def index():
                 my_courses=my_courses)
 
 @auth.requires_login()
-#adds ability to edit course
+# This is the page to create / edit / delete a course.
 def edit_course():
     """
     This is the page to create / edit / delete a course.
