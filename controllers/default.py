@@ -528,9 +528,12 @@ def statistics():
 
         # Que?™eries for all members in a given course
         #rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
-        rows_members = course.enrolled_students
+        #rows_members = course.enrolled_students
 
-        members = [db(db.auth_user.id == m).select().first() for m in rows_members if db(db.auth_user.id == m).select().first()]
+        if course.enrolled_students:
+            members = [db(db.auth_user.id == m).select().first() for m in course.enrolled_students if course.enrolled_students]
+        else:
+            members = None
 
         #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
         #not db.project.curent_members.contains(auth_user.email))
@@ -551,9 +554,10 @@ def statistics():
 
         not_in_projects = []
 
-        for m in members:
-            if m not in in_projects:
-                not_in_projects.append(m)
+        if members:
+            for m in members:
+                if m not in in_projects:
+                    not_in_projects.append(m)
 
 
     return dict(p = projects, members = members, course = course,not_in_projects=not_in_projects)
