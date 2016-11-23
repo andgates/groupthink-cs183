@@ -230,7 +230,7 @@ def project():
     Gets project information and displays to user
     """
 
-    if request.args(0) is None:
+    if request.args(0) is None or len(request.args) < 2:
         session.flash = T('No course selected')
         redirect(URL('default', 'enrolled_courses'))
     else:

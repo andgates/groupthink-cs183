@@ -4,14 +4,20 @@
 
     <div class="page-header clearfix">
         <h4 class="pull-left">Course Name: {{=course.course_name}}</h4>
-            <a href="{{=URL('default', 'edit', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
+            <a href="{{=URL('default', 'edit_project', args=[course.course_id])}}">
+              <button type="button" class="btn btn-default pull-right">
                 <i class="fa fa-plus"></i> Post Project
+              </button>
             </a>
-            <a href="{{=URL('default', 'members', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
-                <i class="fa fa-plus"></i> View Course Members
+            <a href="{{=URL('default', 'members', args=[course.course_id])}}">
+              <button type="button" class="btn btn-default pull-right">
+              <i class="fa fa-plus"></i> View Course Members
+              </button>
             </a>
-            <a href="{{=URL('default', 'project_list', args=[course.course_id])}}" class="btn btn-info pull-right pull-right">
-                <i class="fa fa-plus"></i> View All Projects
+            <a href="{{=URL('default', 'project_list', args=[course.course_id])}}">
+              <button type="button" class="btn btn-default pull-right">
+              <i class="fa fa-plus"></i> View All Projects
+              </button>
             </a>
     </div>
 
