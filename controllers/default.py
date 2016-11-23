@@ -45,17 +45,27 @@ def index():
     """
 
     current_profile = None
+    my_projects = None
+    my_courses=None
 
-    #Current user logged in
+    # Current user logged in
     if auth.user:
         current_profile = db(db.auth_user.email == auth.user.email).select().first()
+        # Get current users projects, across all courses
+        if current_profile.my_projects:
+            my_projects = db(db.project.current_members.contains(current_profile.email)).select()
+        else:
+            my_projects = None
 
-
-    #TODO @Michael: Create my projects list
+        if current_profile.enrolled_courses:
+            my_courses = db(db.course.enrolled_students.contains(current_profile.id)).select()
+        else:
+            my_courses = None
 
 
     #Returns a dict containing the current profile
-    return dict(current_profile=current_profile)
+    return dict(current_profile=current_profile,my_projects=my_projects,
+                my_courses=my_courses)
 
 @auth.requires_login()
 #adds ability to edit course
