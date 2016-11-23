@@ -1,0 +1,4 @@
+project.id,project.course_id,project.user_email,project.project_name,project.current_members,project.project_info,project.needed_skills,project.created_on,project.updated_on,project.accepting_members
+1,CS115F16,dfarley@ucsc.edu,gapSort,|dfarley@ucsc.edu|mcschade@ucsc.edu|,Bi-weekly planner that specifically shows gaps in everyone's schedule.,|web2py|python|,2016-11-23 02:21:45,2016-11-23 16:25:01,False
+2,CS115F16,cslinare@ucsc.edu,Loops,|cslinare@ucsc.edu|hvsanche@ucsc.edu|,Android app that finds a route someone can run/bike given a distance input.,|Android|Java|anything|,2016-11-23 16:37:48,2016-11-23 16:43:02,False
+3,CS115F16,kdolev@ucsc.edu,Problematica,|kdolev@ucsc.edu|smazliac@ucsc.edu|,Provides monetary incentive to tackle unsolved problems in math and science.,|Meteor|Node.js|MongoDB|Bootstrap|CSS3|Sass|Javascript|,2016-11-23 19:12:43,2016-11-23 19:34:31,False
