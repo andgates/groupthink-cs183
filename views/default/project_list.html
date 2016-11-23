@@ -6,15 +6,13 @@
 
   <div class="nav">
 
-    <ul class="nav nav-tabs pull-left pull-left">
-      <li class="active">
+    <ul class="nav nav-tabs">
+      <li class="active pull-left pull-left" role="presentation">
         <a href="{{=URL('default', 'project_list', args=[course_id])}}"> {{=course_name}} Projects</a>
       </li>
-      <li>
+      <li class="pull-left pull-left" role="presentation">
         <a href="{{=URL('default', 'members', args=[course_id])}}"> {{=course_name}} Members</a>
       </li>
-
-    </ul>
 
     <button type="button" class="btn btn-default pull-right">
       <a href="{{=URL('default', 'edit_project', args=[course_id])}}">
@@ -22,9 +20,11 @@
       </a>
     </button>
 
+    </ul>
+
 </div>
 
-<div class="panel">
+<div class="panel" style="border-radius: 0">
 
 
     <table class="table table-striped">
