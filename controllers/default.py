@@ -142,11 +142,6 @@ def edit_course():
 #Displays all enrolled courses to the current user
 def enrolled_courses():
 
-    #TODO: Michael
-    # Updated:
-    # my_courses = db(db.course.course_id.contains(db.auth_user.enrolled_courses)).select()
-    # list_my_courses = [c for c in my_courses]
-
     #Gets the courses from the course database
     courses = db(db.course).select()
     #Gets the current user

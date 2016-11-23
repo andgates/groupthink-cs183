@@ -1,18 +1,119 @@
 Testing for each function:
 
 def get_user_name_from_email(email):
-    This function is thoroughly tested in test.py
+   This function is thoroughly tested in test.py
+Tests that email returns correct name
+Tests what happens when there is in the case of an incorrect email
+
 
 def index():
-    if user is logged in, they will see their projects and classes
-    if user is not loged in, they will see the login page
+   if user is logged in, they will see their projects and classes
+   if user is not logged in, they will see the login page
 def edit_course():
+	This will edit course information
+	Editing the course name will change the name of the course
+If this is left blank, user will be prompted to return a value
+Otherwise, the name is changed
+	When creating a course, the course ID will be unique
+Will return an error if not unique
+	Editing the course info will edit the course description
+The course info field is OK to be blank
+	Admin email will be the admins email
+Wont be able to change this later
+	Editing term changes the listed term
+Leaving the field blank prompts user to Please enter a term
+Otherwise anything can be entered for the term
 def enrolled_courses():
+	This will display a list of courses that the user is currently enrolled in
+	If the user is not logged in, there are no courses to display
 def join():
+	This will have the user enter a course ID and enroll the user in a course with the corresponding ID
+If the user enters nothing, they will be prompted to “Enter a value”
+If the user enters an ID that is not in the database, they will get a “Course not found” error
+If they enter a correct ID, they will be enrolled in the course
 def project_list():
+	This will display a list of projects for a given course, it returns a dictionary of projects and associated info for a given course id
+	If the user tries to view projects and is in multiple courses, user must first select a course
+If they do not, they get a “No course selected” error
+Otherwise, this passes
+	Then, a list of projects is displayed based on the course_id
+If no projects, display no projects
+If some projects, display them
 def project():
+
+
+
+
+
+
 def member_validation(form):
+	This will make sure a user is in a database
+	If only a single user is passed in, we check that the email is in the database/enrolled
+If not, return that user does not exist/is not enrolled
+Otherwise, this passes
+	If multiple users are passed in, check that emails are in database/enrolled
+If not, return a list of problem emails
+Otherwise, this passes
 def edit_project():
-def profile():
+	Changing the project name will change the name of the project
+Leaving the field blank will return an error that says “Enter a value”
+Entering anything else will update the name of the project
+	Editing the current team members will update the table
+Leaving the field blank will return an error “Add yourself to current members!”
+Adding a single email that is not in the database will return “name@domain.x does not exist”
+Adding a single email that is not enrolled in the course will return an error “name@domain.x is not enrolled”
+Adding multiple emails that do not exist will return a list of emails that do not exist
+Adding multiple emails that do are not enrolled will return a list of emails that do not exist
+Adding a mixture of emails that exist and do not exist will return a list of emails that do not exist
+Adding emails that are in the course will pass
+Removing an email will remove them from the project, but not in the database, this is a bug
+	Changing the project description will change the information about the project
+Leaving the field blank will return an error “Enter a value”
+Entering anything else will update the project info
+	Editing the skills needed will change skills needed
+Leaving the field blank is OK
+Adding any number of skills to the skills field is OK
+	Checking/unchecking the “Looking for members” box will change if the project is looking for members
+Ticking the box will update OK
+Unticking the box will update OK
+	Ticking the “Check to delete” box will delete the project
+Leaving it unchecked changes nothing, this is OK
+Ticking it will delete the project, however they are still listed as being in a project in the database, this is a bug (see “Known Problems”)
+
+def profile(): (Done by Savanna Jordan srjordan@ucsc.edu)
+	(in default.py)
+‘Current_profile’ should return the current user from the auth_user database     table.
+    	args= request.arg(0) should return the current user’s username
+-If the username does not exist (no one is logged in), you will be redirected to login page.
+-Current_profile should have all the correct information from the auth_user -database (ie Name, Bio, Skills, Picture), check the information reflected on the page vs. the information in the auth_user database.
+‘projects’ should return all projects the current_profile has created, despite what course the projects are affiliated with.
+-In the project database, any project that has the current user email listed under ‘project.user_email’ should be returned in ‘projects’. Any project that does NOT have the current user email listed under ‘project.user_email’ should NOT be returned in ‘projects’ (this includes projects that the current user is a member of, but not a PO).
+	(in profile.html)
+Clicking on specific tab will display appropriate information based on ‘current_profile’
+-If the user has not entered a bio, joined any projects, or listed any skills the appropriate default message will be displayed.
+Clicking on logout button will log the current user out and redirect to login page.
+Clicking on edit profile button will take the user to the edit profile page with all of their existing information in their respective textbox.
+-If the user edits First name, Last name Username, Phone, Bio, Past Courses, and Picture, it is reflected in their profile and in the auth_user database.
+-The user cannot edit email after sign-up. (see “Known Problems”).
+	Viewing another user’s email:
+-Edit Profile/logout button should now display when viewing others profiles.
+-Clicking on the message button will not do anything (see “Known Problems”)
+-Clicking on the ‘Projects’ tab will list all of the projects affiliated with the user profile you are viewing, regardless of course.
+
+
 def members():
+	(in default.py)
+‘Course’ will return a database object from the course table according to the course_id in request.args(0)
+-If no course_id is passed, you will be redirected to the enrolled_courses page.
+	‘Members’ will return a list of objects from the auth_user table.
+‘Rows-coursework’ will return a list of members that have matching previous coursework with the current user.
+(in members.html)
+Clicking on a specific “profile” button will take you to that specific
+Clicking on the user’s “profile” button will take you to the current user’s profile. (see “Known Problems”).
+
+
 def statistics():
+	This will return the statistics of the class to the admin
+	If no course is selected, will tell the user that they have not selected a course
+	Otherwise gets the course ID from the current user and outputs the course
+This function will return a list of members in the course, a list of project ID’s in the course, and a list of members that are not in projects
