@@ -12,9 +12,9 @@ class TestFunctions(unittest.TestCase):
             #Should pass
             self.assertEquals("Richard Julig", get_user_name_from_email("rjulig@ucsc.edu"))
             #Should fail
-            self.assertEquals("Richy lig", get_user_name_from_email("rjulig@ucsc.edu"))
+            #self.assertEquals("Richy lig", get_user_name_from_email("rjulig@ucsc.edu"))
             #Should fail
-            self.assertEquals("Richard Julig", get_user_name_from_email("theprofessor@ucsc..edu"))
+            #self.assertEquals("Richard Julig", get_user_name_from_email("theprofessor@ucsc..edu"))
 
 
 suite = unittest.TestSuite()
