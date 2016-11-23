@@ -351,7 +351,9 @@ def edit_project():
 
     if new_post:
         # Create a new project if there are no arguments
-        form = SQLFORM(db.project)
+        form = SQLFORM(db.project,
+            labels = {'project_name':'Enter a description for your project:'}
+        )
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
         form.add_button('Cancel', URL('project_list', args=course_id))
