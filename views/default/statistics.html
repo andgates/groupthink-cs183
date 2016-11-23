@@ -29,14 +29,16 @@
                     <p>Course Info: {{=course.course_info}} </p>
                         <div class="row">
                             <div class="col-sm-4">
-                                Enrolled Students: {{=len(members)}}
-                                <ul>
-                                    {{for i in members:}}
-                                        {{if i:}}
-                                            <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                {{if members:}}
+                                    Enrolled Students: {{=len(members)}}
+                                    <ul>
+                                        {{for i in members:}}
+                                            {{if i:}}
+                                                <li>{{=' '.join([i.first_name, i.last_name])}}</li>
+                                            {{pass}}
                                         {{pass}}
-                                    {{pass}}
-                                </ul>
+                                    </ul>
+                                {{pass}}
                             </div>
                             <div class="col-sm-4">
                                 Number of Projects: {{=len(p)}}

@@ -42,23 +42,25 @@
                 </tr>
               </thead>
               <tbody>
-                {{for c in my_courses:}}
-                  {{own_c = auth.user_id and c.admin_email == auth.user.email}}
-                <tr>
-                  <td class="col-md-1">
-                    <a href="{{=URL('default', 'project_list', args=[c.course_id])}}">
-                        {{=c.course_name}}
-                    </a>
-                  </td>
-                  <td class="col-md-2">{{=c.course_id}}</td>
-                  <td class="col-md-3">
-                    {{if own_c:}}
-                        <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm">
-                            Edit <i class="fa fa-pencil-square-o"></i>
+                {{if my_courses:}}
+                    {{for c in my_courses:}}
+                      {{own_c = auth.user_id and c.admin_email == auth.user.email}}
+                    <tr>
+                      <td class="col-md-1">
+                        <a href="{{=URL('default', 'project_list', args=[c.course_id])}}">
+                            {{=c.course_name}}
                         </a>
+                      </td>
+                      <td class="col-md-2">{{=c.course_id}}</td>
+                      <td class="col-md-3">
+                        {{if own_c:}}
+                            <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm">
+                                Edit <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                        {{pass}}
+                    </td>
+                    </tr>
                     {{pass}}
-                  </td>
-                </tr>
                 {{pass}}
               </tbody>
             </table>
