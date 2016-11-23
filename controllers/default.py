@@ -58,7 +58,10 @@ def index():
             my_projects = None
 
         if current_profile.enrolled_courses:
-            my_courses = db(db.course.enrolled_students.contains(current_profile.id)).select()
+            #my_courses = db(db.course.enrolled_students.contains(current_profile.id)).select()
+            #my_courses = db(db.auth_user.enrolled_courses).select()
+            my_courses = [db(db.course.id == m).select().first() for m in current_profile.enrolled_courses if current_profile.enrolled_courses]
+
         else:
             my_courses = None
 
@@ -526,9 +529,10 @@ def statistics():
         members = []
 
         # Que?™eries for all members in a given course
-        rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
+        #rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
+        rows_members = course.enrolled_students
 
-        members = [m for m in rows_members]
+        members = [db(db.auth_user.id == m).select().first() for m in rows_members if db(db.auth_user.id == m).select().first()]
 
         #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
         #not db.project.curent_members.contains(auth_user.email))
