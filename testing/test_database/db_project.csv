@@ -2,3 +2,8 @@ project.id,project.course_id,project.user_email,project.project_name,project.cur
 1,CS115F16,dfarley@ucsc.edu,gapSort,|dfarley@ucsc.edu|mcschade@ucsc.edu|,Bi-weekly planner that specifically shows gaps in everyone's schedule.,|web2py|python|,2016-11-23 02:21:45,2016-11-23 16:25:01,False
 2,CS115F16,cslinare@ucsc.edu,Loops,|cslinare@ucsc.edu|hvsanche@ucsc.edu|,Android app that finds a route someone can run/bike given a distance input.,|Android|Java|anything|,2016-11-23 16:37:48,2016-11-23 16:43:02,False
 3,CS115F16,kdolev@ucsc.edu,Problematica,|kdolev@ucsc.edu|smazliac@ucsc.edu|,Provides monetary incentive to tackle unsolved problems in math and science.,|Meteor|Node.js|MongoDB|Bootstrap|CSS3|Sass|Javascript|,2016-11-23 19:12:43,2016-11-23 19:34:31,False
+4,CS115F16,acchiao@ucsc.edu,NeatTabs,|acchiao@ucsc.edu|riagoyal@ucsc.edu|,Organize Tabs,|HTML|Javascript|,2016-11-23 21:03:04,2016-11-23 21:06:57,False
+5,CS115F16,tfutral@ucsc.edu,Enigma,|tfutral@ucsc.edu|,Encryption for password manager,|HTML|Javascript|,2016-11-23 21:18:00,2016-11-23 21:18:00,False
+6,CS115F16,hpan@ucsc.edu,NutriFit,|hpan@ucsc.edu|jkennedy@ucsc.edu|,Fitness Portal,|Android|Java|,2016-11-23 21:22:21,2016-11-23 21:26:06,False
+7,CS115F16,jkwok@ucsc.edu,Vittles,|jkwok@ucsc.edu|nramirez@ucsc.edu|,Menu focused food app to review and discover the best dishes nearby,|IOS|,2016-11-23 21:31:30,2016-11-23 21:34:34,False
+8,CS115F16,mgates@ucsc.edu,GroupThink,|mgates@ucsc.edu|rmonroe@ucsc.edu|sjordan@ucsc.edu|sdougher@ucsc.edu|,The group forming site of the future,|HTML|Javascript|Python|,2016-11-23 21:39:25,2016-11-23 21:45:52,False

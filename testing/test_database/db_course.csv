@@ -1,2 +1,4 @@
 course.id,course.course_name,course.course_id,course.course_info,course.enrolled_students,course.admin_email,course.term
-1,CS115 - Software Engineering,CS115F16,Intro to Software Engineering at UCSC,|1|3|4|5|6|7|,rjulig@ucsc.edu,Fall 2016
+1,CS115 - Software Engineering,CS115F16,Intro to Software Engineering at UCSC,|1|3|4|5|6|7|1|9|10|11|12|13|14|15|16|17|18|,rjulig@ucsc.edu,Fall 2016
+2,GroupThink 101,groupthink,Start thinking with GroupThink today,<NULL>,rmonroe@ucsc.edu,Fall16
+3,CS 183,CS183F16,Web Applications,<NULL>,mgates@ucsc.edu,Fall16
