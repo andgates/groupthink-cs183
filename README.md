@@ -1,5 +1,5 @@
 # GroupThink
-Software Engineering Project CS115 (UCSC Fall 2016)
+Final Project CS183 (UCSC Fall 2016)
 #### What is GroupThink?
 * GroupThink facilitates team formation for the purpose of developing and collaborating on group projects in an educational environment.
 * The platform allows professors to create private and organized spaces for students to post project ideas and join existing projects.
