@@ -1,0 +1,63 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var courses_url = "{{=URL('default', 'get_my_courses')}}";
+    var purchase_url = "{{=URL('default', 'buy')}}"
+    var history_url = "{{=URL('default', 'get_order_history')}}";
+</script>
+{{end}}
+
+
+<div class="main_content">
+    <div id="vue-div" style="display:none">
+
+      <div class="post_listing center">
+
+          <div class="page-header clearfix">
+              <h2 class="pull-left">GroupThink: My Courses</h2>
+                  <a href="{{=URL('default', 'join')}}">
+                    <button type="button" class="btn btn-default pull-right">
+                      <i class="fa fa-user-plus"></i> Join Course
+                    </button>
+                  </a>
+                  <a href="{{=URL('default', 'edit_course')}}">
+                    <button type="button" class="btn btn-default pull-right">
+                      <i class="fa fa-plus"></i> Create Course
+                    </button>
+                  </a>
+          </div>
+
+          <div v-if="my_courses.length == 0">
+            No courses
+          </div>
+
+          <div v-for="c in my_courses">
+
+
+                      <div class="post">
+
+                              <p class="course-name">${c.course_name}</p>
+                              <p class="course-id">Term: ${c.term}</p>
+                              <p class="course-id">Course ID: ${c.course_id} </p>
+                              <p  class="course-info">${c.course_info}</p>
+                          <div class="post-footer">
+                              <a href="#" type="button" class="btn">
+                                View ${c.course_name} <i class="fa fa-arrow-right"></i>
+                              </a>
+                          </div>
+                      </div>
+
+
+          </div>
+
+
+      </div>
+
+
+    </div>
+
+</div>
+
+<script src="{{=URL('static', 'js/default_my_courses.js')}}"></script>

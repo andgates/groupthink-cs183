@@ -6,13 +6,51 @@ GroupThink™
 """
 
 # Built in modules
-import json, random, string
+import json, random, string, requests, traceback
 
 __author__ = "Sean Dougher, Savanna Jordan, Ryan Monroe, and Michael Gates"
 __email__ = "mjgates@ucsc.edu, sjdoughe@ucsc.edu, srjordan@ucsc.edu, rmonroe@ucsc.edu"
 __version__ = "1"
 __status__ = "Release"
 __date__ = "11/23/2016"
+
+def my_courses():
+    """
+    Nothing served here, see below AJAX controllers
+    """
+    return dict()
+
+
+"""
+Gets a list of a users enrolled courses, in response to a AJAX call
+in Javascript, served to my_courses.html
+"""
+@auth.requires_login()
+def get_my_courses():
+
+    # Gets the current user
+    student = db(db.auth_user.email == auth.user.email).select().first()
+
+    #my_courses = []
+
+    #for course in student.enrolled_courses:
+        #my_courses.append(course)
+
+    #courses = db(db.course).select()
+
+    # I think this gets the courses that the current student is in
+    courses = db(db.course.course_id.contains(student.enrolled_courses)).select()
+
+    my_courses = []
+
+    for c in courses:
+        my_courses.append(c)
+
+    print(my_courses)
+
+
+    return response.json(dict(my_courses=my_courses))
+
 
 
 def get_user_name_from_email(email):
@@ -136,6 +174,7 @@ def enrolled_courses():
     #Gets the current user
     student = db(db.auth_user.email == auth.user.email).select().first()
 
+    # WHY THE FUCK ARE WE RETURNING COURSES ITS NOT USED
     return dict(courses=courses, student=student)
 
 @auth.requires_login()
