@@ -7,7 +7,7 @@
 
 response.logo = A(B('GroupThink'), XML('&trade;&nbsp;'),
                   # It's a really bad idea to use absolute URLs but the URL helper function wasn't working
-                  _class="navbar-brand", _href="/groupthink/default/index",
+                  _class="navbar-brand", _href="/groupthink_CS183/default/index",
                   _id="web2py-logo")
 response.title = request.application.replace('_', ' ').title()
 response.subtitle = ''
