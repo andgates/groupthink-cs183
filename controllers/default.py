@@ -274,10 +274,6 @@ def member_validation(form):
         #user exists
         if db(db.auth_user.email == form.vars.current_members).select().first():
             current_profile = db(db.auth_user.email == form.vars.current_members).select().first()
-            print("current_profile enrolled_courses", "/n")
-            print(current_profile.enrolled_courses)
-            print("COURSE_ID", form.vars.course_id)
-            print("")
 
             if course.id in current_profile.enrolled_courses:
                 pass
@@ -451,7 +447,7 @@ def members():
         course_name = course.course_name
 
         # Que?™eries for all members in a given course
-        rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
+        rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select(orderby=~db.auth_user.id)
 
         # The ol' toss em'in a list ♪
         members = [m for m in rows_members]

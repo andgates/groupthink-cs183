@@ -5,7 +5,7 @@
     {{logged_in = auth.user_id is not None}}
 
     <div class="page-header clearfix">
-        <h2 class="pull-left">GroupThink: Enrolled Courses</h2>
+        <h2 class="pull-left">GroupThink: My Courses</h2>
         {{if logged_in:}}
             <a href="{{=URL('default', 'join')}}">
               <button type="button" class="btn btn-default pull-right">
