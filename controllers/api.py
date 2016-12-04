@@ -104,7 +104,7 @@ def get_one_project():
                 if j == i.email:
                     matchingStudents.remove(i)
 
-        print(matchingStudents)
+        matchingStudents = [s.username for s in matchingStudents]
 
     return response.json(dict(project=project, matches=matchingStudents,))
 
