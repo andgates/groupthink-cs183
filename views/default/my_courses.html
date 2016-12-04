@@ -3,15 +3,17 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var courses_url = "{{=URL('default', 'get_my_courses')}}";
-    var purchase_url = "{{=URL('default', 'buy')}}"
-    var history_url = "{{=URL('default', 'get_order_history')}}";
+    var courses_url = "{{=URL('api', 'get_my_courses')}}";
+    var projects_url = "{{=URL('api', 'get_projects')}}"
+    var view_project_url = "{{=URL('api', 'get_one_project')}}";
 </script>
 {{end}}
 
 
 <div class="main_content">
     <div id="vue-div" style="display:none">
+
+      <div v-if="page == 'courses'">
 
       <div class="post_listing center">
 
@@ -43,9 +45,9 @@
                               <p class="course-id">Course ID: ${c.course_id} </p>
                               <p  class="course-info">${c.course_info}</p>
                           <div class="post-footer">
-                              <a href="#" type="button" class="btn">
+                              <button v-on:click="goto('project_list',c.course_id)">
                                 View ${c.course_name} <i class="fa fa-arrow-right"></i>
-                              </a>
+                              </button>
                           </div>
                       </div>
 
@@ -55,9 +57,88 @@
 
       </div>
 
+    </div> <!-- Courses div -->
+
+    <div v-if="page == 'project_list'">
+
+      <div class="panel" style="border-radius: 0">
+
+
+          <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Project Name</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Team Members</th>
+                    <th class="text-center">Accepting Members?</th>
+                </tr>
+            </thead>
+            <tbody>
+                  <tr v-for="p in projects">
+                      <td>
+                        <button v-on:click="get_one_project(p.course_id,p.id)" data-toggle="modal" data-target="#myModal">
+                            ${p.project_name}
+                        </button>
+                      </td>
+                      <td>${p.project_info}</td>
+                      <td>
+                        <ul v-for="i in p.current_members">
+                                <li>${i}</li>
+                        </ul>
+                      </td>
+                      <td>
+                            <p v-if="p.accepting_members">Yes</p>
+                            <p v-if="p.accepting_members == false">No</p>
+                      </td>
+                      <td>
+                          <button>
+                              Edit Does Nothing <i class="fa fa-pencil-square-o"></i>
+                          </button>
+                      </td>
+                  </tr>
+            </tbody>
+          </table>
+
+        </div> <!-- end project list panel -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">${proj.project_name}</h4>
+              </div>
+              <div class="modal-body">
+                <p>Project Description: ${proj.project_info} </p>
+                Current Members:
+                    <ul v-for="member_email in proj.current_members">
+                            <li>${member_email}</li>
+                    </ul>
+                Needed Skills:
+                    <ul v-for="skill in proj.needed_skills">
+                        <li>${skill}</li>
+                    </ul>
+                    <p v-if="proj.accepting_members">Accepting Members? Yes</p>
+                    <p v-if="proj.accepting_members == false">Accepting Members? No</p>
+                <p>Find Teammates:</p>
+                <ul v-for="m in proj_matches">
+                  <li> ${m} </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div> <!-- Project list div -->
+
+
 
     </div>
 
 </div>
 
-<script src="{{=URL('static', 'js/default_my_courses.js')}}"></script>
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>

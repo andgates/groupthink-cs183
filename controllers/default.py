@@ -14,42 +14,12 @@ __version__ = "1"
 __status__ = "Release"
 __date__ = "11/23/2016"
 
+@auth.requires_login()
 def my_courses():
     """
-    Nothing served here, see below AJAX controllers
+    Nothing served here, see api.py AJAX controllers
     """
     return dict()
-
-
-"""
-Gets a list of a users enrolled courses, in response to a AJAX call
-in Javascript, served to my_courses.html
-"""
-@auth.requires_login()
-def get_my_courses():
-
-    # Gets the current user
-    student = db(db.auth_user.email == auth.user.email).select().first()
-
-    #my_courses = []
-
-    #for course in student.enrolled_courses:
-        #my_courses.append(course)
-
-    #courses = db(db.course).select()
-
-    # I think this gets the courses that the current student is in
-    courses = db(db.course.course_id.contains(student.enrolled_courses)).select()
-
-    my_courses = []
-
-    for c in courses:
-        my_courses.append(c)
-
-    print(my_courses)
-
-
-    return response.json(dict(my_courses=my_courses))
 
 
 
