@@ -77,15 +77,17 @@ def get_one_project():
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
-
+        print course.id
         # List to store matching student objects
         matchingStudents = []
 
         # Great way to efficiently query database
         # Query database for students enrolled in current course that also have at least one skill needed
         # A "rows" object is returned that contains all students in the course, with any of the needed skills
-        students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(
+        students = db(db.auth_user.enrolled_courses.contains(course.id) & db.auth_user.skills.contains(
             project.needed_skills)).select()
+
+
         current_user = db(db.auth_user.email == auth.user.email).select().first()
 
         # Not sure in alg works for students. shows those not in course
