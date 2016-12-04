@@ -32,10 +32,12 @@ def get_my_courses():
 
     my_courses = []
 
-    for c in courses:
-        # Only appends teh courses that the current student is in
-        if c.id in student.enrolled_courses:
-            my_courses.append(c)
+    # Nonetype check to ensure user is enroled in at least one course
+    if student.enrolled_courses:
+        for c in courses:
+            # Only appends teh courses that the current student is in
+            if c.id in student.enrolled_courses:
+                my_courses.append(c)
 
     return response.json(dict(my_courses=my_courses))
 

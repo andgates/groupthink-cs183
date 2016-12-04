@@ -77,6 +77,13 @@ auth.settings.extra_fields['auth_user']= [
     Field('my_projects', 'list:reference project'),
     ]
 
+def get_username():
+    current_profile = None
+    if auth.user:
+        current_profile = db(db.auth_user.email == auth.user.email).select().first()
+
+    return current_profile.username
+
 service = Service()
 plugins = PluginManager()
 # create all tables needed by auth if not custom tables

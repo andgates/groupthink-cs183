@@ -32,11 +32,11 @@ response.google_analytics_id = None
 
 
 response.menu = [
-    (T('My Courses'), False, URL('default', 'enrolled_courses')),
-    (T('Join Course'), False, URL('default', 'join')),
+    #(T('My Courses'), False, URL('default', 'enrolled_courses')),
+    #(T('Join Course'), False, URL('default', 'join')),
 ]
 
-DEVELOPMENT_MENU = True
+DEVELOPMENT_MENU = False
 
 
 # ----------------------------------------------------------------------------------------------------------------------

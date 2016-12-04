@@ -66,15 +66,27 @@
           {{=response.logo or ''}}
             </div>
         </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
           <ul class="nav navbar-nav navbar-right">
             {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
           </ul>
           <!-- Only reveal menu to logged in users -->
           {{if auth.user:}}
-            {{if response.menu:}}
-            {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}
-            {{pass}}
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="{{=URL('default', 'join')}}">
+                <i class="fa fa-plus"></i> Join Course
+              </a>
+            </li>
+            <li>
+              <a href="{{=URL('default', 'profile', args=[get_username()])}}">
+                <i class="fa fa-user"></i> My Profile
+              </a>
+            </li>
+          </ul>
+          {{pass}}
+          {{if response.menu:}}
+          {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}
           {{pass}}
         </div>
       </div>

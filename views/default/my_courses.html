@@ -6,57 +6,48 @@
     var courses_url = "{{=URL('api', 'get_my_courses')}}";
     var projects_url = "{{=URL('api', 'get_projects')}}"
     var view_project_url = "{{=URL('api', 'get_one_project')}}";
-     var edit_project_url = "{{=URL('api', 'edit_project')}}";
+    var edit_project_url = "{{=URL('api', 'edit_project')}}";
 </script>
 {{end}}
 
+<div class="container">
+  <div id="vue-div" style="display:none">
 
-<div class="main_content">
-    <div id="vue-div" style="display:none">
+    <!-- Breadcrumb navigation for courses -->
+    <ol class="breadcrumb">
+      <li>
+        <a v-on:click="goto('courses')"> My Courses </a>
+      </li>
+      <li v-if="current_course != null">
+        ${current_course}
+      </li>
+    </ol>
 
-      <div v-if="page == 'courses'">
+    <div v-if="page == 'courses'">
 
-      <div class="post_listing center">
+    <div v-if="my_courses.length == 0">
+      No courses
+    </div>
 
-          <div class="page-header clearfix">
-              <h2 class="pull-left">GroupThink: My Courses</h2>
-                  <a href="{{=URL('default', 'join')}}">
-                    <button type="button" class="btn btn-default pull-right">
-                      <i class="fa fa-user-plus"></i> Join Course
-                    </button>
-                  </a>
-                  <a href="{{=URL('default', 'edit_course')}}">
-                    <button type="button" class="btn btn-default pull-right">
-                      <i class="fa fa-plus"></i> Create Course
-                    </button>
-                  </a>
-          </div>
+    <div v-for="c in my_courses">
+      <div class="panel panel-default" id="course-panel">
 
-          <div v-if="my_courses.length == 0">
-            No courses
-          </div>
-
-          <div v-for="c in my_courses">
-
-
-                      <div class="post">
-
-                              <p class="course-name">${c.course_name}</p>
-                              <p class="course-id">Term: ${c.term}</p>
-                              <p class="course-id">Course ID: ${c.course_id} </p>
-                              <p  class="course-info">${c.course_info}</p>
-                          <div class="post-footer">
-                              <button v-on:click="goto('project_list',c.course_id)">
-                                View ${c.course_name} <i class="fa fa-arrow-right"></i>
-                              </button>
-                          </div>
-                      </div>
-
-
-          </div>
-
-
+        <div class="panel-heading clearfix">
+          <h5 class="pull-left"> ${c.course_name} </h2>
+          <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
+            View ${c.course_name} <i class="fa fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="panel-body">
+          <p class="text-center">${c.course_info}</p>
+        </div>
+      <div class="panel-footer clearfix">
+        <p class="pull-left"> Term: ${c.term}</p>
+        <p class="pull-right"> Course ID: ${c.course_id} </p>
       </div>
+      </div>
+
+    </div>
 
     </div> <!-- Courses div -->
 

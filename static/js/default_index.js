@@ -78,10 +78,19 @@ var app = function() {
         self.vue.page = page;
         self.vue.course_id = course_id;
         self.vue.project_id = p_id;
+        self.vue.current_course = course_id
         if (page == 'project_list') {
           // Get the orders if the current page is order_hist
           self.get_projects();
         };
+        if (page == 'courses') {
+          self.get_courses();
+        };
+    };
+
+    self.get_dashboard = function () {
+      self.vue.projects = [];
+      self.get_courses();
     };
 
 
@@ -99,8 +108,10 @@ var app = function() {
             project_id: "",
             form: "",
             page: 'courses',
+            current_course: null,
         },
         methods: {
+            get_dashboard: self.get_dashboard,
             get_courses: self.get_courses,
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
@@ -111,7 +122,7 @@ var app = function() {
 
     });
 
-    self.get_courses();
+    self.get_dashboard();
     //self.read_cart();
     $("#vue-div").show();
 
