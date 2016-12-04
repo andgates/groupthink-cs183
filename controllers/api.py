@@ -93,3 +93,19 @@ def get_one_project():
         print(matchingStudents)
 
     return response.json(dict(project=project, matches=matchingStudents,))
+
+
+@auth.requires_login()
+def edit_project():
+
+    if request.vars.form == None:
+        form = None
+        form = SQLFORM(db.project)
+
+
+    if  request.vars.form != None and request.vars.form.process().accepted:
+        session.flash=T('PROJECT CREATED')
+        redirect(URL('default','index'))
+        print("VERY NICE")
+
+    return response.json(dict(form=form))

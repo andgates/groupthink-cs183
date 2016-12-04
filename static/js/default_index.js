@@ -29,6 +29,23 @@ var app = function() {
       });
     };
 
+/**   functions to implement same-page edit
+
+    self.edit_project = function () {
+      self.vue.loading = true;
+      $.getJSON(edit_project_url, function(data) {
+          self.vue.form = data.form;
+          self.vue.loading = false;
+      });
+    };
+
+    self.send_project = function () {
+      $.post(edit_project_url, function(data) {
+          form: self.vue.form;
+      });
+    };
+*/
+
 
     self.get_projects = function () {
       self.vue.loading = true;
@@ -80,12 +97,15 @@ var app = function() {
             proj: [],
             course_id: "",
             project_id: "",
+            form: "",
             page: 'courses',
         },
         methods: {
             get_courses: self.get_courses,
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
+            //edit_project: self.edit_project,
+            //send_project: self.send_project,
             goto: self.goto,
         }
 

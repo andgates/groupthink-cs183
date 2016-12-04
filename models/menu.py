@@ -36,7 +36,7 @@ response.menu = [
     (T('Join Course'), False, URL('default', 'join')),
 ]
 
-DEVELOPMENT_MENU = False
+DEVELOPMENT_MENU = True
 
 
 # ----------------------------------------------------------------------------------------------------------------------

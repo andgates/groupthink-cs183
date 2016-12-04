@@ -6,6 +6,7 @@
     var courses_url = "{{=URL('api', 'get_my_courses')}}";
     var projects_url = "{{=URL('api', 'get_projects')}}"
     var view_project_url = "{{=URL('api', 'get_one_project')}}";
+     var edit_project_url = "{{=URL('api', 'edit_project')}}";
 </script>
 {{end}}
 
@@ -91,8 +92,11 @@
                             <p v-if="p.accepting_members == false">No</p>
                       </td>
                       <td>
-                          <button>
-                              Edit Does Nothing <i class="fa fa-pencil-square-o"></i>
+
+                          <button v-on:click="">
+                              Edit DOES NOTHING
+
+                              <i class="fa fa-pencil-square-o"></i>
                           </button>
                       </td>
                   </tr>
@@ -132,6 +136,31 @@
             </div>
           </div>
         </div>
+
+
+        <!--  Edit Modal
+        <div class="modal fade" id="editModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Project</h4>
+              </div>
+              <div class="modal-body">
+                  <div v-html="form"></div>
+                    <button v-on:click="send_project">
+                        The Real Submit
+                    </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+
+
 
     </div> <!-- Project list div -->
 
