@@ -57,6 +57,11 @@ var app = function() {
           self.vue.loading = false;
       });
     };
+    self.get_members = function(){
+        $.getJSON(members_url, function(data){
+            self.vue.my_members = data.members;
+        });
+    };
 
     self.get_one_project = function (course_id,p_id) {
       self.vue.course_id = course_id;
@@ -78,13 +83,16 @@ var app = function() {
         self.vue.page = page;
         self.vue.course_id = course_id;
         self.vue.project_id = p_id;
-        self.vue.current_course = course_id
+        self.vue.current_course = course_id;
         if (page == 'project_list') {
           // Get the orders if the current page is order_hist
           self.get_projects();
         };
         if (page == 'courses') {
           self.get_courses();
+        };
+        if (page == 'members'){
+            self.get_members();
         };
     };
 
@@ -104,6 +112,9 @@ var app = function() {
             projects: [],
             proj_matches: [],
             proj: [],
+            my_members: [],
+            coursework: [],
+            course_name: "",
             course_id: "",
             project_id: "",
             form: "",
@@ -115,6 +126,7 @@ var app = function() {
             get_courses: self.get_courses,
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
+            get_members: self.get_members,
             //edit_project: self.edit_project,
             //send_project: self.send_project,
             goto: self.goto,

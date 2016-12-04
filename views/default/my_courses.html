@@ -4,9 +4,10 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
     var courses_url = "{{=URL('api', 'get_my_courses')}}";
-    var projects_url = "{{=URL('api', 'get_projects')}}"
+    var projects_url = "{{=URL('api', 'get_projects')}}";
     var view_project_url = "{{=URL('api', 'get_one_project')}}";
     var edit_project_url = "{{=URL('api', 'edit_project')}}";
+    var members_url = "{{=URL('api', 'get_members')}}";
 </script>
 {{end}}
 
@@ -20,34 +21,35 @@
       </li>
       <li v-if="current_course != null">
         ${current_course}
+          <a v-on:click="goto('members')"> Members </a>
       </li>
     </ol>
 
     <div v-if="page == 'courses'">
 
-    <div v-if="my_courses.length == 0">
-      No courses
-    </div>
-
-    <div v-for="c in my_courses">
-      <div class="panel panel-default" id="course-panel">
-
-        <div class="panel-heading clearfix">
-          <h5 class="pull-left"> ${c.course_name} </h2>
-          <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
-            View ${c.course_name} <i class="fa fa-arrow-right"></i>
-          </button>
+        <div v-if="my_courses.length == 0">
+          No courses
         </div>
-        <div class="panel-body">
-          <p class="text-center">${c.course_info}</p>
-        </div>
-      <div class="panel-footer clearfix">
-        <p class="pull-left"> Term: ${c.term}</p>
-        <p class="pull-right"> Course ID: ${c.course_id} </p>
-      </div>
-      </div>
 
-    </div>
+        <div v-for="c in my_courses">
+          <div class="panel panel-default" id="course-panel">
+
+            <div class="panel-heading clearfix">
+              <h2 class="pull-left"> ${c.course_name} </h2>
+              <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
+                View ${c.course_name} <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="panel-body">
+              <p class="text-center">${c.course_info}</p>
+            </div>
+          <div class="panel-footer clearfix">
+            <p class="pull-left"> Term: ${c.term}</p>
+            <p class="pull-right"> Course ID: ${c.course_id} </p>
+          </div>
+          </div>
+
+        </div>
 
     </div> <!-- Courses div -->
 
@@ -95,6 +97,10 @@
           </table>
 
         </div> <!-- end project list panel -->
+
+
+
+
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog" style="top:15%;">
@@ -150,15 +156,18 @@
           </div>
         </div>
         -->
-
-
-
     </div> <!-- Project list div -->
 
+    <div v-if="page == 'members'">
+        <div class="panel" style="border-radius: 0">
+            <div v-for="m in my_members">
+            </div>
+        </div>
+    </div> <!-- end of member list panel -->
 
 
-    </div>
+  </div> <!-- Vue div -->
 
-</div>
+</div> <!-- container div -->
 
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>
