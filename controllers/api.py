@@ -84,11 +84,25 @@ def get_one_project():
         # Great way to efficiently query database
         # Query database for students enrolled in current course that also have at least one skill needed
         # A "rows" object is returned that contains all students in the course, with any of the needed skills
-        students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(project.needed_skills)).select()
+        students = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.skills.contains(
+            project.needed_skills)).select()
         current_user = db(db.auth_user.email == auth.user.email).select().first()
 
+        # Not sure in alg works for students. shows those not in course
+
+        # filter the project for PO and members
+
         # This is just adding each "student" row object to a regular list, using list comprehension
-        matchingStudents = [s.username for s in students]
+        matchingStudents = [s for s in students]
+        for i in matchingStudents:
+            if (i.email == project.user_email):
+                matchingStudents.remove(i)
+
+        # filter the list of students for current members
+        for i in matchingStudents:
+            for j in project.current_members:
+                if j == i.email:
+                    matchingStudents.remove(i)
 
         print(matchingStudents)
 
