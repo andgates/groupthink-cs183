@@ -31,17 +31,20 @@ def get_my_courses():
     courses = db(db.course).select()
 
     current_url = URL('default', 'edit_course')
+    stat_url = URL('default','statistics')
 
     my_courses = []
 
-    # Nonetype check to ensure user is enroled in at least one course
+    # Nonetype check to ensure user is enrolled in at least one course
     if student.enrolled_courses:
         for c in courses:
             # Only appends teh courses that the current student is in
             if c.id in student.enrolled_courses:
                 my_courses.append(c)
 
-    return response.json(dict(my_courses=my_courses, current_url=current_url))
+
+
+    return response.json(dict(my_courses=my_courses, current_url=current_url, stat_url = stat_url))
 
 """
 Gets a list of a projects
@@ -55,11 +58,18 @@ def get_projects():
         # Query database for all projects with correct course_id
         projects = db(db.project.course_id == course_id).select(orderby=~db.project.created_on)
 
+
+
         current_url = URL('default', 'edit_project')
+
 
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
+
+
+
+
 
     return response.json(dict(projects=projects, current_url=current_url))
 

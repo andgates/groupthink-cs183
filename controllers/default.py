@@ -523,10 +523,11 @@ def statistics():
         #rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
         #rows_members = course.enrolled_students
 
-        if course.enrolled_students:
-            members = [db(db.auth_user.id == m).select().first() for m in course.enrolled_students if course.enrolled_students]
-        else:
-            members = None
+        if course:
+            if course.enrolled_students:
+                members = [db(db.auth_user.id == m).select().first() for m in course.enrolled_students if course.enrolled_students]
+            else:
+                members = None
 
         #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
         #not db.project.curent_members.contains(auth_user.email))
@@ -540,6 +541,7 @@ def statistics():
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         #course_name = course.course_name
+
 
         rows_in_projects = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.my_projects.contains(project_ids)).select()
 
