@@ -368,7 +368,7 @@ def edit_project():
 
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project_list', args=course_id))
+        form.add_button('Cancel', URL('default', 'index'))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
@@ -385,7 +385,7 @@ def edit_project():
             'What skills and technologies are needed to develop this project?','accepting_members':
             'Are you looking for more team members? If so, click this box!'})
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project_list', args=course_id))
+        form.add_button('Cancel', URL('defauilt', 'index'))
 
     if form.process(onvalidation=member_validation).accepted:
         this_project = db(db.project.id == form.vars.id).select().first()
