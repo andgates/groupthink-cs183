@@ -102,16 +102,18 @@
                             <p v-if="p.accepting_members">Yes</p>
                             <p v-if="p.accepting_members == false">No</p>
                       </td>
-                      <td v-if="current == p.user_email">
-
-                          <a v-bind:href="edit_project_str + '/' + p.id">
-                          <button>
-                              Edit DOES SOMETHING
-
-                              <i class="fa fa-pencil-square-o"></i>
-                          </button>
-                        </a>
+                      <td>
+                          <div v-if="current == p.user_email">
+                                  <a v-bind:href="edit_project_str + '/' + p.id">
+                                  <button>
+                                      Edit Project
+                                      <i class="fa fa-pencil-square-o"></i>
+                                  </button>
+                                  </a>
+                          </div>
                       </td>
+
+
                   </tr>
             </tbody>
           </table>

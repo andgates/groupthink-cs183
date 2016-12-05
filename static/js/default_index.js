@@ -25,7 +25,7 @@ var app = function() {
       $.getJSON(courses_url, function(data) {
           self.vue.my_courses = data.my_courses;
           self.vue.edit_course_str = data.current_url;
-          self.vue.edit_course_str += "/" + self.vue.course_id;
+          self.vue.edit_course_str += self.vue.course_id;
           //enumerate(self.vue.my_courses);
           //self.vue.admin = data.admin;
           self.vue.loading = false;
