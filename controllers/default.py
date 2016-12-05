@@ -454,9 +454,10 @@ def profile():
     projects = db(db.project.user_email == current_profile.email).select()
 
     courses = []
-    for e in current_profile.enrolled_courses:
-        temp_course = db(db.course.id == e).select().first()
-        courses.append(temp_course)
+    if current_profile.enrolled_courses:
+        for e in current_profile.enrolled_courses:
+            temp_course = db(db.course.id == e).select().first()
+            courses.append(temp_course)
 
     # for c in course:
     #     for e in c.enrolled_students:
