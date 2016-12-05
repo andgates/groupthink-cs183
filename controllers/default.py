@@ -533,7 +533,7 @@ def statistics():
 
         project_ids = []
         # get the projects for the course
-        projects = db(db.project.course_id == course_id).select()
+        projects = db(db.project.course_id == course.course_id).select()
         for p in projects:
             project_ids.append(p.id)
 
