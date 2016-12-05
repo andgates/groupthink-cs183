@@ -87,7 +87,7 @@ def edit_course():
             'term': 'Please enter the current Term:'})
 
         #adds a cancel button to return
-        form.add_button('Cancel', URL('enrolled_courses'))
+        form.add_button('Cancel', URL('default', 'index'))
     # If there are arguments, edit a course
     else:
         #Queries for user that matches admin email, and is enrolled in a specific course
@@ -99,7 +99,7 @@ def edit_course():
         if course is None:
             #User is not authorized
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'enrolled_courses'))
+            redirect(URL('default', 'index'))
 
         args = request.args(0)
         # Course ID cannot be changed after being created
@@ -107,7 +107,7 @@ def edit_course():
         # Admin email must be current user
         db.course.admin_email.writable = False
         form = SQLFORM(db.course, course, deletable=True, showid=False)
-        form.add_button('Cancel', URL('enrolled_courses'))
+        form.add_button('Cancel', URL('default', 'index'))
 
     if form.process().accepted:
         # query for the new course
@@ -131,9 +131,12 @@ def edit_course():
             admin.enrolled_courses = newCourse
             admin.update_record()
         session.flash = T('Course created' if args is None else 'Course edited')
-        redirect(URL('default', 'enrolled_courses'))
+        redirect(URL('default', 'index'))
 
-    return dict(args=args,form=form)
+
+
+
+    return dict(args=args, form=form)
 
 @auth.requires_login()
 #Displays all enrolled courses to the current user
@@ -180,7 +183,7 @@ def join():
                         #if user is already enrolled...
                         session.flash = "Already Enrolled"
                         # this will redirect the page and break out of the whole function
-                        redirect(URL('default', 'enrolled_courses'))
+                        redirect(URL('default', 'index'))
                 # must append if the list isnt empty
                 studentReference.enrolled_courses.append(selectedCourse)
                 studentReference.update_record()
@@ -197,7 +200,7 @@ def join():
                 selectedCourse.update_record()
             # after adding go back to enrolled courses
             session.flash = "Course Joined"
-            redirect(URL('default', 'enrolled_courses'))
+            redirect(URL('default', 'index'))
         # query returned none, therefore the course doesnt exist
         else:
             session.flash = "Course Not Found"

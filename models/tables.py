@@ -12,7 +12,7 @@ import datetime
 # Courses Table
 db.define_table('course',
                 Field('course_name'),
-                Field('course_id', 'string', unique=True),
+                Field('course_id', 'string'),
                 Field('course_info'),
                 #Field('numStudents', type='integer'),
                 # This could be a student object
@@ -55,8 +55,10 @@ db.auth_user.enrolled_courses.readable = db.auth_user.enrolled_courses.writable 
 db.auth_user.my_projects.readable = db.auth_user.my_projects.writable = False
 
 # When submitting a project, these fields should not be empty
+
 db.course.course_name.requires = IS_NOT_EMPTY(error_message='Please enter a Course Name')
 db.course.course_id.requires = IS_NOT_EMPTY(error_message='Please enter a unique course ID')
+db.course.course_id.requires = IS_NOT_IN_DB(db, 'course.course_id')
 db.course.term.requires = IS_NOT_EMPTY(error_message='Please enter a term')
 
 # When submitting a project, these fields should not be empty
