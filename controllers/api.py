@@ -30,6 +30,8 @@ def get_my_courses():
     # Gets all the courses oh god
     courses = db(db.course).select()
 
+    current_url = URL('default', 'edit_course')
+
     my_courses = []
 
     # Nonetype check to ensure user is enroled in at least one course
@@ -39,7 +41,7 @@ def get_my_courses():
             if c.id in student.enrolled_courses:
                 my_courses.append(c)
 
-    return response.json(dict(my_courses=my_courses))
+    return response.json(dict(my_courses=my_courses, current_url=current_url))
 
 """
 Gets a list of a projects

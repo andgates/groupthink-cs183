@@ -51,16 +51,19 @@
                 View ${c.course_name} Members <i class="fa fa-arrow-right"></i>
               </button>
             </div>
-            <div v-if="current == c.admin_email">
-                <h2>I am boss</h2>
-            </div>
-
             <div class="panel-body">
               <p class="text-center">${c.course_info}</p>
             </div>
           <div class="panel-footer clearfix">
             <p class="pull-left"> Term: ${c.term}</p>
             <p class="pull-right"> Course ID: ${c.course_id} </p>
+            <p v-if="current == c.admin_email">
+                <a v-bind:href="edit_course_str + '/' + c.id">
+                <button>
+                    Edit Course<i class="fa fa-pencil-square-o"></i>
+                </button>
+                </a>
+            </p>
           </div>
           </div>
 
@@ -108,9 +111,6 @@
                               <i class="fa fa-pencil-square-o"></i>
                           </button>
                         </a>
-                      </td>
-                      <td v-if="current == p.user_email">
-                          MINE
                       </td>
                   </tr>
             </tbody>
@@ -201,9 +201,7 @@
                       </td>
                       <td>
                           <button v-on:click="">
-                              View Profile
-
-                              <i class="fa fa-user-circle"></i>
+                              View Profile <i class="fa fa-user"></i>
                           </button>
                       </td>
                   </tr>

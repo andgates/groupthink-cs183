@@ -24,6 +24,8 @@ var app = function() {
       // Gets new products in response to a query, or to an initial page load.
       $.getJSON(courses_url, function(data) {
           self.vue.my_courses = data.my_courses;
+          self.vue.edit_course_str = data.current_url;
+          self.vue.edit_course_str += "/" + self.vue.course_id;
           //enumerate(self.vue.my_courses);
           //self.vue.admin = data.admin;
           self.vue.loading = false;
@@ -132,6 +134,7 @@ var app = function() {
             page: 'courses',
             current_course: null,
             edit_project_str: "",
+            edit_course_str: "",
         },
         methods: {
             get_dashboard: self.get_dashboard,
