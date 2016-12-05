@@ -6,6 +6,7 @@
     var courses_url = "{{=URL('api', 'get_my_courses')}}";
     var projects_url = "{{=URL('api', 'get_projects')}}";
     var view_project_url = "{{=URL('api', 'get_one_project')}}";
+    var view_statistics_url = "{{=URL('api','get_statistics')}}"
     var edit_project_url = "{{=URL('api', 'edit_project')}}";
     var members_url = "{{=URL('api', 'get_members')}}";
     var current_url = "{{=URL('api', 'get_current')}}";
@@ -65,18 +66,31 @@
                 </button>
                 </a>
 
+
+                <button v-on:click="get_one_course(c.id)" data-toggle="modal" data-target="#statModal">
+                    View Statistics for ${c.course_name} <i class="fa fa-bar-chart"></i>
+                </button>
+
+                <!--
                 <a v-bind:href="statistics_str + '/' + c.id">
                 <button>
                     View Statistics <i class="fa fa-bar-chart"></i>
                 </button>
                 </a>
+                -->
+
             </p>
           </div>
           </div>
 
+
         </div>
 
+
     </div> <!-- Courses div -->
+
+
+
 
     <div v-if="page == 'project_list'">
 
@@ -128,10 +142,7 @@
         </div> <!-- end project list panel -->
 
 
-
-
-
-        <!-- Modal -->
+        <!--  Project Modal -->
         <div class="modal fade" id="myModal" role="dialog" style="top:15%;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -164,27 +175,8 @@
         </div>
 
 
-        <!--  Edit Modal
-        <div class="modal fade" id="editModal" role="dialog" style="top:15%;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Project</h4>
-              </div>
-              <div class="modal-body">
-                  <div v-html="form"></div>
-                    <button v-on:click="send_project">
-                        The Real Submit
-                    </button>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
+
+
     </div> <!-- Project list div -->
 
     <div v-if="page == 'members'">
@@ -217,18 +209,25 @@
             </tbody>
           </table>
         </div>
-    </div> <!-- end of member list panel -->
 
 
-    <!-- Statistics Modal -->
+
+
+              <!--  Statistics Modal -->
         <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                  <h1>HELLO STATS:</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Course Name: ${course.course_name} </h4>
+                <h5>Course Info: ${course.course_info}</h5>
               </div>
               <div class="modal-body">
-
+                  Enrolled Students:
+                    <ul v-for=" m in course.course_members">
+                        <li>${m.first_name}</li>
+                        <li>${m.last_name}</li>
+                    </ul>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -236,6 +235,39 @@
             </div>
           </div>
         </div>
+
+
+
+
+
+
+    </div> <!-- end of member list panel -->
+
+
+            <!--  Statistics Modal
+        <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> ${course.course_id} </h4>
+              </div>
+              <div class="modal-body">
+                   Current Members:
+                    <ul v-for="member_email in course.course_members">
+                            <li>${member_email}</li>
+                    </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+
+
+
 
 
 

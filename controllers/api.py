@@ -129,6 +129,44 @@ def get_members():
         print "leaving"
     return response.json(dict(members=members))
 
+
+def get_statistics():
+
+    course=None;
+
+    course_id = request.vars.c_id.strip()
+
+    if request.vars.c_id:
+        # Query database for correct course object
+        course = db(db.course.id == course_id).select().first()
+
+        if course.enrolled_students:
+            members = [db(db.auth_user.id == m).select().first()
+                       for m in course.enrolled_students if course.enrolled_students]
+        else:
+            members = None
+
+
+        project_ids = []
+        # get the projects for the course
+        projects = db(db.project.course_id == course_id).select()
+        for p in projects:
+                project_ids.append(p.id)
+
+        rows_in_projects = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.my_projects.contains(project_ids)).select()
+
+        in_projects = [n for n in rows_in_projects]
+
+        not_in_projects = []
+
+        if members:
+            for m in members:
+                if m not in in_projects:
+                    not_in_projects.append(m)
+
+    return response.json(dict(course=course, course_members=members, projects_in_course=projects, not_in_projects=not_in_projects,))
+
+
 """
 Gets a single project
 """

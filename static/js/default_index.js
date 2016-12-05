@@ -21,7 +21,7 @@ var app = function() {
 
     self.get_courses = function () {
 
-        console.log( "IN DIS FUNCTION");
+
       self.vue.loading = true;
         self.vue.courses = [];
 
@@ -33,8 +33,8 @@ var app = function() {
           self.vue.edit_course_str += self.vue.course_id;
 
 
-          self.vue.statistics_str = data.stat_url;
-          self.vue.statistics_str += self.vue.course_id;
+          //self.vue.statistics_str = data.stat_url;
+          //self.vue.statistics_str += self.vue.course_id;
 
 
           //enumerate(self.vue.my_courses);
@@ -44,22 +44,6 @@ var app = function() {
       });
     };
 
-/**   functions to implement same-page edit
-
-    self.edit_project = function () {
-      self.vue.loading = true;
-      $.getJSON(edit_project_url, function(data) {
-          self.vue.form = data.form;
-          self.vue.loading = false;
-      });
-    };
-
-    self.send_project = function () {
-      $.post(edit_project_url, function(data) {
-          form: self.vue.form;
-      });
-    };
-*/
 
 
     self.get_projects = function () {
@@ -104,6 +88,34 @@ var app = function() {
       });
     };
 
+    self.get_one_course = function(course_id){
+
+        self.vue.course_id = course_id;
+        self.vue.course=[];
+        self.vue.course_members=[];
+        self.vue.projects_in_course = [];
+        self.vue.not_in_projects=[];
+      $.getJSON(view_statistics_url, $.param({c_id: self.vue.course_id}), function(data){
+
+        self.vue.course = data.course;
+        self.vue.course_members = data.course_members;
+        self.vue.projects_in_course = data.projects;
+        self.vue.not_in_projects = data.not_in_projects;
+      });
+
+        console.log( "at end of js function : ", self.vue.course_id);
+        console.log("at end of js function:", self.vue.course);
+        console.log("at end of js function:", self.vue.course_members);
+        console.log("at end of js function: ", self.vue.projects_in_course);
+        console.log("at end of js function: ", self.vue.not_in_projects);
+
+    };
+
+
+
+
+
+
     self.goto = function (page, course_id, p_id) {
         self.vue.page = page;
         self.vue.course_id = course_id;
@@ -139,9 +151,13 @@ var app = function() {
             my_courses: [],
             projects: [],
             courses: [],
+            projects_in_course: [],
             proj_matches: [],
             proj: [],
+            course: [],
+            course_members: [],
             my_members: [],
+            not_in_projects: [],
             coursework: [],
             current: "",
             course_name: "",
@@ -153,10 +169,12 @@ var app = function() {
             edit_project_str: "",
             edit_course_str: "",
             statistics_str:"",
+            course_name:"",
         },
         methods: {
             get_dashboard: self.get_dashboard,
             get_courses: self.get_courses,
+            get_one_course: self.get_one_course,
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
             get_members: self.get_members,
