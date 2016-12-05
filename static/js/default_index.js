@@ -53,6 +53,7 @@ var app = function() {
       $.getJSON(projects_url, $.param({c_id: self.vue.course_id}), function(data) {
           self.vue.edit_project_str = data.current_url;
           self.vue.edit_project_str += "/" + self.vue.course_id;
+          self.vue.profiles_url = data.profiles_url;
 
 
           console.log(data.current_url);
@@ -83,6 +84,7 @@ var app = function() {
       $.getJSON(view_project_url, $.param({c_id: self.vue.course_id, p_id: self.vue.project_id}), function(data) {
           self.vue.proj = data.project;
           self.vue.proj_matches = data.matches;
+          self.vue.profile_url = data.profile_url;
           //enumerate(self.vue.proj);
           //enumerate(self.vue.proj_matches);
           self.vue.loading = false;
@@ -102,6 +104,7 @@ var app = function() {
         self.vue.course_members = data.course_members;
         self.vue.projects_in_course = data.projects;
         self.vue.not_in_projects = data.not_in_projects;
+
       });
 
         console.log( "at end of js function : ", self.vue.course_id);
@@ -109,6 +112,7 @@ var app = function() {
         console.log("at end of js function:", self.vue.course_members);
         console.log("at end of js function: ", self.vue.projects_in_course);
         console.log("at end of js function: ", self.vue.not_in_projects);
+        console.log("at end of js function: ", self.vue.profile_url);
 
     };
 
@@ -173,6 +177,7 @@ var app = function() {
             page: 'courses',
             current_course: null,
             profile_url: "",
+            profiles_url: "",
             edit_project_str: "",
             edit_course_str: "",
             statistics_str:"",
