@@ -87,7 +87,7 @@ def edit_course():
             'term': 'Please enter the current Term:'})
 
         #adds a cancel button to return
-        form.add_button('Cancel', URL('enrolled_courses'))
+        form.add_button('Cancel', URL('default', 'index'))
     # If there are arguments, edit a course
     else:
         #Queries for user that matches admin email, and is enrolled in a specific course
@@ -107,7 +107,7 @@ def edit_course():
         # Admin email must be current user
         db.course.admin_email.writable = False
         form = SQLFORM(db.course, course, deletable=True, showid=False)
-        form.add_button('Cancel', URL('enrolled_courses'))
+        form.add_button('Cancel', URL('default', 'index'))
 
     if form.process().accepted:
         # query for the new course
@@ -385,7 +385,7 @@ def edit_project():
             'What skills and technologies are needed to develop this project?','accepting_members':
             'Are you looking for more team members? If so, click this box!'})
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('defauilt', 'index'))
+        form.add_button('Cancel', URL('default', 'index'))
 
     if form.process(onvalidation=member_validation).accepted:
         this_project = db(db.project.id == form.vars.id).select().first()
