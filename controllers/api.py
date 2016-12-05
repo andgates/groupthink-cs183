@@ -63,41 +63,38 @@ def get_projects():
 
 @auth.requires_login()
 def get_members():
+
+    members = None
+    print "about to do stuff"
+    course_id = request.vars.c_id.strip()
+    print "GETTING ID"
+    if course_id:
+        print "Got ID"
+
+
+
     current_user = db(db.auth_user.id == auth.user.id).select().first()
 
     # Extract the course_id from the argument ("View Course Members" button in project.html)
-    course_id = request.args(0)
-
+    course_id = request.vars.c_id.strip()
+    print "members"
     course = db(db.course.course_id == course_id).select().first()
     course_name = course.course_name
-
+    print "stuff"
     # Que?™eries for all members in a given course
     rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select(orderby=~db.auth_user.id)
 
     # The ol' toss em'in a list ♪
     members = [m for m in rows_members]
-
-    # Queries for members­ that have matching previous coursework (people who have taken the same class in the past)
-    rows_coursework = db(db.auth_user.enrolled_courses.contains(course.id)
-                         and db.auth_user.coursework.contains(current_user.coursework)).select()
+    print "shite"
+    # # Queries for members­ that have matching previous coursework (people who have taken the same class in the past)
+    # rows_coursework = db(db.auth_user.enrolled_courses.contains(course.id)
+    #                      and db.auth_user.coursework.contains(current_user.coursework)).select()
 
     # Toss em' in a list ♫
-    coursework_members = [m for m in rows_coursework]
+    # coursework_members = [m for m in rows_coursework]
 
     return response.json(dict(members=members))
-
-def get_user_name_from_email(email):
-    """Returns a string corresponding to the user first and last names,
-    given the user email."""
-
-    #gets the user based on user email
-    u = db(db.auth_user.email == email).select().first()
-    if u is None:
-        #if there is no name, returns none
-        return 'None'
-    else:
-        #otherwise, returns first and last name
-        return ' '.join([u.first_name, u.last_name])
 
 """
 Gets a single project

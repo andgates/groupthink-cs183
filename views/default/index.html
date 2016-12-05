@@ -21,7 +21,6 @@
       </li>
       <li v-if="current_course != null">
         ${current_course}
-          <a v-on:click="goto('members')"> Members </a>
       </li>
     </ol>
 
@@ -38,6 +37,9 @@
               <h2 class="pull-left"> ${c.course_name} </h2>
               <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
                 View ${c.course_name} <i class="fa fa-arrow-right"></i>
+              </button>
+                  <button v-on:click="goto('members',c.course_id)" class="pull-right">
+                View ${c.course_name} Members <i class="fa fa-arrow-right"></i>
               </button>
             </div>
             <div class="panel-body">
@@ -160,10 +162,39 @@
 
     <div v-if="page == 'members'">
         <div class="panel" style="border-radius: 0">
-            <div v-for="m in my_members">
+          <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                  <tr v-for="m in my_members">
+                      <td >
+                          ${m.first_name} ${m.last_name}
+                      </td>
+                      <td>
+                          ${m.email}
+                      </td>
+                      <td>
+                          ${m.username}
+                      </td>
+                      <td>
+                          <button v-on:click="">
+                              View Profile
+
+                              <i class="fa fa-user-circle"></i>
+                          </button>
+                      </td>
+                  </tr>
+            </tbody>
+          </table>
             </div>
         </div>
     </div> <!-- end of member list panel -->
+
 
 
   </div> <!-- Vue div -->
