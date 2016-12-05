@@ -62,7 +62,7 @@ var app = function() {
       });
     };
     self.get_members = function(){
-        $.getJSON(members_url, function(data){
+        $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
             self.vue.my_members = data.members;
         });
     };
