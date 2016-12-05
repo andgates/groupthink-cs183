@@ -165,4 +165,5 @@ def edit_project():
 def get_current():
     student = db(db.auth_user.email == auth.user.email).select().first()
     current_user = student.email
-    response.json(dict(current_user=current_user))
+    return response.json(dict(current_user=current_user))
+

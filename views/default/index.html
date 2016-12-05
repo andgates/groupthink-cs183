@@ -51,7 +51,7 @@
                 View ${c.course_name} Members <i class="fa fa-arrow-right"></i>
               </button>
             </div>
-            <div v-if="admin == c.admin_email">
+            <div v-if="current == c.admin_email">
                 <h2>I am boss</h2>
             </div>
 
@@ -99,7 +99,7 @@
                             <p v-if="p.accepting_members">Yes</p>
                             <p v-if="p.accepting_members == false">No</p>
                       </td>
-                      <td>
+                      <td v-if="current == p.user_email">
 
                           <a v-bind:href="edit_project_str + '/' + p.id">
                           <button>
@@ -108,6 +108,9 @@
                               <i class="fa fa-pencil-square-o"></i>
                           </button>
                         </a>
+                      </td>
+                      <td v-if="current == p.user_email">
+                          MINE
                       </td>
                   </tr>
             </tbody>
