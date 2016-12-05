@@ -15,7 +15,7 @@ __status__ = "Release"
 __date__ = "11/23/2016"
 
 @auth.requires_login()
-def my_courses():
+def index():
     """
     Nothing served here, see api.py AJAX controllers
     """
@@ -36,7 +36,7 @@ def get_user_name_from_email(email):
         #otherwise, returns first and last name
         return ' '.join([u.first_name, u.last_name])
 
-def index():
+def dashboard():
     """
     Index is the dashboard for logged in users.
     """

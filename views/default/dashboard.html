@@ -1,0 +1,128 @@
+{{extend 'layout.html'}}
+
+<div class="post_listing center">
+
+{{logged_in = auth.user_id is not None}}
+
+
+{{if logged_in:}}
+
+<div class="page-header clearfix">
+
+    <h2>GroupThink Dashboard</h2>
+
+  <a href="{{=URL('default', 'profile', args=[current_profile.username])}}">
+    <button type="button" class="btn btn-default btn-lg">
+      <i class="fa fa-user"></i> My Profile
+    </button>
+  </a>
+
+</div>
+
+<div class="col-xs-6">
+  <div class="panel panel-info">
+    <div class="panel-heading clearfix">
+      <h2> My Courses </h2>
+      <a href="{{=URL('default', 'enrolled_courses')}}">
+        <button type="button" class="btn btn-default btn-lg">
+          <i class="fa fa-graduation-cap"></i> View All
+        </button>
+      </a>
+    </div>
+        <div class="panel-body">
+          {{if my_courses:}}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col-md-1 text-center">Course Name</th>
+                  <th class="col-md-2 text-center">Course ID</th>
+                  <th class="col-md-3 text-center">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{if my_courses:}}
+                    {{for c in my_courses:}}
+                      {{own_c = auth.user_id and c.admin_email == auth.user.email}}
+                    <tr>
+                      <td class="col-md-1">
+                        <a href="{{=URL('default', 'project_list', args=[c.course_id])}}">
+                            {{=c.course_name}}
+                        </a>
+                      </td>
+                      <td class="col-md-2">{{=c.course_id}}</td>
+                      <td class="col-md-3">
+                        {{if own_c:}}
+                            <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm">
+                                Edit <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                        {{pass}}
+                    </td>
+                    </tr>
+                    {{pass}}
+                {{pass}}
+              </tbody>
+            </table>
+          </div>
+          {{else:}}
+            <p>You're not enrolled in any courses yet.<p>
+          {{pass}}
+        </div>
+  </div>
+</div>
+
+<div class="col-xs-6">
+  <div class="panel panel-info">
+    <div class="panel-heading clearfix">
+      <h2> My Projects </h2>
+    </div>
+        <div class="panel-body">
+          {{if my_projects:}}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col-md-1 text-center">Project Name</th>
+                  <th class="col-md-2 text-center">Course ID</th>
+                  <th class="col-md-3 text-center">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{for p in my_projects:}}
+                  {{own_p = auth.user_id and p.user_email == auth.user.email}}
+                <tr>
+                  <td class="col-md-1">
+                    <a href="{{=URL('default', 'project', args=[p.course_id,p.id])}}">
+                        {{=p.project_name}}
+                    </a>
+                  </td>
+                  <td class="col-md-2">{{=p.course_id}}</td>
+                  <td class="col-md-3">
+                    {{if own_p:}}
+                        <a href="{{=URL('default', 'edit_project', args=[p.course_id,p.id])}}" class="btn btn-primary btn-sm">
+                            Edit <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    {{pass}}
+                  </td>
+                </tr>
+                {{pass}}
+              </tbody>
+            </table>
+          </div>
+          {{else:}}
+            <p>You have no projects yet<p>
+          {{pass}}
+        </div>
+  </div>
+</div>
+
+    {{else:}}
+    <div class="page-header clearfix">
+        <h2>GroupThink</h2>
+        <h3>Start thinking with GroupThink today. Login or Sign up.</h3>
+        <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
+            Log in <i class="fa fa-sign-in"></i>
+        </a>
+    </div>
+    {{pass}}
+</div>

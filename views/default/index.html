@@ -1,128 +1,173 @@
 {{extend 'layout.html'}}
 
-<div class="post_listing center">
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var courses_url = "{{=URL('api', 'get_my_courses')}}";
+    var projects_url = "{{=URL('api', 'get_projects')}}";
+    var view_project_url = "{{=URL('api', 'get_one_project')}}";
+    var edit_project_url = "{{=URL('api', 'edit_project')}}";
+    var members_url = "{{=URL('api', 'get_members')}}";
+</script>
+{{end}}
 
-{{logged_in = auth.user_id is not None}}
+<div class="container">
+  <div id="vue-div" style="display:none">
+
+    <!-- Breadcrumb navigation for courses -->
+    <ol class="breadcrumb">
+      <li>
+        <a v-on:click="goto('courses')"> My Courses </a>
+      </li>
+      <li v-if="current_course != null">
+        ${current_course}
+          <a v-on:click="goto('members')"> Members </a>
+      </li>
+    </ol>
+
+    <div v-if="page == 'courses'">
+
+        <div v-if="my_courses.length == 0">
+          No courses
+        </div>
+
+        <div v-for="c in my_courses">
+          <div class="panel panel-default" id="course-panel">
+
+            <div class="panel-heading clearfix">
+              <h2 class="pull-left"> ${c.course_name} </h2>
+              <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
+                View ${c.course_name} <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="panel-body">
+              <p class="text-center">${c.course_info}</p>
+            </div>
+          <div class="panel-footer clearfix">
+            <p class="pull-left"> Term: ${c.term}</p>
+            <p class="pull-right"> Course ID: ${c.course_id} </p>
+          </div>
+          </div>
+
+        </div>
+
+    </div> <!-- Courses div -->
+
+    <div v-if="page == 'project_list'">
+
+      <div class="panel">
 
 
-{{if logged_in:}}
-
-<div class="page-header clearfix">
-
-    <h2>GroupThink Dashboard</h2>
-
-  <a href="{{=URL('default', 'profile', args=[current_profile.username])}}">
-    <button type="button" class="btn btn-default btn-lg">
-      <i class="fa fa-user"></i> My Profile
-    </button>
-  </a>
-
-</div>
-
-<div class="col-xs-6">
-  <div class="panel panel-info">
-    <div class="panel-heading clearfix">
-      <h2> My Courses </h2>
-      <a href="{{=URL('default', 'enrolled_courses')}}">
-        <button type="button" class="btn btn-default btn-lg">
-          <i class="fa fa-graduation-cap"></i> View All
-        </button>
-      </a>
-    </div>
-        <div class="panel-body">
-          {{if my_courses:}}
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
+          <table class="table table-striped">
+            <thead>
                 <tr>
-                  <th class="col-md-1 text-center">Course Name</th>
-                  <th class="col-md-2 text-center">Course ID</th>
-                  <th class="col-md-3 text-center">Edit</th>
+                    <th class="text-center">Project Name</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Team Members</th>
+                    <th class="text-center">Accepting Members?</th>
                 </tr>
-              </thead>
-              <tbody>
-                {{if my_courses:}}
-                    {{for c in my_courses:}}
-                      {{own_c = auth.user_id and c.admin_email == auth.user.email}}
-                    <tr>
-                      <td class="col-md-1">
-                        <a href="{{=URL('default', 'project_list', args=[c.course_id])}}">
-                            {{=c.course_name}}
-                        </a>
+            </thead>
+            <tbody>
+                  <tr v-for="p in projects">
+                      <td>
+                        <button v-on:click="get_one_project(p.course_id,p.id)" data-toggle="modal" data-target="#myModal">
+                            ${p.project_name}
+                        </button>
                       </td>
-                      <td class="col-md-2">{{=c.course_id}}</td>
-                      <td class="col-md-3">
-                        {{if own_c:}}
-                            <a href="{{=URL('default', 'edit_course', args=[c.id])}}" class="btn btn-primary btn-sm">
-                                Edit <i class="fa fa-pencil-square-o"></i>
-                            </a>
-                        {{pass}}
-                    </td>
-                    </tr>
-                    {{pass}}
-                {{pass}}
-              </tbody>
-            </table>
-          </div>
-          {{else:}}
-            <p>You're not enrolled in any courses yet.<p>
-          {{pass}}
-        </div>
-  </div>
-</div>
+                      <td>${p.project_info}</td>
+                      <td>
+                        <ul v-for="i in p.current_members">
+                                <li>${i}</li>
+                        </ul>
+                      </td>
+                      <td>
+                            <p v-if="p.accepting_members">Yes</p>
+                            <p v-if="p.accepting_members == false">No</p>
+                      </td>
+                      <td>
 
-<div class="col-xs-6">
-  <div class="panel panel-info">
-    <div class="panel-heading clearfix">
-      <h2> My Projects </h2>
-    </div>
-        <div class="panel-body">
-          {{if my_projects:}}
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th class="col-md-1 text-center">Project Name</th>
-                  <th class="col-md-2 text-center">Course ID</th>
-                  <th class="col-md-3 text-center">Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{for p in my_projects:}}
-                  {{own_p = auth.user_id and p.user_email == auth.user.email}}
-                <tr>
-                  <td class="col-md-1">
-                    <a href="{{=URL('default', 'project', args=[p.course_id,p.id])}}">
-                        {{=p.project_name}}
-                    </a>
-                  </td>
-                  <td class="col-md-2">{{=p.course_id}}</td>
-                  <td class="col-md-3">
-                    {{if own_p:}}
-                        <a href="{{=URL('default', 'edit_project', args=[p.course_id,p.id])}}" class="btn btn-primary btn-sm">
-                            Edit <i class="fa fa-pencil-square-o"></i>
-                        </a>
-                    {{pass}}
-                  </td>
-                </tr>
-                {{pass}}
-              </tbody>
-            </table>
-          </div>
-          {{else:}}
-            <p>You have no projects yet<p>
-          {{pass}}
-        </div>
-  </div>
-</div>
+                          <button v-on:click="">
+                              Edit DOES NOTHING
 
-    {{else:}}
-    <div class="page-header clearfix">
-        <h2>GroupThink</h2>
-        <h3>Start thinking with GroupThink today. Login or Sign up.</h3>
-        <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning pull-right">
-            Log in <i class="fa fa-sign-in"></i>
-        </a>
-    </div>
-    {{pass}}
-</div>
+                              <i class="fa fa-pencil-square-o"></i>
+                          </button>
+                      </td>
+                  </tr>
+            </tbody>
+          </table>
+
+        </div> <!-- end project list panel -->
+
+
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">${proj.project_name}</h4>
+              </div>
+              <div class="modal-body">
+                <p>Project Description: ${proj.project_info} </p>
+                Current Members:
+                    <ul v-for="member_email in proj.current_members">
+                            <li>${member_email}</li>
+                    </ul>
+                Needed Skills:
+                    <ul v-for="skill in proj.needed_skills">
+                        <li>${skill}</li>
+                    </ul>
+                    <p v-if="proj.accepting_members">Accepting Members? Yes</p>
+                    <p v-if="proj.accepting_members == false">Accepting Members? No</p>
+                <p>Find Teammates:</p>
+                <ul v-for="m in proj_matches">
+                  <li> ${m} </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!--  Edit Modal
+        <div class="modal fade" id="editModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Project</h4>
+              </div>
+              <div class="modal-body">
+                  <div v-html="form"></div>
+                    <button v-on:click="send_project">
+                        The Real Submit
+                    </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+    </div> <!-- Project list div -->
+
+    <div v-if="page == 'members'">
+        <div class="panel" style="border-radius: 0">
+            <div v-for="m in my_members">
+            </div>
+        </div>
+    </div> <!-- end of member list panel -->
+
+
+  </div> <!-- Vue div -->
+
+</div> <!-- container div -->
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
