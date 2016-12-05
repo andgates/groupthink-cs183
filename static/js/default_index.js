@@ -78,9 +78,11 @@ var app = function() {
       });
     };
     self.get_members = function(){
+        console.log("XFILES");
         $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
             self.vue.my_members = data.members;
         });
+        console.log("FUX")
     };
 
     self.get_one_project = function (course_id,p_id) {
