@@ -62,6 +62,10 @@ def get_projects():
 
         current_url = URL('default', 'edit_project')
 
+        profiles_url = URL('default', 'profile')
+        print("get_projects")
+        print (profiles_url)
+
 
 
         # Extract course name for webpage heading
@@ -72,7 +76,7 @@ def get_projects():
 
 
 
-    return response.json(dict(projects=projects, current_url=current_url))
+    return response.json(dict(projects=projects, profiles_url=profiles_url,  current_url=current_url))
 
 @auth.requires_login()
 def get_members():
@@ -198,8 +202,11 @@ def get_one_project():
                     matchingStudents.remove(i)
 
         matchingStudents = [s.username for s in matchingStudents]
+        profile_url = URL('default', 'profile')
+        print (profile_url)
+        print ( "get_one_project")
 
-    return response.json(dict(project=project, matches=matchingStudents,))
+    return response.json(dict(project=project, profile_url=profile_url, matches=matchingStudents,))
 
 
 @auth.requires_login()

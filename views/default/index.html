@@ -122,7 +122,10 @@
                       <td>${p.project_info}</td>
                       <td>
                         <ul v-for="i in p.current_members">
-                                <li>${i}</li>
+
+                                <li>
+                                    ${i}
+                                </li>
                         </ul>
                       </td>
                       <td>
@@ -170,7 +173,11 @@
                     <p v-if="proj.accepting_members == false">Accepting Members? No</p>
                 <p>Find Teammates:</p>
                 <ul v-for="m in proj_matches">
-                  <li> ${m} </li>
+                  <li>
+                      <a v-bind:href="profile_url + '/' + m">
+                        ${m}
+                      </a>
+                  </li>
                 </ul>
               </div>
               <div class="modal-footer">
