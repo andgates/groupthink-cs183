@@ -55,8 +55,8 @@ var app = function() {
           self.vue.edit_project_str += "/" + self.vue.course_id;
 
 
-          console.log(data.current_url);
-          console.log(self.vue.edit_project_str);
+          // console.log(data.current_url);
+          // console.log(self.vue.edit_project_str);
           self.vue.projects = data.projects;
           self.vue.admin = data.student;
           //enumerate(self.vue.projects);
@@ -65,11 +65,11 @@ var app = function() {
     };
 
     self.get_members = function(){
-        console.log("XFILES");
+        // console.log("XFILES");
         $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
             self.vue.my_members = data.members;
         });
-        console.log("FUX")
+        // console.log("FUX")
     };
 
     self.get_one_project = function (course_id,p_id) {
@@ -102,12 +102,12 @@ var app = function() {
         self.vue.projects_in_course = data.projects;
         self.vue.not_in_projects = data.not_in_projects;
       });
-
-        console.log( "at end of js function : ", self.vue.course_id);
-        console.log("at end of js function:", self.vue.course);
-        console.log("at end of js function:", self.vue.course_members);
-        console.log("at end of js function: ", self.vue.projects_in_course);
-        console.log("at end of js function: ", self.vue.not_in_projects);
+        //
+        // console.log( "at end of js function : ", self.vue.course_id);
+        // console.log("at end of js function:", self.vue.course);
+        // console.log("at end of js function:", self.vue.course_members);
+        // console.log("at end of js function: ", self.vue.projects_in_course);
+        // console.log("at end of js function: ", self.vue.not_in_projects);
 
     };
 

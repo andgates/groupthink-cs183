@@ -77,43 +77,20 @@ def get_projects():
 def get_members():
 
     members = None
-    print "about to do stuff"
     course_id = request.vars.c_id
-    print request.vars.c_id
-    print "GETTING ID"
-    if course_id:
-        print "Got ID"
     if request.vars.c_id:
         current_user = db(db.auth_user.id == auth.user.id).select().first()
 
         # Extract the course_id from the argument ("View Course Members" button in project.html)
         course_id = request.vars.c_id.strip()
-        print "members"
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
-        print "stuff"
         # Que?™eries for all members in a given course
         rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select(orderby=~db.auth_user.id)
 
         # The ol' toss em'in a list ♪
         members = [m for m in rows_members]
-        # class tempStudent:
-        #     def __init__(self, name, username, email):
-        #         self.name = name
-        #         self.username = username
-        #         self.email = email
-        # temp = []
-        # print "shite"
-        # for i in members:
-        #     print "shite1"
-        #     tempName = i.first_name + " " + i.last_name
-        #     print "shite2"
-        #     print tempName
-        #     print i.username
-        #     print i.email
-        #     poop =tempStudent(tempName, i.username, i.email)
-        #     print "shite3"
-        #     temp.append(poop)
+
         temp = members[:]
         for i in temp:
             if i.picture or i.picture_file:
@@ -126,7 +103,7 @@ def get_members():
 
         # Toss em' in a list ♫
         # coursework_members = [m for m in rows_coursework]
-        print "leaving"
+        # print "leaving"
     return response.json(dict(members=members))
 
 
@@ -231,7 +208,7 @@ def edit_project():
     if  request.vars.form != None and request.vars.form.process().accepted:
         session.flash=T('PROJECT CREATED')
         redirect(URL('default','index'))
-        print("VERY NICE")
+        # print("VERY NICE")
 
     return response.json(dict(form=form))
 @auth.requires_login()

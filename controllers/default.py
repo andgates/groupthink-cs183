@@ -463,7 +463,7 @@ def profile():
     #         student = db(db.auth_user.id == c).select().first()
     #         if student:
     #             courses.append(c)
-    print ("courses: ", courses)
+    # print ("courses: ", courses)
 
 
     return dict(courses = courses,current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
