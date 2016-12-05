@@ -87,7 +87,7 @@ def edit_course():
             'term': 'Please enter the current Term:'})
 
         #adds a cancel button to return
-        form.add_button('Cancel', URL('default', 'index'))
+        form.add_button('Cancel', URL('enrolled_courses'))
     # If there are arguments, edit a course
     else:
         #Queries for user that matches admin email, and is enrolled in a specific course
@@ -99,7 +99,7 @@ def edit_course():
         if course is None:
             #User is not authorized
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'index'))
+            redirect(URL('default', 'enrolled_courses'))
 
         args = request.args(0)
         # Course ID cannot be changed after being created
@@ -107,7 +107,7 @@ def edit_course():
         # Admin email must be current user
         db.course.admin_email.writable = False
         form = SQLFORM(db.course, course, deletable=True, showid=False)
-        form.add_button('Cancel', URL('default', 'index'))
+        form.add_button('Cancel', URL('enrolled_courses'))
 
     if form.process().accepted:
         # query for the new course
@@ -131,7 +131,7 @@ def edit_course():
             admin.enrolled_courses = newCourse
             admin.update_record()
         session.flash = T('Course created' if args is None else 'Course edited')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'enrolled_courses'))
 
     return dict(args=args,form=form)
 
@@ -180,7 +180,7 @@ def join():
                         #if user is already enrolled...
                         session.flash = "Already Enrolled"
                         # this will redirect the page and break out of the whole function
-                        redirect(URL('default', 'index'))
+                        redirect(URL('default', 'enrolled_courses'))
                 # must append if the list isnt empty
                 studentReference.enrolled_courses.append(selectedCourse)
                 studentReference.update_record()
@@ -197,7 +197,7 @@ def join():
                 selectedCourse.update_record()
             # after adding go back to enrolled courses
             session.flash = "Course Joined"
-            redirect(URL('default', 'index'))
+            redirect(URL('default', 'enrolled_courses'))
         # query returned none, therefore the course doesnt exist
         else:
             session.flash = "Course Not Found"
@@ -218,7 +218,7 @@ def project_list():
 
     if request.args(0) is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # Extract course_id from url argument (Button on enrolled_courses page)
         course_id = request.args(0)
@@ -241,7 +241,7 @@ def project():
 
     if request.args(0) is None or len(request.args) < 2:
         session.flash = T('No course selected')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # Extract course_id,project_id from url argument (Button on individual project)
         course_id, project_id = request.args[:2]
@@ -368,7 +368,7 @@ def edit_project():
 
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('default', 'index'))
+        form.add_button('Cancel', URL('project_list', args=course_id))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
@@ -378,14 +378,14 @@ def edit_project():
         # Invariant: Check if project exists
         if project is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'index'))
+            redirect(URL('default', 'project_list', args=course_id))
         form = SQLFORM(db.project, project, deletable=True, showid=False,labels = {'project_name': 'What is the name of your project?','current_members':
             'Add your email and the email of other team members:', 'project_info':'Please describe your project: '
             'What is the design, purpose, and goal?','needed_skills':
             'What skills and technologies are needed to develop this project?','accepting_members':
             'Are you looking for more team members? If so, click this box!'})
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('default', 'index'))
+        form.add_button('Cancel', URL('project_list', args=course_id))
 
     if form.process(onvalidation=member_validation).accepted:
         this_project = db(db.project.id == form.vars.id).select().first()
@@ -431,7 +431,7 @@ def edit_project():
                             the_user.my_projects = this_project
                             the_user.update_record()
         else:
-            redirect(URL('default', 'index'))
+            redirect(URL('default', 'project_list', args=[course_id]))
 
         session.flash = T('Project created' if project_id is None else 'Project edited')
         redirect(URL('default', 'index'))
@@ -461,7 +461,7 @@ def members():
 
     if request.args(0) is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # Extract the course_id from the argument ("View Course Members" button in project.html)
         course_id = request.args(0)
@@ -512,10 +512,10 @@ def statistics():
     course_id = request.args(0)
     if course_id is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'index'))
+        redirect(URL('default', 'enrolled_courses'))
     else:
         # find the course
-        course = db(db.course.course_id == course_id).select().first()
+        course = db(db.course.id == course_id).select().first()
 
         members = []
 
@@ -523,11 +523,10 @@ def statistics():
         #rows_members = db(db.auth_user.enrolled_courses.contains(course.id)).select()
         #rows_members = course.enrolled_students
 
-        if course:
-            if course.enrolled_students:
-                members = [db(db.auth_user.id == m).select().first() for m in course.enrolled_students if course.enrolled_students]
-            else:
-                members = None
+        if course.enrolled_students:
+            members = [db(db.auth_user.id == m).select().first() for m in course.enrolled_students if course.enrolled_students]
+        else:
+            members = None
 
         #rows_not_in = db(db.auth_user.enrolled_courses.contains(course.id) and
         #not db.project.curent_members.contains(auth_user.email))
@@ -537,11 +536,6 @@ def statistics():
         projects = db(db.project.course_id == course_id).select()
         for p in projects:
             project_ids.append(p.id)
-
-        # Extract course name for webpage heading
-        course = db(db.course.course_id == course_id).select().first()
-        #course_name = course.course_name
-
 
         rows_in_projects = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.my_projects.contains(project_ids)).select()
 
