@@ -32,6 +32,12 @@
       <li v-if="current_course != null">
         ${current_course}
       </li>
+      <li v-if="page == 'project_list'">
+        Projects
+      </li>
+      <li v-if="page == 'members'">
+        Members
+      </li>
     </ol>
 
     <div v-if="page == 'courses'">
