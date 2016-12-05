@@ -25,7 +25,9 @@ var app = function() {
       $.getJSON(courses_url, function(data) {
           self.vue.my_courses = data.my_courses;
           //enumerate(self.vue.my_courses);
+          self.vue.admin = data.admin;
           self.vue.loading = false;
+
       });
     };
 
@@ -57,6 +59,7 @@ var app = function() {
           console.log(data.current_url);
           console.log(self.vue.edit_project_str);
           self.vue.projects = data.projects;
+          self.vue.admin = data.student;
           //enumerate(self.vue.projects);
           self.vue.loading = false;
       });
@@ -118,6 +121,7 @@ var app = function() {
             proj: [],
             my_members: [],
             coursework: [],
+            admin: "",
             course_name: "",
             course_id: "",
             project_id: "",

@@ -50,6 +50,10 @@
                 View ${c.course_name} Members <i class="fa fa-arrow-right"></i>
               </button>
             </div>
+            <div v-if="admin == c.admin_email">
+                <h2>I am boss</h2>
+            </div>
+
             <div class="panel-body">
               <p class="text-center">${c.course_info}</p>
             </div>
@@ -95,6 +99,7 @@
                             <p v-if="p.accepting_members == false">No</p>
                       </td>
                       <td>
+
                           <a v-bind:href="edit_project_str + '/' + p.id">
                           <button>
                               Edit DOES SOMETHING

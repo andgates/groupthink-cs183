@@ -26,7 +26,7 @@ def get_my_courses():
 
     # Gets the current user
     student = db(db.auth_user.email == auth.user.email).select().first()
-
+    admin = student.email
     # Gets all the courses oh god
     courses = db(db.course).select()
 
@@ -39,16 +39,15 @@ def get_my_courses():
             if c.id in student.enrolled_courses:
                 my_courses.append(c)
 
-    return response.json(dict(my_courses=my_courses))
+    return response.json(dict(my_courses=my_courses, admin=admin))
 
 """
 Gets a list of a projects
 """
 @auth.requires_login()
 def get_projects():
-
+    student = db(db.auth_user.email == auth.user.email).select().first()
     projects = None
-
     course_id = request.vars.c_id.strip()
     if request.vars.c_id:
 
@@ -61,7 +60,7 @@ def get_projects():
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
-    return response.json(dict(projects=projects, current_url=current_url))
+    return response.json(dict(projects=projects, current_url=current_url, student=student))
 
 @auth.requires_login()
 def get_members():
