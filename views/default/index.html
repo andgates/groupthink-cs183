@@ -95,12 +95,13 @@
                             <p v-if="p.accepting_members == false">No</p>
                       </td>
                       <td>
-
-                          <button v-on:click="">
+                          <a v-bind:href="edit_project_str + '/' + p.id">
+                          <button>
                               Edit DOES NOTHING
 
                               <i class="fa fa-pencil-square-o"></i>
                           </button>
+                        </a>
                       </td>
                   </tr>
             </tbody>
