@@ -134,17 +134,19 @@ def get_statistics():
 
     course=None;
 
-    course_id = request.vars.c_id.strip()
+    #course_id = request.vars.c_id.strip()
 
     if request.vars.c_id:
         # Query database for correct course object
-        course = db(db.course.id == course_id).select().first()
+        course = db(db.course.id == request.vars.c_id).select().first()
 
         if course.enrolled_students:
             members = [db(db.auth_user.id == m).select().first()
                        for m in course.enrolled_students if course.enrolled_students]
         else:
             members = None
+
+        course_id= course.course_id;
 
 
         project_ids = []
