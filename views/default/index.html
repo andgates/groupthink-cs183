@@ -223,11 +223,26 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3> </h3>
+
                 <h4 class="modal-title"> Course Name: ${course.course_name} </h4>
                 <h5>Course Info: ${course.course_info}</h5>
               </div>
               <div class="modal-body">
+                  Enrolled Users: ( ${course_members.length} )
+                   <ul v-for="m in course_members" style="">
+                            <li>${m.username}</li>
+                   </ul>
+                  Projects: ( ${projects_in_course.length} )
+                  <ul v-for="p in projects_in_course">
+                            <li>${p.project_name}</li>
+                  </ul>
+                  Students not in a Project: ( ${not_in_projects.length})
+                  <ul v-for="n in not_in_projects">
+                            <li>${n.username}</li>
+                  </ul>
+
+
+
 
               </div>
               <div class="modal-footer">

@@ -128,7 +128,7 @@ def get_statistics():
         else:
             members = None
 
-        course_id= course.course_id;
+        course_id= course.course_id
 
 
         project_ids = []

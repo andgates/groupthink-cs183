@@ -100,7 +100,7 @@ var app = function() {
 
         self.vue.course = data.course;
         self.vue.course_members = data.course_members;
-        self.vue.projects_in_course = data.projects;
+        self.vue.projects_in_course = data.projects_in_course;
         self.vue.not_in_projects = data.not_in_projects;
       });
         //
