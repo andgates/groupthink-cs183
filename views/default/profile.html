@@ -69,9 +69,10 @@
     <div class="profile-content">
 
         <ul class = "tab">
-           <li><a href="javascript:void(0)" onclick="openTab(event,'Bio')" class="nonactive"> Bio </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab(event,'Projects')" class="active" >Projects </a> </li>
-           <li><a href="javascript:void(0)" onclick="openTab(event,'Skills')" class="nonactive"> Skills </a> </li>
+            <li><a href="javascript:void(0)" onclick="openTab(event,'Bio')" class="nonactive"> Bio </a> </li>
+            <li><a href="javascript:void(0)" onclick="openTab(event,'Projects')" class="active" >Projects </a> </li>
+            <li><a href="javascript:void(0)" onclick="openTab(event,'Classes')" class="nonactive"> Classes </a> </li>
+            <li><a href="javascript:void(0)" onclick="openTab(event,'Skills')" class="nonactive"> Skills </a></li>
         </ul>
         <body onload="openTab(event, 'Bio')">
             <div id="Projects" class="tabcontent">
@@ -86,6 +87,21 @@
                   {{pass}}
                 {{else:}}
                   <p> No projects yet. </p>
+                {{pass}}
+            </div>
+
+            <div id="Classes" class="tabcontent">
+                {{if courses:}}
+                  {{for c in courses:}}
+                    <ul>
+                    <li><a style="display: inline" href="{{=URL('default', 'index')}}">{{=c.course_name}}:</a>
+                       <p style="display: inline" >{{=c.course_info}}</p>
+                    </li>
+
+                    </ul>
+                  {{pass}}
+                {{else:}}
+                  <p> No courses yet. </p>
                 {{pass}}
             </div>
 

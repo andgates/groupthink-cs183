@@ -23,7 +23,9 @@ var app = function() {
 
         console.log( "IN DIS FUNCTION");
       self.vue.loading = true;
-      // Gets new products in response to a query, or to an initial page load.
+        self.vue.courses = [];
+
+      // Gets new courses in response to a query, or to an initial page load.
       $.getJSON(courses_url, function(data) {
           self.vue.my_courses = data.my_courses;
 
@@ -77,6 +79,7 @@ var app = function() {
           self.vue.loading = false;
       });
     };
+
     self.get_members = function(){
         console.log("XFILES");
         $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
@@ -135,6 +138,7 @@ var app = function() {
             loading: false,
             my_courses: [],
             projects: [],
+            courses: [],
             proj_matches: [],
             proj: [],
             my_members: [],

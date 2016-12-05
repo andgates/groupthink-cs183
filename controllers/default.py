@@ -453,8 +453,20 @@ def profile():
     # Query for projects made by user
     projects = db(db.project.user_email == current_profile.email).select()
 
+    courses = []
+    for e in current_profile.enrolled_courses:
+        temp_course = db(db.course.id == e).select().first()
+        courses.append(temp_course)
 
-    return dict(current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
+    # for c in course:
+    #     for e in c.enrolled_students:
+    #         student = db(db.auth_user.id == c).select().first()
+    #         if student:
+    #             courses.append(c)
+    print ("courses: ", courses)
+
+
+    return dict(courses = courses,current_profile=current_profile,projects=projects,get_user_name_from_email=get_user_name_from_email)
 
 @auth.requires_login()
 #displays membersbps
