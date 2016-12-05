@@ -24,7 +24,7 @@
 
 <div class="profile-userpic">
 
-  <img src="{{=URL('default','download', args=[current_profile.picture])}}" class="img-responsive" onerror="this.src='/groupthink/static/images/noprofilemale.gif' ">
+  <img src="{{=URL('default','download', args=[current_profile.picture])}}" class="img-responsive" onerror="this.src='/groupthink_CS183/static/images/noprofilemale.gif' ">
 
 </div>
 
@@ -68,49 +68,50 @@
 <div class="col-md-9">
     <div class="profile-content">
 
- <ul class = "tab">
+        <ul class = "tab">
            <li><a href="javascript:void(0)" onclick="openTab(event,'Bio')" class="nonactive"> Bio </a> </li>
            <li><a href="javascript:void(0)" onclick="openTab(event,'Projects')" class="active" >Projects </a> </li>
            <li><a href="javascript:void(0)" onclick="openTab(event,'Skills')" class="nonactive"> Skills </a> </li>
-       </ul>
+        </ul>
+        <body onload="openTab(event, 'Bio')" class=nonactive">
+            <div id="Projects" class="tabcontent">
+                {{if projects:}}
+                  {{for p in projects:}}
+                    <ul>
+                    <li><a style="display: inline" href="{{=URL('default', 'project', args=[p.course_id,p.id])}}">{{=p.project_name}}:</a>
+                       <p style="display: inline" >{{=p.project_info}}</p>
+                    </li>
 
-        <div id="Projects" class="tabcontent">
-            {{if projects:}}
-              {{for p in projects:}}
+                    </ul>
+                  {{pass}}
+                {{else:}}
+                  <p> No projects yet. </p>
+                {{pass}}
+            </div>
+
+            <div id="Skills" class="tabcontent">
+              {{if current_profile.skills:}}
+                <p>Skills:
                 <ul>
-                <li><a style="display: inline" href="{{=URL('default', 'project', args=[p.course_id,p.id])}}">{{=p.project_name}}:</a>
-                   <p style="display: inline" >{{=p.project_info}}</p>
-                </li>
+                {{for skill in current_profile.skills:}}
+                 <li> {{=skill}}</li>
 
+                {{pass}}
                 </ul>
+              {{else:}}
+                <p> This person has no skills. </p>
               {{pass}}
-            {{else:}}
-              <p> No projects yet. </p>
-            {{pass}}
-        </div>
 
-        <div id="Skills" class="tabcontent">
-          {{if current_profile.skills:}}
-            <p>Skills:
-            <ul>
-            {{for skill in current_profile.skills:}}
-             <li> {{=skill}}</li>
+            </div>
 
-            {{pass}}
-            </ul>
-          {{else:}}
-            <p> This person has no skills. </p>
-          {{pass}}
-
-        </div>
-
-        <div id="Bio" class="tabcontent">
-            {{if current_profile.addtl_info:}}
-                <p>{{=current_profile.addtl_info}}</p>
-            {{else:}}
-                <p> This person has no Bio.</p>
-            {{pass}}
-        </div>
+            <div id="Bio" class="tabcontent">
+                {{if current_profile.addtl_info:}}
+                    <p>{{=current_profile.addtl_info}}</p>
+                {{else:}}
+                    <p> This person has no Bio.</p>
+                {{pass}}
+            </div>
+        </body>
 
 
     </div>
