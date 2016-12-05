@@ -209,54 +209,23 @@
             </tbody>
           </table>
         </div>
-
-
-
-
-              <!--  Statistics Modal -->
-        <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"> Course Name: ${course.course_name} </h4>
-                <h5>Course Info: ${course.course_info}</h5>
-              </div>
-              <div class="modal-body">
-                  Enrolled Students:
-                    <ul v-for=" m in course.course_members">
-                        <li>${m.first_name}</li>
-                        <li>${m.last_name}</li>
-                    </ul>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
+        
 
     </div> <!-- end of member list panel -->
 
 
-            <!--  Statistics Modal
+         <!--  Statistics Modal -->
         <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"> ${course.course_id} </h4>
+                <h3> </h3>
+                <h4 class="modal-title"> Course Name: ${course.course_name} </h4>
+                <h5>Course Info: ${course.course_info}</h5>
               </div>
               <div class="modal-body">
-                   Current Members:
-                    <ul v-for="member_email in course.course_members">
-                            <li>${member_email}</li>
-                    </ul>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -264,14 +233,6 @@
             </div>
           </div>
         </div>
-        -->
-
-
-
-
-
-
-
 
 
   </div> <!-- Vue div -->
