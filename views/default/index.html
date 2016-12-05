@@ -46,6 +46,7 @@
               <h2 class="pull-left"> ${c.course_name} </h2>
               <button v-on:click="goto('project_list',c.course_id)" class="pull-right">
                 View ${c.course_name} <i class="fa fa-arrow-right"></i>
+
               </button>
                   <button v-on:click="goto('members',c.course_id)" class="pull-right">
                 View ${c.course_name} Members <i class="fa fa-arrow-right"></i>
@@ -60,7 +61,13 @@
             <p v-if="current == c.admin_email">
                 <a v-bind:href="edit_course_str + '/' + c.id">
                 <button>
-                    Edit Course<i class="fa fa-pencil-square-o"></i>
+                    Edit Course <i class="fa fa-pencil-square-o"></i>
+                </button>
+                </a>
+
+                <a v-bind:href="statistics_str + '/' + c.id">
+                <button>
+                    View Statistics <i class="fa fa-bar-chart"></i>
                 </button>
                 </a>
             </p>
@@ -212,6 +219,27 @@
             </div>
         </div>
     </div> <!-- end of member list panel -->
+
+
+    <!-- Statistics Modal -->
+        <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h1>HELLO STATS:</h1>
+              </div>
+              <div class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
 
 
 
