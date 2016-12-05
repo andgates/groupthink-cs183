@@ -171,14 +171,16 @@
                     </ul>
                     <p v-if="proj.accepting_members">Accepting Members? Yes</p>
                     <p v-if="proj.accepting_members == false">Accepting Members? No</p>
-                <p>Find Teammates:</p>
-                <ul v-for="m in proj_matches">
-                  <li>
-                      <a v-bind:href="profile_url + '/' + m">
-                        ${m}
-                      </a>
-                  </li>
-                </ul>
+                <div v-if="current == proj.user_email">
+                      <p>Find Teammates:</p>
+                    <ul v-for="m in proj_matches">
+                      <li>
+                          <a v-bind:href="profile_url + '/' + m">
+                            ${m}
+                          </a>
+                      </li>
+                    </ul>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
