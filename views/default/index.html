@@ -191,6 +191,7 @@
             </thead>
             <tbody>
                   <tr v-for="m in my_members">
+
                       <td >
                           ${m.first_name} ${m.last_name}
                       </td>
@@ -201,9 +202,11 @@
                           ${m.username}
                       </td>
                       <td>
-                          <button v-on:click="">
-                              View Profile <i class="fa fa-user"></i>
-                          </button>
+                          <a v-bind:href="profile_url + '/' + m.username">
+                              <button>
+                                  View Profile <i class="fa fa-user"></i>
+                              </button>
+                          </a>
                       </td>
                   </tr>
             </tbody>
