@@ -221,7 +221,7 @@ def project_list():
 
     if request.args(0) is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'enrolled_courses'))
+        redirect(URL('default', 'index'))
     else:
         # Extract course_id from url argument (Button on enrolled_courses page)
         course_id = request.args(0)
@@ -244,7 +244,7 @@ def project():
 
     if request.args(0) is None or len(request.args) < 2:
         session.flash = T('No course selected')
-        redirect(URL('default', 'enrolled_courses'))
+        redirect(URL('default', 'index'))
     else:
         # Extract course_id,project_id from url argument (Button on individual project)
         course_id, project_id = request.args[:2]
@@ -371,7 +371,7 @@ def edit_project():
 
         # Fill the course_id field with the current course_id
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project_list', args=course_id))
+        form.add_button('Cancel', URL('default','index'))
     else:
         # If there are arguments, edit a project
         q = ((db.project.user_email == auth.user.email) &
@@ -381,14 +381,14 @@ def edit_project():
         # Invariant: Check if project exists
         if project is None:
             session.flash = T('Not Authorized')
-            redirect(URL('default', 'project_list', args=course_id))
+            redirect(URL('default', 'index'))
         form = SQLFORM(db.project, project, deletable=True, showid=False,labels = {'project_name': 'What is the name of your project?','current_members':
             'Add your email and the email of other team members:', 'project_info':'Please describe your project: '
             'What is the design, purpose, and goal?','needed_skills':
             'What skills and technologies are needed to develop this project?','accepting_members':
             'Are you looking for more team members? If so, click this box!'})
         form.vars.course_id = course_id
-        form.add_button('Cancel', URL('project_list', args=course_id))
+        form.add_button('Cancel', URL('default', 'index'))
 
     if form.process(onvalidation=member_validation).accepted:
         this_project = db(db.project.id == form.vars.id).select().first()
@@ -434,7 +434,7 @@ def edit_project():
                             the_user.my_projects = this_project
                             the_user.update_record()
         else:
-            redirect(URL('default', 'project_list', args=[course_id]))
+            redirect(URL('default', 'index'))
 
         session.flash = T('Project created' if project_id is None else 'Project edited')
         redirect(URL('default', 'index'))
@@ -527,7 +527,7 @@ def statistics():
     course_id = request.args(0)
     if course_id is None:
         session.flash = T('No course selected')
-        redirect(URL('default', 'enrolled_courses'))
+        redirect(URL('default', 'index'))
     else:
         # find the course
         course = db(db.course.id == course_id).select().first()
