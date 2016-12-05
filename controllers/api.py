@@ -63,6 +63,7 @@ def get_projects():
         current_url = URL('default', 'edit_project')
 
 
+
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
@@ -126,8 +127,11 @@ def get_members():
 
         # Toss em' in a list ♫
         # coursework_members = [m for m in rows_coursework]
+        profile_url = URL('default', 'profile')
+        print (profile_url)
+        print ("here")
         print "leaving"
-    return response.json(dict(members=members))
+    return response.json(dict(members=members, profile_url=profile_url))
 
 """
 Gets a single project

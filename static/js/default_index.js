@@ -84,6 +84,7 @@ var app = function() {
         console.log("XFILES");
         $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
             self.vue.my_members = data.members;
+            self.vue.profile_url = data.profile_url;
         });
         console.log("FUX")
     };
@@ -121,6 +122,11 @@ var app = function() {
         };
     };
 
+    self.go_to_profile = function (username) {
+        self.vue.profile_url = URL('deafault', 'profile', args=[username]);
+
+    }
+
     self.get_dashboard = function () {
         $.getJSON(current_url, function(data){
             self.vue.current = data.current_user;
@@ -150,12 +156,14 @@ var app = function() {
             form: "",
             page: 'courses',
             current_course: null,
+            profile_url: "",
             edit_project_str: "",
             edit_course_str: "",
             statistics_str:"",
         },
         methods: {
             get_dashboard: self.get_dashboard,
+            go_to_profile: self.go_to_profile,
             get_courses: self.get_courses,
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
