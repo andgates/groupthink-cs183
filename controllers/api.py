@@ -55,11 +55,13 @@ def get_projects():
         # Query database for all projects with correct course_id
         projects = db(db.project.course_id == course_id).select(orderby=~db.project.created_on)
 
+        current_url = URL('default', 'edit_project')
+
         # Extract course name for webpage heading
         course = db(db.course.course_id == course_id).select().first()
         course_name = course.course_name
 
-    return response.json(dict(projects=projects))
+    return response.json(dict(projects=projects, current_url=current_url))
 
 @auth.requires_login()
 def get_members():
@@ -164,5 +166,3 @@ def edit_project():
         print("VERY NICE")
 
     return response.json(dict(form=form))
-
-

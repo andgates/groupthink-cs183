@@ -434,7 +434,7 @@ def edit_project():
             redirect(URL('default', 'project_list', args=[course_id]))
 
         session.flash = T('Project created' if project_id is None else 'Project edited')
-        redirect(URL('default', 'project', args=[course_id,form.vars.id]))
+        redirect(URL('default', 'index'))
 
     return dict(form=form,args=args)
 

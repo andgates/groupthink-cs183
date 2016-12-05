@@ -14,6 +14,14 @@
 <div class="container">
   <div id="vue-div" style="display:none">
 
+    <span v-if="page == 'project_list'">
+      <a v-bind:href="edit_project_str">
+        <button type="button" class="btn btn-default pull-right">
+        Post Project ${course_id}
+        </button>
+      </a>
+    </span>
+
     <!-- Breadcrumb navigation for courses -->
     <ol class="breadcrumb">
       <li>

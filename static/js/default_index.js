@@ -52,6 +52,10 @@ var app = function() {
       self.vue.projects = [];
       // Gets new products in response to a query, or to an initial page load.
       $.getJSON(projects_url, $.param({c_id: self.vue.course_id}), function(data) {
+          self.vue.edit_project_str = data.current_url;
+          self.vue.edit_project_str += "/" + self.vue.course_id;
+          console.log(data.current_url);
+          console.log(self.vue.edit_project_str);
           self.vue.projects = data.projects;
           //enumerate(self.vue.projects);
           self.vue.loading = false;
@@ -120,6 +124,7 @@ var app = function() {
             form: "",
             page: 'courses',
             current_course: null,
+            edit_project_str: "",
         },
         methods: {
             get_dashboard: self.get_dashboard,
