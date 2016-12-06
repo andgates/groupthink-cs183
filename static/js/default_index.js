@@ -20,31 +20,19 @@ var app = function() {
     };
 
     self.get_courses = function () {
-
-
       self.vue.loading = true;
-        self.vue.courses = [];
-
+      self.vue.courses = [];
       // Gets new courses in response to a query, or to an initial page load.
       $.getJSON(courses_url, function(data) {
           self.vue.my_courses = data.my_courses;
-
           self.vue.edit_course_str = data.current_url;
-          self.vue.edit_course_str += self.vue.course_id;
-
-
-          //self.vue.statistics_str = data.stat_url;
-          //self.vue.statistics_str += self.vue.course_id;
-
-
-          //enumerate(self.vue.my_courses);
-          //self.vue.admin = data.admin;
+          if (self.vue.course_id != undefined) {
+            self.vue.edit_course_str += self.vue.course_id;
+          };
           self.vue.loading = false;
 
       });
     };
-
-
 
     self.get_projects = function () {
       self.vue.loading = true;
@@ -54,24 +42,17 @@ var app = function() {
           self.vue.edit_project_str = data.current_url;
           self.vue.edit_project_str += "/" + self.vue.course_id;
           self.vue.profiles_url = data.profiles_url;
-
-
-          // console.log(data.current_url);
-          // console.log(self.vue.edit_project_str);
           self.vue.projects = data.projects;
           self.vue.admin = data.student;
-          //enumerate(self.vue.projects);
           self.vue.loading = false;
       });
     };
 
     self.get_members = function(){
-        // console.log("XFILES");
         $.getJSON(members_url, $.param({c_id: self.vue.course_id}), function(data){
             self.vue.my_members = data.members;
             self.vue.profile_url = data.profile_url;
         });
-        // console.log("FUX")
     };
 
     self.get_one_project = function (course_id,p_id) {
@@ -85,35 +66,22 @@ var app = function() {
           self.vue.proj = data.project;
           self.vue.proj_matches = data.matches;
           self.vue.profile_url = data.profile_url;
-          //enumerate(self.vue.proj);
-          //enumerate(self.vue.proj_matches);
           self.vue.loading = false;
       });
     };
 
     self.get_one_course = function(course_id){
-
         self.vue.course_id = course_id;
         self.vue.course=[];
         self.vue.course_members=[];
         self.vue.projects_in_course = [];
         self.vue.not_in_projects=[];
       $.getJSON(view_statistics_url, $.param({c_id: self.vue.course_id}), function(data){
-
         self.vue.course = data.course;
         self.vue.course_members = data.course_members;
         self.vue.projects_in_course = data.projects_in_course;
         self.vue.not_in_projects = data.not_in_projects;
-
       });
-
-
-        console.log( "at end of js function : ", self.vue.course_id);
-        console.log("at end of js function:", self.vue.course);
-        console.log("at end of js function:", self.vue.course_members);
-        console.log("at end of js function: ", self.vue.projects_in_course);
-        console.log("at end of js function: ", self.vue.not_in_projects);
-
     };
 
 
@@ -127,7 +95,6 @@ var app = function() {
         self.vue.project_id = p_id;
         self.vue.current_course = course_id;
         if (page == 'project_list') {
-          // Get the orders if the current page is order_hist
           self.get_projects();
         };
         if (page == 'courses') {
@@ -140,7 +107,6 @@ var app = function() {
 
     self.go_to_profile = function (username) {
         self.vue.profile_url = URL('deafault', 'profile', args=[username]);
-
     }
 
     self.get_dashboard = function () {
@@ -191,15 +157,12 @@ var app = function() {
             get_projects: self.get_projects,
             get_one_project: self.get_one_project,
             get_members: self.get_members,
-            //edit_project: self.edit_project,
-            //send_project: self.send_project,
             goto: self.goto,
         }
 
     });
 
     self.get_dashboard();
-    //self.read_cart();
     $("#vue-div").show();
 
 

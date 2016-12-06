@@ -7,7 +7,6 @@
     var projects_url = "{{=URL('api', 'get_projects')}}";
     var view_project_url = "{{=URL('api', 'get_one_project')}}";
     var view_statistics_url = "{{=URL('api','get_statistics')}}"
-    var edit_project_url = "{{=URL('api', 'edit_project')}}";
     var members_url = "{{=URL('api', 'get_members')}}";
     var current_url = "{{=URL('api', 'get_current')}}";
 </script>
@@ -76,15 +75,6 @@
                 <button v-on:click="get_one_course(c.id)" data-toggle="modal" data-target="#statModal">
                     View Statistics for ${c.course_name} <i class="fa fa-bar-chart"></i>
                 </button>
-
-                <!--
-                <a v-bind:href="statistics_str + '/' + c.id">
-                <button>
-                    View Statistics <i class="fa fa-bar-chart"></i>
-                </button>
-                </a>
-                -->
-
             </p>
           </div>
           </div>
@@ -94,8 +84,6 @@
 
 
     </div> <!-- Courses div -->
-
-
 
 
     <div v-if="page == 'project_list'">
@@ -231,7 +219,6 @@
 
     </div> <!-- end of member list panel -->
 
-
          <!--  Statistics Modal -->
         <div class="modal fade" id="statModal" role="dialog" style="top:15%;">
           <div class="modal-dialog modal-lg">
@@ -255,10 +242,6 @@
                   <ul v-for="n in not_in_projects">
                             <li>${n.username}</li>
                   </ul>
-
-
-
-
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

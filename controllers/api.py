@@ -3,7 +3,7 @@
 """
 GroupThink™
 
-Interfaces with Javascript via AJAX calls
+Interfaces with default_index.js via AJAX calls
 
 """
 
@@ -12,9 +12,9 @@ import json, random, string, requests, traceback
 
 __author__ = "Sean Dougher, Savanna Jordan, Ryan Monroe, and Michael Gates"
 __email__ = "mjgates@ucsc.edu, sjdoughe@ucsc.edu, srjordan@ucsc.edu, rmonroe@ucsc.edu"
-__version__ = "1"
-__status__ = "Release"
-__date__ = "11/23/2016"
+__version__ = "1.1"
+__status__ = "Beta"
+__date__ = "12/06/2016"
 
 
 """
@@ -208,24 +208,8 @@ def get_one_project():
 
     return response.json(dict(project=project, profile_url=profile_url, matches=matchingStudents,))
 
-
-@auth.requires_login()
-def edit_project():
-
-    if request.vars.form == None:
-        form = None
-        form = SQLFORM(db.project)
-
-
-    if  request.vars.form != None and request.vars.form.process().accepted:
-        session.flash=T('PROJECT CREATED')
-        redirect(URL('default','index'))
-        # print("VERY NICE")
-
-    return response.json(dict(form=form))
 @auth.requires_login()
 def get_current():
     student = db(db.auth_user.email == auth.user.email).select().first()
     current_user = student.email
     return response.json(dict(current_user=current_user))
-
