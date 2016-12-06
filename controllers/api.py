@@ -142,17 +142,30 @@ def get_statistics():
                 project_ids.append(p.id)
 
         rows_in_projects = db(db.auth_user.enrolled_courses.contains(course.id) and db.auth_user.my_projects.contains(project_ids)).select()
-
         in_projects = [n for n in rows_in_projects]
-
         not_in_projects = []
 
-        if members:
-            for m in members:
-                if m not in in_projects:
-                    not_in_projects.append(m)
+        # Quick fix remove photo in a copy of the array
+        mems_noPhoto = members[:]
+        if mems_noPhoto:
+            for i in mems_noPhoto:
+                if i.picture or i.picture_file:
+                    i.picture = ""
+                    i.picture_file = ""
+        inProj_noPhoto = in_projects[:]
+        if inProj_noPhoto:
+            for j in inProj_noPhoto :
+                if j.picture or j.picture_file:
+                    j.picture = ""
+                    j.picture_file = ""
 
-    return response.json(dict(course=course, course_members=members, projects_in_course=projects, not_in_projects=not_in_projects,))
+        # find members not in a project
+        if mems_noPhoto:
+             for m in mems_noPhoto:
+                 if m not in inProj_noPhoto:
+                     not_in_projects.append(m)
+
+    return response.json(dict(course=course, course_members=mems_noPhoto, projects_in_course=projects, not_in_projects=not_in_projects,))
 
 
 """
