@@ -8,8 +8,8 @@ GroupThink™
 # Built in modules
 import json, random, string, requests, traceback
 
-__author__ = "Sean Dougher, Savanna Jordan, Ryan Monroe, and Michael Gates"
-__email__ = "mjgates@ucsc.edu, sjdoughe@ucsc.edu, srjordan@ucsc.edu, rmonroe@ucsc.edu"
+__author__ = "Colin Marley, Savanna Jordan, Ryan Monroe, Michael Gates, and Sean Dougher"
+__email__ = "mjgates@ucsc.edu, cmarley@ucsc.edu, srjordan@ucsc.edu, rmonroe@ucsc.edu, sjdoughe@ucsc.edu"
 __version__ = "1"
 __status__ = "Release"
 __date__ = "11/23/2016"
